@@ -108,11 +108,13 @@ export default function SearchBar({
       return;
     }
 
-    if (event.metaKey || event.altKey || event.ctrlKey) {
+    const modifierActive = event.metaKey || event.altKey;
+
+    if (!modifierActive) {
       return;
     }
 
-    switch (key) {
+    switch (key.toLowerCase()) {
       case "7":
         event.preventDefault();
         setPreset("7D");
@@ -126,23 +128,19 @@ export default function SearchBar({
         setPreset("90D");
         break;
       case "c":
-      case "C":
         event.preventDefault();
         setPreset("CUSTOM");
         document.dispatchEvent(new CustomEvent(CUSTOM_PRESET_EVENT));
         break;
       case "g":
-      case "G":
         event.preventDefault();
         toggleDataset("gdelt");
         break;
       case "p":
-      case "P":
         event.preventDefault();
         toggleDataset("poly");
         break;
       case "t":
-      case "T":
         if (twitterDatasetEnabled) {
           event.preventDefault();
           toggleDataset("twitter");
