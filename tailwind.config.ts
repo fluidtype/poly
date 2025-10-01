@@ -14,14 +14,19 @@ const config: Config = {
       colors: {
         bg: "var(--bg)",
         surface: "var(--surface)",
+        surface2: "var(--surface-2)",
         "surface-2": "var(--surface-2)",
         primary: "var(--primary)",
+        primary600: "var(--primary-600)",
         "primary-600": "var(--primary-600)",
         accent: "var(--accent)",
         success: "var(--success)",
         text: "var(--text)",
         muted: "var(--muted)",
         border: "var(--border)",
+      },
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
       },
       boxShadow: {
         soft: "0 30px 60px -30px rgba(9, 11, 17, 0.55)",

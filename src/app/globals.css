@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -38,14 +40,18 @@
   }
 
   body {
-    @apply min-h-screen bg-bg text-text antialiased;
-    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont,
-      "Segoe UI", system-ui, sans-serif;
+    @apply min-h-screen bg-[var(--bg)] font-sans antialiased text-[var(--text)];
   }
-}
 
-@layer utilities {
+  .h1 {
+    @apply text-2xl font-semibold tracking-tight md:text-3xl;
+  }
+
   .card {
-    @apply rounded-2xl border border-border bg-surface shadow-soft;
+    @apply rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.25)];
+  }
+
+  .surface-pill {
+    @apply bg-gradient-to-b from-[var(--surface-2)] to-[var(--surface)] shadow-md ring-1 ring-inset ring-white/5;
   }
 }
