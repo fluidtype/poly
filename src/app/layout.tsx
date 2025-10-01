@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import TopBar from "@/components/TopBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,8 +43,9 @@ export default function RootLayout({
               </nav>
             </div>
           </header>
-          <main className="flex-1">
-            <div className="mx-auto w-full max-w-none px-5 py-10">{children}</div>
+          <TopBar />
+          <main className="mx-auto w-full max-w-[1440px] flex-1 px-5 pb-10 pt-[var(--topbar-gap)]">
+            {children}
           </main>
           <footer className="border-t border-border/70 bg-surface/60">
             <div className="mx-auto flex h-16 w-full max-w-none items-center justify-between px-5 text-xs text-muted">

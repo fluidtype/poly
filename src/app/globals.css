@@ -13,7 +13,21 @@
   --text: #eaecee;
   --muted: #a7adb7;
   --border: #24272e;
+  --header-h: 72px;
+  --topbar-gap: 20px;
   color-scheme: dark;
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --topbar-gap: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --topbar-gap: 12px;
+  }
 }
 
 @layer base {
