@@ -1,16 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import DatePresets from "@/components/search/DatePresets";
 import DatasetToggles from "@/components/search/DatasetToggles";
 import { CUSTOM_PRESET_EVENT, SEARCH_SUBMIT_EVENT } from "@/components/search/events";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   twitterDatasetEnabled,
   useGlobalFilters,
 } from "@/stores/useGlobalFilters";
 import { Search } from "lucide-react";
+
+type SearchBarProps = {
+  loading?: boolean;
+  error?: string | null;
+  onRetry?: () => void;
+  onSearch?: (keywords: string[]) => void;
+};
 
 const DEBOUNCE_DELAY = 300;
 
@@ -25,13 +40,6 @@ function keywordsEqual(a: string[], b: string[]) {
   if (a.length !== b.length) return false;
   return a.every((value, index) => value === b[index]);
 }
-
-type SearchBarProps = {
-  loading?: boolean;
-  error?: string | null;
-  onRetry?: () => void;
-  onSearch?: (keywords: string[]) => void;
-};
 
 export default function SearchBar({
   loading = false,
@@ -64,11 +72,6 @@ export default function SearchBar({
     return () => window.clearTimeout(handle);
   }, [query, keywords, setKeywords]);
 
-  const clearSearch = () => {
-    setQuery("");
-    setKeywords([]);
-  };
-
   const dispatchSearchEvent = (parsed: string[]) => {
     if (typeof window !== "undefined") {
       window.dispatchEvent(
@@ -77,6 +80,12 @@ export default function SearchBar({
         })
       );
     }
+  };
+
+  const clearSearch = () => {
+    setQuery("");
+    setKeywords([]);
+    dispatchSearchEvent([]);
   };
 
   const handleSubmit = () => {
@@ -153,6 +162,20 @@ export default function SearchBar({
     "md:h-14"
   );
 
+  const dialogContent = useMemo(
+    () => (
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Advanced search</DialogTitle>
+        </DialogHeader>
+        <div className="rounded-3xl border border-dashed border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/70 p-6 text-sm text-[color:var(--muted)]">
+          Controls coming soon.
+        </div>
+      </DialogContent>
+    ),
+    []
+  );
+
   return (
     <div className="mx-auto w-full max-w-[760px]">
       {loading ? (
@@ -169,7 +192,7 @@ export default function SearchBar({
             "focus-within:ring-2 focus-within:ring-[color:var(--primary)]/45"
           )}
         >
-          <Search className="mr-3 h-4 w-4 opacity-70" strokeWidth={2} />
+          <Search className="mr-3 h-4 w-4 text-[color:var(--muted)]" strokeWidth={2} />
           <input
             type="text"
             placeholder="Search events or markets"
@@ -202,6 +225,20 @@ export default function SearchBar({
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <DatePresets disabled={loading} />
         <DatasetToggles disabled={loading} />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              className="rounded-2xl border border-transparent bg-[color:var(--surface-2)]/80 px-3 text-[13px] text-[color:var(--muted)] transition hover:border-[color:var(--primary)]/35 hover:bg-[color:var(--primary)]/12 hover:text-[color:var(--text)]"
+              disabled={loading}
+            >
+              Advanced
+            </Button>
+          </DialogTrigger>
+          {dialogContent}
+        </Dialog>
       </div>
 
       <div className="pointer-events-none mt-1 h-[2px] rounded-full bg-[radial-gradient(60%_80%_at_50%_50%,rgba(224,36,36,0.45),transparent)]" />

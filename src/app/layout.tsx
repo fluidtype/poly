@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import { AppQueryProvider } from "./query-client-provider";
@@ -37,7 +38,7 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/80 backdrop-blur">
               <div className="mx-auto flex h-[72px] w-full max-w-none items-center justify-between px-5">
-                <span className="text-lg font-semibold tracking-tight">Poly</span>
+                <span className="text-lg font-bold tracking-tight">Poly</span>
                 <nav className="flex items-center gap-6 text-sm text-muted">
                   <a className="transition hover:text-text" href="#">
                     Overview
@@ -62,6 +63,7 @@ export default function RootLayout({
               </div>
             </footer>
           </div>
+          <Toaster />
         </AppQueryProvider>
       </body>
     </html>

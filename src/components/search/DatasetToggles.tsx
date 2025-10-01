@@ -8,7 +8,7 @@ import {
   twitterDatasetEnabled,
   useGlobalFilters,
 } from "@/stores/useGlobalFilters";
-import { BarChart3, Globe2, Twitter } from "lucide-react";
+import { BarChart, Search, Twitter } from "lucide-react";
 
 const chipClass = cn(
   "inline-flex items-center gap-1.5 rounded-2xl px-3 py-1.5 text-[13px] transition-all",
@@ -32,8 +32,8 @@ type DatasetOption = {
 };
 
 const datasetOptions: DatasetOption[] = [
-  { key: "gdelt", label: "GDELT", icon: Globe2 },
-  { key: "poly", label: "Polymarket", icon: BarChart3 },
+  { key: "gdelt", label: "GDELT", icon: Search },
+  { key: "poly", label: "Polymarket", icon: BarChart },
   { key: "twitter", label: "Twitter", icon: Twitter },
 ];
 
@@ -62,8 +62,8 @@ export default function DatasetToggles({ disabled = false }: DatasetTogglesProps
               toggleDataset(key);
             }}
           >
-            <Icon className="h-3.5 w-3.5 opacity-70" strokeWidth={2} />
-            <span>{label}</span>
+            <Icon className="h-3.5 w-3.5 opacity-75" strokeWidth={2} />
+            <span className="font-semibold tracking-tight">{label}</span>
           </button>
         );
       })}
