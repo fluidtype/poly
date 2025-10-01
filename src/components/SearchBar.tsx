@@ -56,10 +56,8 @@ export default function SearchBar({
 
   useEffect(() => {
     const joined = keywords.join(" ");
-    if (joined !== query) {
-      setQuery(joined);
-    }
-  }, [keywords, query]);
+    setQuery((current) => (current === joined ? current : joined));
+  }, [keywords]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
