@@ -1,3 +1,5 @@
+@import "react-day-picker/dist/style.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,6 +16,20 @@
   --muted: #a7adb7;
   --border: #24272e;
   color-scheme: dark;
+}
+
+:root.light {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --primary: #0f172a;
+  --primary-600: #1e293b;
+  --accent: #2563eb;
+  --success: #16a34a;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #d0d7e2;
+  color-scheme: light;
 }
 
 @layer base {
@@ -34,4 +50,23 @@
   .card {
     @apply rounded-2xl border border-border bg-surface shadow-soft;
   }
+}
+
+.rdp {
+  @apply rounded-xl bg-surface p-2 text-text;
+}
+
+.rdp-caption_dropdowns select,
+.rdp-caption_label,
+.rdp-button {
+  @apply text-xs font-medium text-text;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:hover {
+  @apply rounded-full bg-primary text-white;
+}
+
+.rdp-day:hover {
+  @apply rounded-full bg-surface-2 text-text;
 }
