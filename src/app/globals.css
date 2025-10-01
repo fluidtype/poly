@@ -38,14 +38,33 @@
   }
 
   body {
-    @apply min-h-screen bg-bg text-text antialiased;
-    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont,
-      "Segoe UI", system-ui, sans-serif;
+    @apply min-h-screen bg-bg font-sans text-text antialiased;
   }
 }
 
 @layer utilities {
   .card {
     @apply rounded-2xl border border-border bg-surface shadow-soft;
+  }
+}
+
+.main-wrap {
+  padding-top: var(--topbar-gap);
+}
+
+.surface-pill {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(0, 0, 0, 0.18) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+@layer components {
+  .h1 {
+    @apply text-2xl font-semibold tracking-tight md:text-3xl;
   }
 }

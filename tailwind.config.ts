@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 import animate from "tailwindcss-animate";
 
 const config: Config = {
@@ -22,6 +23,14 @@ const config: Config = {
         text: "var(--text)",
         muted: "var(--muted)",
         border: "var(--border)",
+      },
+      fontFamily: {
+        sans: [
+          "Poppins",
+          "ui-sans-serif",
+          "system-ui",
+          ...defaultTheme.fontFamily.sans,
+        ],
       },
       boxShadow: {
         soft: "0 30px 60px -30px rgba(9, 11, 17, 0.55)",
