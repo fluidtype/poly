@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Menu, Moon, Sun, User2 } from "lucide-react";
+import { Menu, Moon, SlidersHorizontal, Sun, User2 } from "lucide-react";
 
 import SearchBar from "@/components/SearchBar";
+import useAdvancedModal from "@/stores/useAdvancedModal";
 
 const LogoMark = () => (
   <svg
@@ -26,8 +27,10 @@ const Header = () => {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [advancedOpen, setAdvancedOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const advancedOpen = useAdvancedModal((state) => state.open);
+  const openAdvanced = useAdvancedModal((state) => state.openModal);
+  const closeAdvanced = useAdvancedModal((state) => state.closeModal);
 
   useEffect(() => {
     setMounted(true);
@@ -62,40 +65,47 @@ const Header = () => {
     window.localStorage.setItem("poly-theme", theme);
   }, [theme, mounted]);
 
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  };
+
   useEffect(() => {
     if (!advancedOpen) return;
     const handler = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setAdvancedOpen(false);
+        closeAdvanced();
       }
     };
 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [advancedOpen]);
-
-  const toggleTheme = () => {
-    setTheme((current) => (current === "dark" ? "light" : "dark"));
-  };
-
-  const handleAdvancedClick = () => {
-    setAdvancedOpen(true);
-    setMobileOpen(false);
-  };
+  }, [advancedOpen, closeAdvanced]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/80 backdrop-blur">
-      <div className="mx-auto flex h-[72px] w-full max-w-none items-center gap-4 px-5">
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-[color:var(--surface)/0.8] backdrop-blur pt-[env(safe-area-inset-top)]">
+      <div className="mx-auto flex h-[var(--header-h)] w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-2">
+        <div className="flex flex-none items-center gap-3">
           <LogoMark />
           <span className="text-sm font-semibold tracking-wide text-text/80">Poly Broadcast</span>
         </div>
 
-        <div className="flex-1">
-          <SearchBar onAdvancedClick={handleAdvancedClick} />
+        <div className="hidden min-w-0 flex-1 justify-center md:flex">
+          <div className="w-full max-w-[760px]">
+            <SearchBar />
+          </div>
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden flex-none items-center gap-2 md:flex">
+          <button
+            type="button"
+            onClick={() => {
+              openAdvanced();
+            }}
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-border/70 bg-surface-2 px-4 text-xs font-medium text-muted transition hover:border-border hover:text-text"
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            Advanced
+          </button>
           <button
             type="button"
             aria-label="Toggle theme"
@@ -126,6 +136,17 @@ const Header = () => {
               className="absolute right-0 top-12 w-48 rounded-2xl border border-border/70 bg-surface-2 p-3 shadow-soft"
               onClick={(event) => event.stopPropagation()}
             >
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-muted transition hover:bg-surface"
+                onClick={() => {
+                  openAdvanced();
+                  setMobileOpen(false);
+                }}
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+                Advanced
+              </button>
               <button
                 type="button"
                 className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm text-muted transition hover:bg-surface"
@@ -165,7 +186,7 @@ const Header = () => {
       {advancedOpen ? (
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm"
-          onClick={() => setAdvancedOpen(false)}
+          onClick={closeAdvanced}
         >
           <div
             className="w-[min(90%,420px)] rounded-2xl border border-border/70 bg-surface-2 p-6 text-sm text-muted shadow-soft"
@@ -176,7 +197,7 @@ const Header = () => {
               <button
                 type="button"
                 className="rounded-full border border-border/70 px-3 py-1 text-xs font-medium text-muted transition hover:border-border hover:text-text"
-                onClick={() => setAdvancedOpen(false)}
+                onClick={closeAdvanced}
               >
                 Close
               </button>

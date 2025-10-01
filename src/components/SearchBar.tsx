@@ -12,6 +12,7 @@ import useGlobalFilters, {
   parseDateKey,
   twitterEnabled,
 } from "@/stores/useGlobalFilters";
+import useAdvancedModal from "@/stores/useAdvancedModal";
 
 type SearchBarProps = {
   isLoading?: boolean;
@@ -137,6 +138,8 @@ const SearchBar = ({
     setDateRange,
     toggleDataset,
   } = useGlobalFilters();
+  const openAdvanced = useAdvancedModal((state) => state.openModal);
+  const handleAdvancedClick = onAdvancedClick ?? openAdvanced;
 
   const [inputValue, setInputValue] = useState(() => keywords.join(" "));
   const [selectedPreset, setSelectedPreset] = useState<PresetOption["value"]>(() =>
@@ -247,20 +250,20 @@ const SearchBar = ({
 
   if (isLoading) {
     return (
-      <div className="space-y-3">
-        <div className="flex h-12 w-full items-center gap-3 rounded-2xl border border-border/70 bg-surface-2 px-4">
-          <Loader2 className="h-4 w-4 animate-spin text-muted" />
+      <div className="w-full">
+        <div className="flex h-14 w-full items-center gap-3 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-5">
+          <Loader2 className="h-5 w-5 animate-spin text-muted" />
           <div className="h-3 flex-1 rounded-full bg-border/80" />
         </div>
-        <div className="h-9 w-full rounded-2xl bg-surface-2" />
+        <div className="mt-2 h-8 w-full rounded-full bg-surface-2" />
       </div>
     );
   }
 
   return (
-    <div className="w-full space-y-3">
+    <div className="w-full">
       {error ? (
-        <div className="flex items-center justify-between rounded-xl border border-primary/50 bg-primary/10 px-4 py-3 text-sm text-primary">
+        <div className="mb-3 flex items-center justify-between rounded-xl border border-primary/50 bg-primary/10 px-4 py-3 text-sm text-primary">
           <span>{error}</span>
           {onRetry ? (
             <button
@@ -274,25 +277,25 @@ const SearchBar = ({
         </div>
       ) : null}
 
-      <div className="relative flex w-full items-center gap-3 rounded-2xl border border-border/70 bg-surface-2 px-4 py-3 shadow-soft">
-        <Search className="h-4 w-4 flex-none text-muted" />
+      <div className="relative flex h-14 w-full items-center gap-3 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-5 shadow-soft">
+        <Search className="h-5 w-5 flex-none text-muted" />
         <input
-          className="h-full w-full bg-transparent text-sm text-text placeholder:text-muted focus:outline-none"
+          className="h-full w-full bg-transparent text-sm text-[color:var(--text)] placeholder:text-[color:var(--muted)] focus:outline-none"
           placeholder="Search events or markets"
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
         />
         <button
           type="button"
-          className="hidden items-center gap-2 rounded-xl border border-border/60 px-3 py-2 text-xs font-medium text-muted transition hover:border-border hover:text-text md:inline-flex"
-          onClick={onAdvancedClick}
+          className="hidden items-center gap-2 rounded-full border border-[color:var(--border)]/80 bg-[color:var(--surface)] px-3 py-2 text-xs font-medium text-muted transition hover:border-[color:var(--border)] hover:text-text md:inline-flex"
+          onClick={handleAdvancedClick}
         >
           <SlidersHorizontal className="h-4 w-4" />
           Advanced
         </button>
       </div>
 
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mt-2 flex flex-wrap items-center gap-2">
         <div className="flex flex-wrap items-center gap-2">
           {PRESETS.map((preset) => (
             <div
@@ -307,7 +310,7 @@ const SearchBar = ({
                   "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition",
                   selectedPreset === preset.value
                     ? "border-primary/60 bg-primary/10 text-primary"
-                    : "border-border/70 bg-surface text-muted hover:border-border hover:text-text",
+                    : "border-[color:var(--border)] bg-[color:var(--surface)] text-muted hover:border-[color:var(--border)] hover:text-text",
                 )}
               >
                 {preset.value === "custom" ? <CalendarIcon className="h-3.5 w-3.5" /> : null}
@@ -325,7 +328,7 @@ const SearchBar = ({
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 md:ml-auto">
           {datasetOptions.map((option) => (
             <button
               key={option.key}
@@ -335,10 +338,10 @@ const SearchBar = ({
               className={cn(
                 "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition",
                 option.disabled
-                  ? "cursor-not-allowed border-border/50 text-muted/50"
+                  ? "cursor-not-allowed border-[color:var(--border)]/40 text-muted/50"
                   : option.active
                     ? "border-primary/60 bg-primary/10 text-primary"
-                    : "border-border/70 bg-surface text-muted hover:border-border hover:text-text",
+                    : "border-[color:var(--border)] bg-[color:var(--surface)] text-muted hover:border-[color:var(--border)] hover:text-text",
               )}
             >
               <span>{option.label}</span>
@@ -348,8 +351,8 @@ const SearchBar = ({
 
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-full border border-border/70 px-3 py-1.5 text-xs font-medium text-muted transition hover:border-border hover:text-text md:hidden"
-            onClick={onAdvancedClick}
+            className="inline-flex items-center gap-2 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] px-3 py-1.5 text-xs font-medium text-muted transition hover:border-[color:var(--border)] hover:text-text md:hidden"
+            onClick={handleAdvancedClick}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
             Advanced

@@ -15,6 +15,7 @@
   --text: #eaecee;
   --muted: #a7adb7;
   --border: #24272e;
+  --header-h: 88px;
   color-scheme: dark;
 }
 
@@ -30,6 +31,17 @@
   --muted: #64748b;
   --border: #d0d7e2;
   color-scheme: light;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-h: 72px;
+  }
+}
+
+html,
+body {
+  overflow-y: auto;
 }
 
 @layer base {
