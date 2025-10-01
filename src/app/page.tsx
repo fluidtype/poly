@@ -1,7 +1,12 @@
 export default function HomePage() {
   return (
-    <section className="flex min-h-[360px] items-center justify-center rounded-3xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--surface-2)]/50 text-sm text-[color:var(--muted)]">
-      <span>Dashboard content coming soon.</span>
-    </section>
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
+      {/* Placeholder tiles for upcoming dashboard sections */}
+      <div className="card md:col-span-8">Block A1</div>
+      <div className="card md:col-span-4">Block A2</div>
+      <div className="card md:col-span-6">Block B1</div>
+      <div className="card md:col-span-6">Block B2</div>
+      <div className="card md:col-span-12">Block C</div>
+    </div>
   );
 }
