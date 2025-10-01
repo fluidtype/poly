@@ -27,18 +27,11 @@ type SearchBarProps = {
   onSearch?: (keywords: string[]) => void;
 };
 
-const DEBOUNCE_DELAY = 300;
-
 function parseKeywords(value: string) {
   return value
     .split(/[\s,]+/)
     .map((keyword) => keyword.trim())
     .filter(Boolean);
-}
-
-function keywordsEqual(a: string[], b: string[]) {
-  if (a.length !== b.length) return false;
-  return a.every((value, index) => value === b[index]);
 }
 
 export default function SearchBar({
@@ -58,17 +51,6 @@ export default function SearchBar({
     const joined = keywords.join(" ");
     setQuery((current) => (current === joined ? current : joined));
   }, [keywords]);
-
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      const parsed = parseKeywords(query);
-      if (!keywordsEqual(parsed, keywords)) {
-        setKeywords(parsed);
-      }
-    }, DEBOUNCE_DELAY);
-
-    return () => window.clearTimeout(handle);
-  }, [query, keywords, setKeywords]);
 
   const dispatchSearchEvent = (parsed: string[]) => {
     if (typeof window !== "undefined") {
