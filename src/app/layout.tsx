@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import Header from "@/components/Header";
+import SearchDock from "@/components/SearchDock";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -23,30 +25,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-bg">
-      <body className={cn("min-h-screen bg-bg text-text antialiased", inter.className)}>
+    <html lang="en" className="bg-[color:var(--bg)]">
+      <body className={cn("bg-[color:var(--bg)] text-[color:var(--text)] antialiased", inter.className)}>
         <div className="flex min-h-screen flex-col">
-          <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/80 backdrop-blur">
-            <div className="mx-auto flex h-[72px] w-full max-w-none items-center justify-between px-5">
-              <span className="text-lg font-semibold tracking-tight">Poly</span>
-              <nav className="flex items-center gap-6 text-sm text-muted">
-                <a className="transition hover:text-text" href="#">
-                  Overview
-                </a>
-                <a className="transition hover:text-text" href="#">
-                  Reports
-                </a>
-                <a className="transition hover:text-text" href="#">
-                  Settings
-                </a>
-              </nav>
+          {/* Header sticky, sempre visibile */}
+          <header className="sticky top-0 z-50 bg-[color:var(--surface)/0.8] backdrop-blur border-b border-[color:var(--border)]">
+            <div className="mx-auto max-w-[1440px] px-3 sm:px-4 md:px-5 h-[var(--header-h)] flex items-center justify-between gap-4">
+              {/* Left: logo */}
+              {/* Center: SearchBar (solo ≥ md) */}
+              {/* Right: actions */}
+              <Header />
             </div>
           </header>
-          <main className="flex-1">
-            <div className="mx-auto w-full max-w-none px-5 py-10">{children}</div>
+
+          {/* Mobile/Tablet: barra di ricerca in dock separato, sotto l’header */}
+          <SearchDock /> {/* questo componente è hidden su ≥ md */}
+
+          {/* Spazio di cortesia sotto l’header: mai far toccare la search al bordo top */}
+          <main className="mx-auto max-w-[1440px] px-3 sm:px-4 md:px-5 pt-[var(--header-gap)] pb-8 flex-1 w-full">
+            {children}
           </main>
-          <footer className="border-t border-border/70 bg-surface/60">
-            <div className="mx-auto flex h-16 w-full max-w-none items-center justify-between px-5 text-xs text-muted">
+
+          <footer className="border-t border-[color:var(--border)] bg-[color:var(--surface)/0.6]">
+            <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-3 sm:px-4 md:px-5 text-xs text-[color:var(--muted)]">
               <span>&copy; {new Date().getFullYear()} Poly UI</span>
               <span>Built with Next.js 14 · Tailwind CSS · shadcn/ui</span>
             </div>
