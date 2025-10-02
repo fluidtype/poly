@@ -1,17 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
+import AdvancedModal from "@/components/gdelt/AdvancedModal";
 import DatePresets from "@/components/search/DatePresets";
 import DatasetToggles from "@/components/search/DatasetToggles";
 import { CUSTOM_PRESET_EVENT, SEARCH_SUBMIT_EVENT } from "@/components/search/events";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -46,6 +40,7 @@ export default function SearchBar({
   const toggleDataset = useGlobalFilters((state) => state.toggleDataset);
 
   const [query, setQuery] = useState(() => keywords.join(" "));
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   useEffect(() => {
     const joined = keywords.join(" ");
@@ -141,20 +136,6 @@ export default function SearchBar({
     "md:h-14"
   );
 
-  const dialogContent = useMemo(
-    () => (
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Advanced search</DialogTitle>
-        </DialogHeader>
-        <div className="rounded-3xl border border-dashed border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/70 p-6 text-sm text-[color:var(--muted)]">
-          Controls coming soon.
-        </div>
-      </DialogContent>
-    ),
-    []
-  );
-
   return (
     <div className="mx-auto w-full max-w-[760px]">
       {loading ? (
@@ -212,20 +193,16 @@ export default function SearchBar({
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <DatePresets disabled={loading} />
         <DatasetToggles disabled={loading} />
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              type="button"
-              size="sm"
-              variant="ghost"
-              className="rounded-2xl border border-transparent bg-[color:var(--surface-2)]/80 px-3 text-[13px] text-[color:var(--muted)] transition hover:border-[color:var(--primary)]/35 hover:bg-[color:var(--primary)]/12 hover:text-[color:var(--text)]"
-              disabled={loading}
-            >
-              Advanced
-            </Button>
-          </DialogTrigger>
-          {dialogContent}
-        </Dialog>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          className="rounded-2xl border border-transparent bg-[color:var(--surface-2)]/80 px-3 text-[13px] text-[color:var(--muted)] transition hover:border-[color:var(--primary)]/35 hover:bg-[color:var(--primary)]/12 hover:text-[color:var(--text)]"
+          disabled={loading}
+          onClick={() => setAdvancedOpen(true)}
+        >
+          Advanced
+        </Button>
       </div>
 
       <div className="pointer-events-none mt-1 h-[2px] rounded-full bg-[radial-gradient(60%_80%_at_50%_50%,rgba(224,36,36,0.45),transparent)]" />
@@ -244,6 +221,7 @@ export default function SearchBar({
           )}
         </div>
       )}
+      <AdvancedModal open={advancedOpen} onOpenChange={setAdvancedOpen} />
     </div>
   );
 }

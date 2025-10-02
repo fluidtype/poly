@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
@@ -5,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
+import { SidePanel } from "@/components/shared/SidePanel";
 import { AppQueryProvider } from "./query-client-provider";
 
 const poppins = Poppins({
@@ -40,15 +42,15 @@ export default function RootLayout({
               <div className="mx-auto flex h-[72px] w-full max-w-none items-center justify-between px-5">
                 <span className="text-lg font-bold tracking-tight">Poly</span>
                 <nav className="flex items-center gap-6 text-sm text-muted">
-                  <a className="transition hover:text-text" href="#">
+                  <Link className="transition hover:text-text" href="/">
                     Overview
-                  </a>
-                  <a className="transition hover:text-text" href="#">
+                  </Link>
+                  <Link className="transition hover:text-text" href="/reports">
                     Reports
-                  </a>
-                  <a className="transition hover:text-text" href="#">
+                  </Link>
+                  <Link className="transition hover:text-text" href="/settings">
                     Settings
-                  </a>
+                  </Link>
                 </nav>
               </div>
             </header>
@@ -63,6 +65,7 @@ export default function RootLayout({
               </div>
             </footer>
           </div>
+          <SidePanel />
           <Toaster />
         </AppQueryProvider>
       </body>
