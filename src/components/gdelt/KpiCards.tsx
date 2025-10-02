@@ -1,0 +1,123 @@
+"use client"
+
+import clsx from "clsx"
+import { ArrowDownRight, ArrowUpRight } from "lucide-react"
+import { ReactNode, useMemo } from "react"
+
+interface KpiCardsProps {
+  totalEvents?: number
+  avgTone?: number
+  avgImpact?: number
+  topPair?: string
+  isLoading?: boolean
+  error?: string | null
+}
+
+interface KpiCardProps {
+  label: string
+  value: ReactNode
+  trend?: number | null
+}
+
+const formatNumber = (value?: number, options?: Intl.NumberFormatOptions) => {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "—"
+  }
+  return value.toLocaleString(undefined, options)
+}
+
+const TrendIndicator = ({ value }: { value: number }) => {
+  if (!value) return null
+
+  const isPositive = value > 0
+  const Icon = isPositive ? ArrowUpRight : ArrowDownRight
+
+  return (
+    <span
+      className={clsx(
+        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
+        isPositive ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+      )}
+    >
+      <Icon className="h-3.5 w-3.5" strokeWidth={2} />
+      {formatNumber(Math.abs(value), {
+        maximumFractionDigits: 1,
+        minimumFractionDigits: 0,
+      })}
+    </span>
+  )
+}
+
+const KpiCard = ({ label, value, trend }: KpiCardProps) => {
+  return (
+    <div className="card compact relative overflow-hidden rounded-2xl border border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/50 p-4 shadow-sm shadow-black/5">
+      <h3 className="text-sm font-medium text-[color:var(--muted)]">{label}</h3>
+      <div className="mt-2 flex items-baseline gap-3">
+        <p className="text-2xl font-semibold tracking-tight text-[color:var(--text)] tabular-nums">{value}</p>
+        {typeof trend === "number" && trend !== 0 ? <TrendIndicator value={trend} /> : null}
+      </div>
+    </div>
+  )
+}
+
+export function KpiCards({
+  totalEvents,
+  avgTone,
+  avgImpact,
+  topPair,
+  isLoading = false,
+  error,
+}: KpiCardsProps) {
+  const items = useMemo(
+    () => [
+      {
+        label: "Total Events",
+        value: formatNumber(totalEvents, { maximumFractionDigits: 0 }),
+      },
+      {
+        label: "Avg Tone",
+        value: formatNumber(avgTone, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+        trend: avgTone ?? null,
+      },
+      {
+        label: "Avg Impact",
+        value: formatNumber(avgImpact, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+        trend: avgImpact ?? null,
+      },
+      {
+        label: "Top Actor Pair",
+        value: topPair ?? "—",
+      },
+    ],
+    [avgImpact, avgTone, topPair, totalEvents]
+  )
+
+  if (error) {
+    return (
+      <div className="rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
+        {error}
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div
+            key={index}
+            className="card compact h-24 animate-pulse rounded-2xl bg-gradient-to-br from-[color:var(--surface-2)] via-[color:var(--surface-3)] to-[color:var(--surface-2)]"
+          />
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {items.map((item) => (
+        <KpiCard key={item.label} label={item.label} value={item.value} trend={item.trend ?? undefined} />
+      ))}
+    </div>
+  )
+}
