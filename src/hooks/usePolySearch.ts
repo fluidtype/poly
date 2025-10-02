@@ -6,6 +6,8 @@ import type { PolyMarket, PolyMarketApi, PolySearchApiResponse } from "@/types";
 
 import { commonQueryOptions, createAbortSignal, normalizeMarket } from "./utils";
 
+const shouldLog = process.env.NODE_ENV !== "production";
+
 type PolySortOption = "volume24h" | "liquidity" | "endDate";
 
 export type UsePolySearchParams = {
@@ -39,7 +41,13 @@ export async function fetchPolySearch(
   }
   searchParams.set("sort", params.sort ?? "volume24h");
 
-  const response = await fetchImpl(`/api/poly?${searchParams.toString()}`, {
+  const requestUrl = `/api/poly?${searchParams.toString()}`;
+
+  if (shouldLog) {
+    console.log("[hooks/usePolySearch] Fetching URL:", requestUrl, "params:", params);
+  }
+
+  const response = await fetchImpl(requestUrl, {
     signal: createAbortSignal(abortSignal),
   });
 

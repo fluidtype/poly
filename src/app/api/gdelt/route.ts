@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { fetchWithTimeout } from '@/lib/api';
 import { gdeltQuerySchema } from '@/lib/validation';
 
+const shouldLog = process.env.NODE_ENV !== 'production';
+
 const ACTIONS_REQUIRING_DATES = new Set([
   'context',
   'country',
@@ -89,6 +91,11 @@ export async function GET(req: Request) {
   }
 
   const targetUrl = `${baseUrl}?${url.searchParams.toString()}`;
+
+  if (shouldLog) {
+    console.log('[api/gdelt] Fetching URL:', targetUrl);
+  }
+
   const response = await fetchWithTimeout(targetUrl);
 
   let data: unknown;
@@ -112,6 +119,10 @@ export async function GET(req: Request) {
       data && typeof data === 'object' && 'message' in (data as Record<string, unknown>)
         ? String((data as { message?: unknown }).message)
         : 'Upstream request failed';
+
+    if (shouldLog) {
+      console.error('[api/gdelt] Non-OK response', status, 'from URL:', targetUrl, 'message:', message);
+    }
 
     return NextResponse.json(
       { status: 'error', message },
