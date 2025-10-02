@@ -60,6 +60,7 @@ export interface PolyTokenApi {
 
 export interface PolyMarket {
   id: string;
+  slug?: string;
   title: string;
   endDate: string | null;
   volume24h: number;
@@ -73,6 +74,7 @@ export interface PolyMarket {
 
 export interface PolyMarketApi {
   id?: string | number | null;
+  slug?: string | null;
   title?: string | null;
   endDate?: string | null;
   volume24h?: number | string | null;

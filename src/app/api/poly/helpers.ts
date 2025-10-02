@@ -8,6 +8,7 @@ export type NormalizedToken = {
 
 export type NormalizedMarket = {
   id: string;
+  slug?: string;
   title: string;
   endDate: string | null;
   volume24h: number;
@@ -116,12 +117,70 @@ const pickString = (market: GammaMarket, keys: string[]): string | undefined => 
   return undefined;
 };
 
+const extractNumericValue = (
+  value: unknown,
+  visited = new Set<unknown>(),
+): number | null => {
+  const direct = toNumber(value);
+  if (direct !== 0 || value === 0 || value === '0') {
+    return direct;
+  }
+
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  if (visited.has(value)) {
+    return null;
+  }
+
+  visited.add(value);
+
+  const record = value as Record<string, unknown>;
+  const priorityKeys = [
+    'usd',
+    'USD',
+    'usdValue',
+    'usd_amount',
+    'usdAmount',
+    'amountUsd',
+    'amount_usd',
+    'inUsd',
+    'inUSD',
+    'value',
+    'amount',
+    'num',
+    'numValue',
+    'float',
+    'total',
+    'quantity',
+  ];
+
+  for (const key of priorityKeys) {
+    if (key in record) {
+      const nested = extractNumericValue(record[key], visited);
+      if (nested !== null) {
+        return nested;
+      }
+    }
+  }
+
+  for (const nestedValue of Object.values(record)) {
+    const nested = extractNumericValue(nestedValue, visited);
+    if (nested !== null) {
+      return nested;
+    }
+  }
+
+  return null;
+};
+
 const pickNumber = (market: GammaMarket, keys: string[]): number => {
   for (const key of keys) {
     if (key in market) {
       const value = market[key];
-      const parsed = toNumber(value);
-      if (parsed !== 0 || value === 0 || value === '0') {
+      const parsed = extractNumericValue(value);
+      if (parsed !== null) {
         return parsed;
       }
     }
@@ -131,8 +190,34 @@ const pickNumber = (market: GammaMarket, keys: string[]): number => {
 };
 
 export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null => {
-  const idValue = market.id ?? market.marketId ?? market.slug;
-  if (typeof idValue !== 'string' || !idValue) {
+  const toIdString = (value: unknown): string | undefined => {
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      return trimmed.length > 0 ? trimmed : undefined;
+    }
+
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? String(value) : undefined;
+    }
+
+    return undefined;
+  };
+
+  const identifierKeys = [
+    'id',
+    'marketId',
+    '_id',
+    'questionId',
+    'question_id',
+    'market_id',
+    'slug',
+  ];
+
+  const idValue = identifierKeys
+    .map((key) => toIdString(market[key]))
+    .find((candidate): candidate is string => Boolean(candidate));
+
+  if (!idValue) {
     return null;
   }
 
@@ -140,9 +225,34 @@ export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null =>
     pickString(market, ['question', 'title', 'name', 'slug']) ??
     `Market ${idValue}`;
 
+  const slug = pickString(market, ['slug', 'urlSlug', 'marketSlug', 'questionSlug']);
+
   const endDate = pickString(market, ['endDate', 'endTime', 'end_time', 'closeTime']) ?? null;
-  const volume24h = pickNumber(market, ['volume24h', 'volume24Hr', 'volume24hr', 'volume24Hours']);
-  const liquidity = pickNumber(market, ['liquidity', 'liquidity24h', 'marketMakerLiquidity']);
+  const volume24h = pickNumber(market, [
+    'volume24h',
+    'volume24Hr',
+    'volume24hr',
+    'volume24Hours',
+    'volume24hUsd',
+    'volume24hUSD',
+    'volume24hInUsd',
+    'volume24hValue',
+    'volume24hAmount',
+  ]);
+  const liquidity = pickNumber(market, [
+    'liquidity',
+    'liquidity24h',
+    'marketMakerLiquidity',
+    'liquidityInUsd',
+    'liquidityInUSD',
+    'liquidityUsd',
+    'liquidityUSD',
+    'liquidityValue',
+    'liquidityAmount',
+    'tvl',
+    'tvlUsd',
+    'totalLiquidity',
+  ]);
 
   const rawStatus = pickString(market, ['status', 'state']);
   const status = rawStatus ?? (typeof market.active === 'boolean' ? (market.active ? 'active' : 'inactive') : 'unknown');
@@ -158,6 +268,7 @@ export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null =>
 
   return {
     id: idValue,
+    slug: slug ?? undefined,
     title,
     endDate,
     volume24h,

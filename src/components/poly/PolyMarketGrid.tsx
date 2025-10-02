@@ -164,7 +164,13 @@ export function PolyMarketGrid({
               Open
             </button>
             <Link
-              href={market.id ? `https://polymarket.com/market/${market.id}` : "https://polymarket.com"}
+              href={
+                market.slug
+                  ? `https://polymarket.com/market/${market.slug}`
+                  : market.id
+                  ? `https://polymarket.com/market/${market.id}`
+                  : "https://polymarket.com"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="pill inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[color:var(--accent-light)] transition hover:border-[color:var(--accent)]/50 hover:bg-[color:var(--accent)]/10"

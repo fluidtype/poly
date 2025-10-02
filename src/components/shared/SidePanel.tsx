@@ -221,7 +221,10 @@ function MarketContent({ market }: { market: PolyMarket | null }) {
     );
   }
 
-  const polymarketUrl = `https://polymarket.com/market/${market.id}`;
+  const slugOrId = market.slug ?? market.id;
+  const polymarketUrl = slugOrId
+    ? `https://polymarket.com/market/${slugOrId}`
+    : "https://polymarket.com";
 
   const handleCopyId = async () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
