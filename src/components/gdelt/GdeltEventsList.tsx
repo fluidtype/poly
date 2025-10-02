@@ -85,10 +85,14 @@ export function GdeltEventsList({
       const isoDate = normalizeGdeltDate(event.SQLDATE);
       const { hostname, path } = getHostnameAndPath(String(event.SOURCEURL ?? ""));
       const tone = typeof event.AvgTone === "number" ? event.AvgTone : undefined;
-      const countryCodes = [
-        typeof event.Actor1CountryCode === "string" ? event.Actor1CountryCode : undefined,
-        typeof event.Actor2CountryCode === "string" ? event.Actor2CountryCode : undefined,
-      ].filter((code): code is string => Boolean(code));
+      const countryCodes = Array.from(
+        new Set(
+          [
+            typeof event.Actor1CountryCode === "string" ? event.Actor1CountryCode : undefined,
+            typeof event.Actor2CountryCode === "string" ? event.Actor2CountryCode : undefined,
+          ].filter((code): code is string => Boolean(code)),
+        ),
+      );
 
       return {
         original: event,
