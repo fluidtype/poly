@@ -28,6 +28,7 @@ describe("GET /api/poly", () => {
             question: "Nested market",
             volume24h: "0",
             liquidity: "0",
+            slug: "nested-market",
           },
         ],
       },
@@ -54,5 +55,6 @@ describe("GET /api/poly", () => {
     expect(body.markets).toHaveLength(1);
     expect(body.markets[0].id).toBe("abc123");
     expect(body.markets[0].title).toBe("Nested market");
+    expect(body.markets[0].slug).toBe("nested-market");
   });
 });

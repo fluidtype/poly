@@ -71,6 +71,7 @@ export function normalizeMarket(market?: PolyMarketApi | null): PolyMarket {
 
   return {
     id: String(market?.id ?? ""),
+    slug: market?.slug ? String(market.slug) : undefined,
     title: String(market?.title ?? ""),
     endDate: market?.endDate ? String(market.endDate) : null,
     volume24h: Number(market?.volume24h ?? 0) || 0,
