@@ -14,25 +14,27 @@ const config: Config = {
     extend: {
       colors: {
         bg: "var(--bg)",
-        surface: "var(--surface)",
-        surface2: "var(--surface-2)",
-        primary: "var(--primary)",
-        primary600: "var(--primary-600)",
-        accent: "var(--accent)",
-        success: "var(--success)",
-        text: "var(--text)",
+        panel: "var(--panel)",
+        card: "var(--card)",
+        fg: "var(--fg)",
         muted: "var(--muted)",
         border: "var(--border)",
+        accent: "var(--accent)",
+        "accent-light": "var(--accent-light)",
+        "accent-dark": "var(--accent-dark)",
+        violet: "var(--violet)",
+        "violet-light": "var(--violet-light)",
+        "violet-dark": "var(--violet-dark)",
       },
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
       },
       boxShadow: {
-        soft: "0 30px 60px -30px rgba(9, 11, 17, 0.55)",
+        glow: "0 20px 60px rgba(0,0,0,0.35)",
       },
       backgroundImage: {
-        "surface-gradient":
-          "linear-gradient(135deg, rgba(22,24,28,0.95) 0%, rgba(27,30,36,0.85) 100%)",
+        "glow-red": "var(--grad-red)",
+        "glow-violet": "var(--grad-violet)",
       },
     },
   },
@@ -42,12 +44,6 @@ const config: Config = {
       addUtilities({
         ".h1": {
           "@apply text-2xl md:text-3xl font-semibold tracking-tight": {},
-        },
-        ".card": {
-          "@apply rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_8px_30px_rgba(0,0,0,0.25)] p-4": {},
-        },
-        ".surface-pill": {
-          "@apply bg-gradient-to-b from-[var(--surface-2)] to-[var(--surface)] ring-inset ring-1 ring-white/5 shadow-md": {},
         },
       });
     }),

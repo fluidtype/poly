@@ -1,42 +1,44 @@
-"use client"
+"use client";
 
-import clsx from "clsx"
-import { ArrowDownRight, ArrowUpRight } from "lucide-react"
-import { ReactNode, useMemo } from "react"
+import clsx from "clsx";
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ReactNode, useMemo } from "react";
 
 interface KpiCardsProps {
-  totalEvents?: number
-  avgTone?: number
-  avgImpact?: number
-  topPair?: string
-  isLoading?: boolean
-  error?: string | null
+  totalEvents?: number;
+  avgTone?: number;
+  avgImpact?: number;
+  topPair?: string;
+  isLoading?: boolean;
+  error?: string | null;
 }
 
 interface KpiCardProps {
-  label: string
-  value: ReactNode
-  trend?: number | null
+  label: string;
+  value: ReactNode;
+  trend?: number | null;
 }
 
 const formatNumber = (value?: number, options?: Intl.NumberFormatOptions) => {
   if (value === null || value === undefined || Number.isNaN(value)) {
-    return "—"
+    return "—";
   }
-  return value.toLocaleString(undefined, options)
-}
+  return value.toLocaleString(undefined, options);
+};
 
 const TrendIndicator = ({ value }: { value: number }) => {
-  if (!value) return null
+  if (!value) return null;
 
-  const isPositive = value > 0
-  const Icon = isPositive ? ArrowUpRight : ArrowDownRight
+  const isPositive = value > 0;
+  const Icon = isPositive ? ArrowUpRight : ArrowDownRight;
 
   return (
     <span
       className={clsx(
-        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
-        isPositive ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium transition",
+        isPositive
+          ? "bg-emerald-500/15 text-emerald-300"
+          : "bg-[color:var(--accent)]/20 text-[color:var(--accent-light)]",
       )}
     >
       <Icon className="h-3.5 w-3.5" strokeWidth={2} />
@@ -45,20 +47,20 @@ const TrendIndicator = ({ value }: { value: number }) => {
         minimumFractionDigits: 0,
       })}
     </span>
-  )
-}
+  );
+};
 
 const KpiCard = ({ label, value, trend }: KpiCardProps) => {
   return (
-    <div className="card compact relative overflow-hidden rounded-2xl border border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/50 p-4 shadow-sm shadow-black/5">
-      <h3 className="text-sm font-medium text-[color:var(--muted)]">{label}</h3>
-      <div className="mt-2 flex items-baseline gap-3">
-        <p className="text-2xl font-semibold tracking-tight text-[color:var(--text)] tabular-nums">{value}</p>
+    <div className="card flex flex-col gap-3 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5">
+      <p className="meta uppercase tracking-[0.12em]">{label}</p>
+      <div className="flex items-baseline gap-3">
+        <p className="kpi tabular-nums">{value}</p>
         {typeof trend === "number" && trend !== 0 ? <TrendIndicator value={trend} /> : null}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export function KpiCards({
   totalEvents,
@@ -89,15 +91,15 @@ export function KpiCards({
         value: topPair ?? "—",
       },
     ],
-    [avgImpact, avgTone, topPair, totalEvents]
-  )
+    [avgImpact, avgTone, topPair, totalEvents],
+  );
 
   if (error) {
     return (
-      <div className="rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
+      <div className="card rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-5 text-sm text-[color:var(--accent-light)]">
         {error}
       </div>
-    )
+    );
   }
 
   if (isLoading) {
@@ -106,11 +108,11 @@ export function KpiCards({
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="card compact h-24 animate-pulse rounded-2xl bg-gradient-to-br from-[color:var(--surface-2)] via-[color:var(--surface-3)] to-[color:var(--surface-2)]"
+            className="card h-28 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60"
           />
         ))}
       </div>
-    )
+    );
   }
 
   return (
@@ -119,5 +121,5 @@ export function KpiCards({
         <KpiCard key={item.label} label={item.label} value={item.value} trend={item.trend ?? undefined} />
       ))}
     </div>
-  )
+  );
 }

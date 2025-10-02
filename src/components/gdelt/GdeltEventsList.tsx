@@ -110,23 +110,21 @@ export function GdeltEventsList({
   const rowVirtualizer = useVirtualizer({
     count: normalizedEvents.length,
     getScrollElement: () => containerRef.current,
-    estimateSize: () => 88,
+    estimateSize: () => 92,
     overscan: 12,
   });
 
   if (isLoading) {
     return (
-      <div className="relative h-[400px] rounded-3xl bg-gradient-to-br from-[color:var(--surface)] to-[color:var(--surface-2)] p-4">
-        <div className="flex flex-col gap-4">
-          <div className="h-6 w-40 animate-pulse rounded-full bg-gradient-to-r from-[color:var(--surface-2)] to-[color:var(--surface-3)]" />
-          <div className="space-y-3">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-16 animate-pulse rounded-2xl bg-gradient-to-r from-[color:var(--surface-2)] via-[color:var(--surface-3)] to-[color:var(--surface-2)]"
-              />
-            ))}
-          </div>
+      <div className="card flex h-full min-h-[320px] flex-col gap-4 rounded-2xl bg-[color:var(--card)]/70 p-6">
+        <div className="h-6 w-48 animate-pulse rounded-full bg-[color:var(--elev-2)]/70" />
+        <div className="space-y-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className="h-16 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60"
+            />
+          ))}
         </div>
       </div>
     );
@@ -134,34 +132,31 @@ export function GdeltEventsList({
 
   if (error) {
     return (
-      <div className="relative h-[400px] rounded-3xl border border-red-400/40 bg-red-500/10 p-4 text-red-200">
-        <p className="text-sm font-medium">Unable to load GDELT events</p>
-        <p className="mt-2 text-xs opacity-80">{error}</p>
+      <div className="card flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-6 text-sm text-[color:var(--accent-light)]">
+        <p className="font-medium">Unable to load GDELT events</p>
+        <p className="text-xs opacity-80">{error}</p>
       </div>
     );
   }
 
   if (normalizedEvents.length === 0) {
     return (
-      <div className="relative flex h-[400px] flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-[color:var(--surface)] to-[color:var(--surface-2)] p-4 text-sm text-[color:var(--muted)]">
+      <div className="card flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-sm text-[color:var(--muted)]">
         <p>No GDELT events found for the selected period.</p>
       </div>
     );
   }
 
   return (
-    <div className="relative h-[400px] overflow-hidden rounded-3xl bg-gradient-to-br from-[color:var(--surface)] to-[color:var(--surface-2)] p-4 shadow-lg shadow-black/5">
-      <div className="flex items-center justify-between">
+    <div className="card flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl bg-[color:var(--card)]/90">
+      <div className="flex items-center justify-between border-b border-[color:var(--border)]/60 px-6 py-5">
         <div>
-          <h3 className="text-base font-semibold text-[color:var(--text)]">Event stream</h3>
-          <p className="text-xs text-[color:var(--muted)]">Live slice of the latest {normalizedEvents.length.toLocaleString()} articles.</p>
+          <h3 className="text-base font-semibold text-[color:var(--fg)]">Event stream</h3>
+          <p className="meta mt-1">Live slice of the latest {normalizedEvents.length.toLocaleString()} articles.</p>
         </div>
       </div>
 
-      <div
-        ref={containerRef}
-        className="mt-4 h-[320px] overflow-y-auto pr-2"
-      >
+      <div ref={containerRef} className="flex-1 overflow-y-auto px-3 pb-6 pt-4">
         <div
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
@@ -177,7 +172,7 @@ export function GdeltEventsList({
               <div
                 key={event.id}
                 data-index={virtualRow.index}
-                className="absolute left-0 right-0 px-1"
+                className="absolute left-0 right-0 px-3"
                 style={{
                   transform: `translateY(${virtualRow.start}px)`,
                   height: `${virtualRow.size}px`,
@@ -194,31 +189,31 @@ export function GdeltEventsList({
                     }
                   }}
                   className={clsx(
-                    "group flex h-full cursor-pointer flex-col justify-center rounded-2xl border border-transparent bg-[color:var(--surface-2)]/40 px-4 py-3 shadow-sm shadow-black/5 transition",
-                    isActive && "border-[color:var(--primary)]/60 bg-[color:var(--primary)]/10",
-                    !isActive && "hover:border-[color:var(--primary)]/40 hover:bg-[color:var(--surface-2)]/70",
+                    "group flex h-full cursor-pointer flex-col justify-center rounded-2xl border border-transparent bg-[color:var(--panel)]/40 px-4 py-3 transition",
+                    isActive && "border-[color:var(--accent)]/60 bg-[color:var(--accent)]/15",
+                    !isActive && "hover:border-[color:var(--accent)]/40 hover:bg-[color:var(--panel)]/60",
                   )}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-[color:var(--text)]">
+                      <p className="text-sm font-semibold text-[color:var(--fg)]">
                         {event.hostname || "Unknown source"}
                       </p>
                       {event.path && (
                         <p className="truncate text-xs text-[color:var(--muted)]">{truncate(event.path)}</p>
                       )}
                       {event.isoDate && (
-                        <p className="mt-1 text-xs uppercase tracking-wide text-[color:var(--muted)]">{event.isoDate}</p>
+                        <p className="meta mt-1 uppercase tracking-[0.2em]">{event.isoDate}</p>
                       )}
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                       {event.eventCode && (
                         <span
                           className={clsx(
-                            "rounded-full border px-2 py-0.5 text-xs font-medium",
+                            "pill border px-2 py-0 text-xs font-medium",
                             negative
-                              ? "border-red-500/40 bg-red-500/15 text-red-200"
-                              : "border-[color:var(--primary)]/40 bg-[color:var(--primary)]/15 text-[color:var(--primary)]",
+                              ? "border-[color:var(--accent)]/40 bg-[color:var(--accent)]/15 text-[color:var(--accent-light)]"
+                              : "border-emerald-400/40 bg-emerald-500/10 text-emerald-200",
                           )}
                         >
                           Code {event.eventCode}
@@ -227,12 +222,12 @@ export function GdeltEventsList({
                       {event.tone != null && (
                         <span
                           className={clsx(
-                            "rounded-full border px-2 py-0.5 text-xs font-semibold",
+                            "pill px-2 py-0 text-xs font-semibold",
                             event.tone > 1
-                              ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
+                              ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
                               : event.tone < -1
-                              ? "border-red-500/40 bg-red-500/15 text-red-200"
-                              : "border-[color:var(--border)]/60 bg-[color:var(--surface-3)]/40 text-[color:var(--text)]",
+                              ? "border-[color:var(--accent)]/40 bg-[color:var(--accent)]/15 text-[color:var(--accent-light)]"
+                              : "border-[color:var(--border)]/60 bg-[color:var(--panel)]/50 text-[color:var(--fg)]/90",
                           )}
                         >
                           Tone {toneLabel(event.tone)}
@@ -243,7 +238,7 @@ export function GdeltEventsList({
                           {event.countryCodes.map((code) => (
                             <span
                               key={`${event.id}-${code}`}
-                              className="flex items-center gap-1 rounded-full border border-[color:var(--border)]/60 bg-[color:var(--surface-3)]/40 px-2 py-0.5 text-xs text-[color:var(--text)]"
+                              className="pill gap-1 border-[color:var(--border)]/60 bg-[color:var(--panel)]/50 text-xs text-[color:var(--fg)]/80"
                             >
                               <Flag className="h-3 w-3 opacity-60" aria-hidden="true" />
                               {code}
@@ -256,7 +251,7 @@ export function GdeltEventsList({
                           href={event.original.SOURCEURL}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[color:var(--text)] transition hover:border-[color:var(--primary)]/50 hover:bg-[color:var(--primary)]/20"
+                          className="iconbtn text-[color:var(--fg)] transition hover:border-[color:var(--accent)]/60 hover:bg-[color:var(--accent)]/20"
                           onClick={(clickEvent) => clickEvent.stopPropagation()}
                         >
                           <ExternalLink className="h-4 w-4" aria-hidden="true" />
