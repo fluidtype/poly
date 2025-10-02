@@ -14,6 +14,41 @@ import {
   toQueryTokens,
 } from './helpers';
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const extractMarkets = (payload: unknown): unknown[] => {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (!isRecord(payload)) {
+    return [];
+  }
+
+  const root = payload as Record<string, unknown>;
+
+  const candidates: unknown[] = [root.markets, root.data, root.results];
+
+  if (isRecord(root.data)) {
+    const nestedData = root.data;
+    candidates.push(nestedData.markets, nestedData.data, nestedData.results);
+  }
+
+  if (isRecord(root.markets)) {
+    const nestedMarkets = root.markets;
+    candidates.push(nestedMarkets.data, nestedMarkets.markets, nestedMarkets.results);
+  }
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) {
+      return candidate;
+    }
+  }
+
+  return [];
+};
+
 type SortField = 'volume24h' | 'liquidity' | 'endDate';
 
 const clampLimit = (value: number) => Math.min(Math.max(value, 5), 200);
@@ -99,11 +134,7 @@ export async function GET(req: Request) {
     );
   }
 
-  const upstreamMarkets = Array.isArray((payload as Record<string, unknown>).markets)
-    ? ((payload as { markets: unknown[] }).markets)
-    : Array.isArray((payload as Record<string, unknown>).data)
-      ? ((payload as { data: unknown[] }).data)
-      : [];
+  const upstreamMarkets = extractMarkets(payload);
 
   const filteredRaw = queryTokens.length === 0
     ? upstreamMarkets
