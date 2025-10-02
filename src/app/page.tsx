@@ -206,8 +206,8 @@ const toIsoString = (timestamp?: number): string | undefined => {
 };
 
 const DisabledDatasetCard = ({ title, description }: { title: string; description: string }) => (
-  <div className="flex h-full min-h-[200px] flex-col items-center justify-center rounded-3xl border border-dashed border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/40 p-6 text-center">
-    <h3 className="text-base font-semibold text-[color:var(--text)]">{title}</h3>
+  <div className="card flex h-full min-h-[200px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-center">
+    <h3 className="text-base font-semibold text-[color:var(--fg)]">{title}</h3>
     <p className="mt-2 text-sm text-[color:var(--muted)]">{description}</p>
   </div>
 );
@@ -559,101 +559,115 @@ export default function HomePage() {
   );
 
   return (
-    <main className="space-y-6">
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-8 lg:grid-cols-12">
-        <section className="md:col-span-5 lg:col-span-8">
-          {datasets.gdelt ? (
-            <GdeltChart
-              series={gdeltSeries}
-              aggregation={gdeltAggregation}
-              onDateClick={(iso) => setActiveDate(iso)}
-              isLoading={gdeltLoading}
-              error={gdeltError}
-            />
-          ) : (
-            <DisabledDatasetCard
-              title="GDELT dataset disabled"
-              description="Enable the GDELT dataset from the filters to explore temporal activity."
-            />
-          )}
-        </section>
+    <div className="flex min-h-0 flex-1 flex-col gap-6">
+      <div className="grid flex-1 min-h-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] xl:grid-cols-[minmax(0,8fr)_minmax(0,5fr)]">
+        <div className="grid min-h-0 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-6">
+          <section className="flex min-h-0 flex-col">
+            {datasets.gdelt ? (
+              <GdeltChart
+                series={gdeltSeries}
+                aggregation={gdeltAggregation}
+                onDateClick={(iso) => setActiveDate(iso)}
+                isLoading={gdeltLoading}
+                error={gdeltError}
+              />
+            ) : (
+              <DisabledDatasetCard
+                title="GDELT dataset disabled"
+                description="Enable the GDELT dataset from the filters to explore temporal activity."
+              />
+            )}
+          </section>
 
-        <section className="md:col-span-3 lg:col-span-4">
-          {datasets.gdelt ? (
-            <KpiCards
-              totalEvents={kpiValues.totalEvents}
-              avgTone={kpiValues.avgTone}
-              avgImpact={kpiValues.avgImpact}
-              topPair={kpiValues.topPair ?? undefined}
-              isLoading={gdeltLoading}
-              error={gdeltError}
-            />
-          ) : (
-            <DisabledDatasetCard
-              title="KPIs unavailable"
-              description="Turn on the GDELT feed to surface sentiment and impact metrics."
-            />
-          )}
-        </section>
+          <section className="flex min-h-0 flex-col">
+            {datasets.gdelt ? (
+              <GdeltEventsList
+                events={gdeltEvents}
+                activeDate={activeDate ?? undefined}
+                onOpen={(event) =>
+                  openPanel("event", {
+                    json: event,
+                    title: typeof event.SOURCEURL === "string" ? event.SOURCEURL : "Event details",
+                    url: typeof event.SOURCEURL === "string" ? event.SOURCEURL : undefined,
+                  })
+                }
+                isLoading={gdeltLoading}
+                error={gdeltError}
+              />
+            ) : (
+              <DisabledDatasetCard
+                title="Events hidden"
+                description="Activate the GDELT stream to review the underlying source events."
+              />
+            )}
+          </section>
+        </div>
 
-        <section className="md:col-span-5 lg:col-span-8">
-          {datasets.gdelt ? (
-            <GdeltEventsList
-              events={gdeltEvents}
-              activeDate={activeDate ?? undefined}
-              onOpen={(event) =>
-                openPanel("event", {
-                  json: event,
-                  title: typeof event.SOURCEURL === "string" ? event.SOURCEURL : "Event details",
-                  url: typeof event.SOURCEURL === "string" ? event.SOURCEURL : undefined,
-                })
-              }
-              isLoading={gdeltLoading}
-              error={gdeltError}
-            />
-          ) : (
-            <DisabledDatasetCard
-              title="Events hidden"
-              description="Activate the GDELT stream to review the underlying source events."
-            />
-          )}
-        </section>
+        <div className="flex min-h-0 flex-col gap-6">
+          <div>
+            {datasets.gdelt ? (
+              <KpiCards
+                totalEvents={kpiValues.totalEvents}
+                avgTone={kpiValues.avgTone}
+                avgImpact={kpiValues.avgImpact}
+                topPair={kpiValues.topPair ?? undefined}
+                isLoading={gdeltLoading}
+                error={gdeltError}
+              />
+            ) : (
+              <DisabledDatasetCard
+                title="KPIs unavailable"
+                description="Turn on the GDELT feed to surface sentiment and impact metrics."
+              />
+            )}
+          </div>
 
-        <section className="md:col-span-3 lg:col-span-4">
-          {datasets.poly ? (
-            <PolyMarketGrid
-              markets={markets}
-              onOpen={(id) => openPanel("market", { id })}
-              isLoading={polyLoading}
-              error={polyError}
-            />
-          ) : (
-            <DisabledDatasetCard
-              title="Polymarket disabled"
-              description="Enable the Polymarket dataset to browse high-liquidity markets."
-            />
-          )}
-        </section>
+          <div className="grid flex-1 min-h-0 grid-cols-1 gap-6 xl:grid-cols-2">
+            <div className="min-h-0">
+              {datasets.gdelt ? (
+                <InsightsPanel insights={gdeltInsights} isLoading={gdeltLoading} error={gdeltError} />
+              ) : (
+                <DisabledDatasetCard
+                  title="Insights paused"
+                  description="Switch the GDELT dataset back on to surface keyword and actor insights."
+                />
+              )}
+            </div>
 
-        <section className="md:col-span-3 lg:col-span-5">
-          <TwitterPlaceholder comingSoon={comingSoon} />
-        </section>
+            <div className="min-h-0">
+              <ActivityPanel datasets={datasetStatuses} recentQueries={recentQueries} />
+            </div>
 
-        <section className="md:col-span-3 lg:col-span-4">
-          {datasets.gdelt ? (
-            <InsightsPanel insights={gdeltInsights} isLoading={gdeltLoading} error={gdeltError} />
-          ) : (
-            <DisabledDatasetCard
-              title="Insights paused"
-              description="Switch the GDELT dataset back on to surface keyword and actor insights."
-            />
-          )}
-        </section>
+            <div className="xl:col-span-2 flex min-h-0 flex-col">
+              {datasets.poly ? (
+                <div className="card flex min-h-0 flex-col gap-5 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-semibold text-[color:var(--fg)]">Polymarket highlights</h3>
+                    <span className="meta uppercase tracking-[0.2em]">Top markets</span>
+                  </div>
+                  <div className="min-h-0 overflow-y-auto pr-1">
+                    <PolyMarketGrid
+                      markets={markets}
+                      onOpen={(id) => openPanel("market", { id })}
+                      isLoading={polyLoading}
+                      error={polyError}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <DisabledDatasetCard
+                  title="Polymarket disabled"
+                  description="Enable the Polymarket dataset to browse high-liquidity markets."
+                />
+              )}
+            </div>
 
-        <section className="md:col-span-2 lg:col-span-3">
-          <ActivityPanel datasets={datasetStatuses} recentQueries={recentQueries} />
-        </section>
+            <div className="xl:col-span-2 min-h-0">
+              <TwitterPlaceholder comingSoon={comingSoon} />
+            </div>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -29,39 +29,41 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-bg">
+    <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-[var(--bg)] text-[var(--text)] antialiased",
+          "min-h-screen bg-[color:var(--bg)] text-[color:var(--fg)] antialiased",
           poppins.className,
         )}
       >
         <AppQueryProvider>
-          <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/80 backdrop-blur">
-              <div className="mx-auto flex h-[72px] w-full max-w-none items-center justify-between px-5">
-                <span className="text-lg font-bold tracking-tight">Poly</span>
-                <nav className="flex items-center gap-6 text-sm text-muted">
-                  <Link className="transition hover:text-text" href="/">
+          <div className="flex min-h-screen flex-col bg-[color:var(--bg)]">
+            <header className="border-b border-[color:var(--border)]/80 bg-[color:var(--panel)]/80 backdrop-blur-lg">
+              <div className="container-outer flex h-16 items-center justify-between">
+                <span className="text-lg font-semibold tracking-tight">Poly</span>
+                <nav className="flex items-center gap-6 text-sm text-[color:var(--muted)]">
+                  <Link className="transition hover:text-[color:var(--fg)]" href="/">
                     Overview
                   </Link>
-                  <Link className="transition hover:text-text" href="/reports">
+                  <Link className="transition hover:text-[color:var(--fg)]" href="/reports">
                     Reports
                   </Link>
-                  <Link className="transition hover:text-text" href="/settings">
+                  <Link className="transition hover:text-[color:var(--fg)]" href="/settings">
                     Settings
                   </Link>
                 </nav>
               </div>
             </header>
             <TopBar />
-            <main className="main-wrap mx-auto w-full max-w-[1440px] flex-1 px-5 pb-10">
-              {children}
+            <main className="flex-1 overflow-hidden">
+              <div className="container-outer flex h-full flex-col overflow-hidden py-6">
+                {children}
+              </div>
             </main>
-            <footer className="border-t border-border/70 bg-surface/60">
-              <div className="mx-auto flex h-16 w-full max-w-none items-center justify-between px-5 text-xs text-muted">
+            <footer className="border-t border-[color:var(--border)]/80 bg-[color:var(--panel)]/60">
+              <div className="container-outer flex h-12 items-center justify-between text-xs text-[color:var(--muted)]">
                 <span>&copy; {new Date().getFullYear()} Poly UI</span>
-                <span>Built with Next.js 14 · Tailwind CSS · shadcn/ui</span>
+                <span>Next.js · Tailwind CSS · shadcn/ui</span>
               </div>
             </footer>
           </div>
