@@ -7,7 +7,7 @@ import { SEARCH_SUBMIT_EVENT } from "@/components/search/events";
 import SearchBar from "./SearchBar";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 
-const SEARCH_QUERY_PREFIXES = ["polyMarkets", "gdeltContext", "twitterSearch"] as const;
+const SEARCH_QUERY_PREFIXES = ["poly", "gdelt", "twitter"] as const;
 
 export default function TopBar() {
   const queryClient = useQueryClient();
@@ -15,8 +15,8 @@ export default function TopBar() {
 
   const activeFetches = useIsFetching({
     predicate: (query) => {
-      const [prefix] = query.queryKey as [string | undefined];
-      return prefix !== undefined && SEARCH_QUERY_PREFIXES.includes(prefix as typeof SEARCH_QUERY_PREFIXES[number]);
+      const [prefix] = query.queryKey as [unknown];
+      return typeof prefix === "string" && SEARCH_QUERY_PREFIXES.includes(prefix as (typeof SEARCH_QUERY_PREFIXES)[number]);
     },
   });
 
@@ -24,15 +24,15 @@ export default function TopBar() {
     const prefixes: Array<(typeof SEARCH_QUERY_PREFIXES)[number]> = [];
 
     if (datasets.poly) {
-      prefixes.push("polyMarkets");
+      prefixes.push("poly");
     }
 
     if (datasets.gdelt) {
-      prefixes.push("gdeltContext");
+      prefixes.push("gdelt");
     }
 
     if (datasets.twitter) {
-      prefixes.push("twitterSearch");
+      prefixes.push("twitter");
     }
 
     if (prefixes.length === 0) {
