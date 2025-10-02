@@ -144,8 +144,18 @@ export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null =>
     return undefined;
   };
 
-  const idValue = [market.id, market.marketId, market.slug]
-    .map((candidate) => toIdString(candidate))
+  const identifierKeys = [
+    'id',
+    'marketId',
+    '_id',
+    'questionId',
+    'question_id',
+    'market_id',
+    'slug',
+  ];
+
+  const idValue = identifierKeys
+    .map((key) => toIdString(market[key]))
     .find((candidate): candidate is string => Boolean(candidate));
 
   if (!idValue) {
