@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { fetchWithTimeout } from '@/lib/api';
 import { polyListQuerySchema } from '@/lib/validation';
 
+const shouldLog = process.env.NODE_ENV !== 'production';
+
 import {
   GammaMarket,
   NormalizedMarket,
@@ -58,6 +60,11 @@ export async function GET(req: Request) {
   }
 
   const targetUrl = `${baseUrl}/markets?${searchParams.toString()}`;
+
+  if (shouldLog) {
+    console.log('[api/poly] Fetching URL:', targetUrl);
+  }
+
   const response = await fetchWithTimeout(targetUrl);
 
   let payload: unknown;
@@ -82,6 +89,10 @@ export async function GET(req: Request) {
         ? String((payload as { message?: unknown }).message)
         : 'Upstream request failed';
 
+    if (shouldLog) {
+      console.error('[api/poly] Non-OK response', status, 'from URL:', targetUrl, 'message:', message);
+    }
+
     return NextResponse.json(
       { status: 'error', message },
       { status },
@@ -101,6 +112,17 @@ export async function GET(req: Request) {
   const normalized = filteredRaw
     .map((market) => normalizeMarket(market as GammaMarket))
     .filter((market): market is NormalizedMarket => Boolean(market));
+
+  if (shouldLog) {
+    console.log(
+      '[api/poly] Returning markets:',
+      normalized.length,
+      'from upstream:',
+      upstreamMarkets.length,
+      'query tokens:',
+      queryTokens.length,
+    );
+  }
 
   sortMarkets(normalized, sort);
 

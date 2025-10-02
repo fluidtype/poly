@@ -12,6 +12,8 @@ import type {
 
 import { commonQueryOptions, createAbortSignal, normalizeGdeltDate } from "./utils";
 
+const shouldLog = process.env.NODE_ENV !== "production";
+
 export type GdeltContextResult = {
   series: GdeltSeriesPoint[];
   events: GdeltEvent[];
@@ -53,7 +55,13 @@ export async function fetchGdeltContextData(
   searchParams.set("include_insights", String(params.includeInsights ?? true));
   searchParams.set("limit", String(params.limit ?? 500));
 
-  const response = await fetchImpl(`/api/gdelt?${searchParams.toString()}`, {
+  const requestUrl = `/api/gdelt?${searchParams.toString()}`;
+
+  if (shouldLog) {
+    console.log("[hooks/useGdeltContext] Fetching URL:", requestUrl, "params:", params);
+  }
+
+  const response = await fetchImpl(requestUrl, {
     signal: createAbortSignal(abortSignal),
   });
 
