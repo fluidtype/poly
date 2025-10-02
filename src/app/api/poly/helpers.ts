@@ -131,8 +131,24 @@ const pickNumber = (market: GammaMarket, keys: string[]): number => {
 };
 
 export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null => {
-  const idValue = market.id ?? market.marketId ?? market.slug;
-  if (typeof idValue !== 'string' || !idValue) {
+  const toIdString = (value: unknown): string | undefined => {
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      return trimmed.length > 0 ? trimmed : undefined;
+    }
+
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? String(value) : undefined;
+    }
+
+    return undefined;
+  };
+
+  const idValue = [market.id, market.marketId, market.slug]
+    .map((candidate) => toIdString(candidate))
+    .find((candidate): candidate is string => Boolean(candidate));
+
+  if (!idValue) {
     return null;
   }
 
