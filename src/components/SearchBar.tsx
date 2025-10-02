@@ -68,7 +68,8 @@ export default function SearchBar({
     dispatchSearchEvent([]);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
     const parsed = parseKeywords(query);
     setKeywords(parsed);
     onSearch?.(parsed);
@@ -161,7 +162,8 @@ export default function SearchBar({
           <div className={skeletonClass} />
         </div>
       ) : (
-        <div
+        <form
+          onSubmit={handleSubmit}
           className={cn(
             "surface-pill flex items-center rounded-3xl border border-[color:var(--border)]/60 px-5",
             "bg-[color:var(--surface-2)]",
@@ -170,7 +172,14 @@ export default function SearchBar({
             "focus-within:ring-2 focus-within:ring-[color:var(--primary)]/45"
           )}
         >
-          <Search className="mr-3 h-4 w-4 text-[color:var(--muted)]" strokeWidth={2} />
+          <button
+            type="submit"
+            aria-label="Submit search"
+            className="mr-3 flex h-8 w-8 items-center justify-center rounded-full text-[color:var(--muted)] transition hover:text-[color:var(--text)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)]/45"
+            disabled={loading}
+          >
+            <Search className="h-4 w-4" strokeWidth={2} />
+          </button>
           <input
             type="text"
             placeholder="Search events or markets"
@@ -197,7 +206,7 @@ export default function SearchBar({
           >
             ✕
           </button>
-        </div>
+        </form>
       )}
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
