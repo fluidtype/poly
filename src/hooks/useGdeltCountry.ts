@@ -32,22 +32,11 @@ export async function fetchGdeltCountry(
 
   if (!response.ok) {
     if (response.status === 503) {
-      console.error("Service unavailable");
-      throw new Error("Service unavailable");
+      return {} as GdeltContextApiResponse;
     }
 
-    let message = await response.text();
-    if (!message) {
-      try {
-        const body = (await response.json()) as GdeltContextApiResponse;
-        message = body?.message ?? "Failed to load GDELT country data";
-      } catch (parseError) {
-        console.error("Failed to parse GDELT country error response", parseError);
-        message = "Failed to load GDELT country data";
-      }
-    }
-
-    throw new Error(message);
+    const message = await response.text();
+    throw new Error(message || "GDELT unavailable");
   }
 
   return response.json() as Promise<GdeltContextApiResponse>;
