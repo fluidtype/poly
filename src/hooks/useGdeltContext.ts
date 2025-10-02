@@ -2,7 +2,13 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
-import type { GdeltEvent, GdeltInsights, GdeltSeriesPoint } from "@/types";
+import type {
+  GdeltContextApiItem,
+  GdeltContextApiResponse,
+  GdeltEvent,
+  GdeltInsights,
+  GdeltSeriesPoint,
+} from "@/types";
 
 import { commonQueryOptions, createAbortSignal, normalizeGdeltDate } from "./utils";
 
@@ -59,13 +65,14 @@ export async function fetchGdeltContextData(
 
     let message = "GDELT error";
     try {
-      const errorBody = await response.json();
+      const errorBody = (await response.json()) as GdeltContextApiResponse;
       if (errorBody?.message) {
         message = errorBody.message;
       } else if (typeof errorBody?.status === "string") {
         message = errorBody.status;
       }
-    } catch (error) {
+    } catch (parseError) {
+      console.error("Failed to parse GDELT context error response", parseError);
       const fallbackMessage = await response.text().catch(() => "");
       if (fallbackMessage) {
         message = fallbackMessage;
@@ -75,8 +82,8 @@ export async function fetchGdeltContextData(
     throw new Error(message);
   }
 
-  const data = await response.json();
-  const items: any[] = Array.isArray(data?.data) ? data.data : [];
+  const data = (await response.json()) as GdeltContextApiResponse;
+  const items: GdeltContextApiItem[] = Array.isArray(data?.data) ? data.data : [];
 
   const series: GdeltSeriesPoint[] = items.map((item) => ({
     date: normalizeGdeltDate(item?.DayDate ?? item?.SQLDATE ?? item?.date),

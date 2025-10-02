@@ -45,7 +45,7 @@ function getHostnameAndPath(url?: string) {
     const hostname = parsed.hostname.replace(/^www\./i, "");
     const path = parsed.pathname === "/" && !parsed.search ? "" : `${parsed.pathname}${parsed.search}`;
     return { hostname, path };
-  } catch (error) {
+  } catch {
     return { hostname: url, path: "" };
   }
 }
@@ -87,8 +87,8 @@ export function GdeltEventsList({
       const tone = typeof event.AvgTone === "number" ? event.AvgTone : undefined;
       const countryCodes = [
         typeof event.Actor1CountryCode === "string" ? event.Actor1CountryCode : undefined,
-        typeof (event as any).Actor2CountryCode === "string" ? (event as any).Actor2CountryCode : undefined,
-      ].filter(Boolean) as string[];
+        typeof event.Actor2CountryCode === "string" ? event.Actor2CountryCode : undefined,
+      ].filter((code): code is string => Boolean(code));
 
       return {
         original: event,

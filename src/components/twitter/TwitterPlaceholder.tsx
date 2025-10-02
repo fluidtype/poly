@@ -29,10 +29,12 @@ function formatTimestamp(timestamp?: string) {
       hour: "2-digit",
       minute: "2-digit",
     });
-  } catch (error) {
+  } catch {
     return timestamp;
   }
 }
+
+type TwitterApiResponse = PlaceholderTweet[] | { data?: PlaceholderTweet[] | null };
 
 function TweetSkeleton() {
   return (
@@ -106,7 +108,7 @@ export function TwitterPlaceholder({ comingSoon }: TwitterPlaceholderProps) {
           const message = await response.text();
           throw new Error(message || "Unable to load Twitter data");
         }
-        return response.json();
+        return response.json() as Promise<TwitterApiResponse>;
       })
       .then((data) => {
         if (!isMounted) {
@@ -115,8 +117,8 @@ export function TwitterPlaceholder({ comingSoon }: TwitterPlaceholderProps) {
 
         const normalized: PlaceholderTweet[] = Array.isArray(data)
           ? data
-          : Array.isArray((data as any)?.data)
-          ? (data as any).data
+          : Array.isArray(data?.data)
+          ? data.data ?? []
           : [];
 
         setTweets(normalized);

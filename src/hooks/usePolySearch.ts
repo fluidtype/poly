@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
-import type { PolyMarket } from "@/types";
+import type { PolyMarket, PolyMarketApi, PolySearchApiResponse } from "@/types";
 
 import { commonQueryOptions, createAbortSignal, normalizeMarket } from "./utils";
 
@@ -50,19 +50,22 @@ export async function fetchPolySearch(
     throw new Error(message || "Failed to load Poly search results");
   }
 
-  const data = await response.json();
-  const rawMarkets: any[] = Array.isArray(data?.markets)
-    ? data.markets
-    : Array.isArray(data)
+  const data = (await response.json()) as PolySearchApiResponse;
+  const rawMarkets: PolyMarketApi[] = Array.isArray(data)
     ? data
+    : Array.isArray(data?.markets)
+    ? data.markets ?? []
     : Array.isArray(data?.data)
-    ? data.data
+    ? data.data ?? []
     : [];
 
   const markets = rawMarkets.map((market) => normalizeMarket(market));
 
+  const extraFields: Record<string, unknown> =
+    data && !Array.isArray(data) ? (data as Record<string, unknown>) : {};
+
   return {
-    ...data,
+    ...extraFields,
     markets,
   };
 }

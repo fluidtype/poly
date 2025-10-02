@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
+import type { GdeltContextApiResponse } from "@/types";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 
 import { commonQueryOptions, createAbortSignal } from "./utils";
@@ -38,9 +39,10 @@ export async function fetchGdeltCountry(
     let message = await response.text();
     if (!message) {
       try {
-        const body = await response.json();
+        const body = (await response.json()) as GdeltContextApiResponse;
         message = body?.message ?? "Failed to load GDELT country data";
-      } catch (error) {
+      } catch (parseError) {
+        console.error("Failed to parse GDELT country error response", parseError);
         message = "Failed to load GDELT country data";
       }
     }
@@ -48,7 +50,7 @@ export async function fetchGdeltCountry(
     throw new Error(message);
   }
 
-  return response.json();
+  return response.json() as Promise<GdeltContextApiResponse>;
 }
 
 export function useGdeltCountry(params: UseGdeltCountryParams) {
