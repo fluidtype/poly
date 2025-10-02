@@ -39,12 +39,11 @@ export async function fetchGdeltBBVA(
 
   if (!response.ok) {
     if (response.status === 503) {
-      console.error("Service unavailable");
-      throw new Error("Service unavailable");
+      return {};
     }
 
     const message = await response.text();
-    throw new Error(message || "Failed to load BBVA data");
+    throw new Error(message || "GDELT unavailable");
   }
 
   return response.json();

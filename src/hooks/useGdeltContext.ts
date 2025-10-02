@@ -28,17 +28,6 @@ export type UseGdeltContextParams = {
   includeInsights?: boolean;
 };
 
-const defaultMockContext: GdeltContextResult = {
-  series: [
-    {
-      date: "2025-10-01",
-      conflict_events: 100,
-    },
-  ],
-  events: [],
-  insights: {},
-};
-
 export async function fetchGdeltContextData(
   params: Required<Pick<UseGdeltContextParams, "keywords" | "dateStart" | "dateEnd">> &
     Pick<UseGdeltContextParams, "limit" | "includeInsights">,
@@ -67,27 +56,18 @@ export async function fetchGdeltContextData(
 
   if (!response.ok) {
     if (response.status === 503) {
-      console.error("Service unavailable");
-      return defaultMockContext;
+      return {
+        series: [],
+        events: [],
+        insights: {
+          total_events: 0,
+          keyword_matches: {},
+        } as GdeltInsights,
+      } satisfies GdeltContextResult;
     }
 
-    let message = "GDELT error";
-    try {
-      const errorBody = (await response.json()) as GdeltContextApiResponse;
-      if (errorBody?.message) {
-        message = errorBody.message;
-      } else if (typeof errorBody?.status === "string") {
-        message = errorBody.status;
-      }
-    } catch (parseError) {
-      console.error("Failed to parse GDELT context error response", parseError);
-      const fallbackMessage = await response.text().catch(() => "");
-      if (fallbackMessage) {
-        message = fallbackMessage;
-      }
-    }
-
-    throw new Error(message);
+    const message = await response.text();
+    throw new Error(message || "GDELT unavailable");
   }
 
   const data = (await response.json()) as GdeltContextApiResponse;

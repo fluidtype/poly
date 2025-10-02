@@ -14,14 +14,13 @@ const ACTIONS_REQUIRING_DATES = new Set([
 
 const MAX_DAILY_RANGE_DAYS = 365;
 
-const parseDate = (value: string) =>
-  new Date(
-    Date.UTC(
-      Number(value.slice(0, 4)),
-      Number(value.slice(4, 6)) - 1,
-      Number(value.slice(6, 8)),
-    ),
-  );
+const parseDate = (value: string) => {
+  const year = Number(value.slice(0, 4));
+  const month = Number(value.slice(4, 6)) - 1;
+  const day = Number(value.slice(6, 8));
+
+  return new Date(Date.UTC(year, month, day));
+};
 
 export async function GET(req: Request) {
   const baseUrl = process.env.GDELT_BASE_URL;

@@ -44,7 +44,11 @@ const toKeywordEntries = (matches?: Record<string, number>): KeywordEntry[] => {
 }
 
 const toTemporalEntries = (insights?: GdeltInsights): TemporalEntry[] => {
-  const raw = (insights?.temporal_distribution ?? insights?.timeline ?? []) as unknown[]
+  const raw = insights?.temporal_distribution ?? insights?.timeline ?? []
+
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return []
+  }
 
   return raw
     .map((item) => {
@@ -123,6 +127,11 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
   const temporal = useMemo(() => toTemporalEntries(insights ?? undefined), [insights])
   const actors = useMemo(() => toActorEntries(insights ?? undefined), [insights])
   const spikes = useMemo(() => toSpikeLabels(insights ?? undefined), [insights])
+  const rawTemporalSource = insights?.temporal_distribution ?? insights?.timeline
+  const shouldShowTemporalSection =
+    (Array.isArray(temporal) && temporal.length > 0) ||
+    spikes.length > 0 ||
+    Boolean(rawTemporalSource)
 
   if (error) {
     return (
@@ -179,7 +188,7 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
         </section>
       )}
 
-      {temporal.length > 0 && (
+      {shouldShowTemporalSection && (
         <section className="space-y-3">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-semibold uppercase tracking-wide text-[color:var(--muted)]">Temporal distribution</h4>
@@ -194,30 +203,34 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
             )}
           </div>
           <div className="h-40 rounded-2xl bg-[color:var(--surface-3)]/30 p-3">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={temporal} margin={{ top: 8, left: 0, right: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="insightsBar" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f87171" stopOpacity={0.9} />
-                    <stop offset="95%" stopColor="#f87171" stopOpacity={0.2} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="label" tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} tickLine={false} axisLine={false} hide={temporal.length > 8} />
-                <YAxis tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} tickLine={false} axisLine={false} width={42} />
-                <Tooltip
-                  cursor={{ fill: "rgba(248,113,113,0.1)" }}
-                  contentStyle={{
-                    borderRadius: 12,
-                    border: "none",
-                    background: "var(--surface)",
-                    boxShadow: "0 12px 30px rgba(0,0,0,0.25)",
-                  }}
-                  formatter={(value: number) => [value.toLocaleString(), "Mentions"]}
-                  labelStyle={{ fontWeight: 600 }}
-                />
-                <Bar dataKey="value" fill="url(#insightsBar)" radius={[12, 12, 4, 4]} />
-              </BarChart>
-            </ResponsiveContainer>
+            {Array.isArray(temporal) && temporal.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={temporal} margin={{ top: 8, left: 0, right: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="insightsBar" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f87171" stopOpacity={0.9} />
+                      <stop offset="95%" stopColor="#f87171" stopOpacity={0.2} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="label" tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} tickLine={false} axisLine={false} hide={temporal.length > 8} />
+                  <YAxis tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} tickLine={false} axisLine={false} width={42} />
+                  <Tooltip
+                    cursor={{ fill: "rgba(248,113,113,0.1)" }}
+                    contentStyle={{
+                      borderRadius: 12,
+                      border: "none",
+                      background: "var(--surface)",
+                      boxShadow: "0 12px 30px rgba(0,0,0,0.25)",
+                    }}
+                    formatter={(value: number) => [value.toLocaleString(), "Mentions"]}
+                    labelStyle={{ fontWeight: 600 }}
+                  />
+                  <Bar dataKey="value" fill="url(#insightsBar)" radius={[12, 12, 4, 4]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="flex h-full items-center justify-center text-sm text-[color:var(--muted)]">No data available</p>
+            )}
           </div>
         </section>
       )}
