@@ -40,8 +40,8 @@ const defaultMockContext: GdeltContextResult = {
 };
 
 export async function fetchGdeltContextData(
-  params: Required<Pick<UseGdeltContextParams, "keywords" | "dateStart" | "dateEnd">> &
-    Pick<UseGdeltContextParams, "limit" | "includeInsights">,
+  params: Required<Pick<UseGdeltContextParams, "dateStart" | "dateEnd">> &
+    Pick<UseGdeltContextParams, "keywords" | "limit" | "includeInsights">,
   fetchImpl: typeof fetch = fetch,
   abortSignal?: AbortSignal,
 ): Promise<GdeltContextResult> {
@@ -49,7 +49,10 @@ export async function fetchGdeltContextData(
   searchParams.set("action", "context");
   searchParams.set("mode", "artlist");
   searchParams.set("format", "json");
-  searchParams.set("keywords", params.keywords.join(","));
+  const hasKeywords = Array.isArray(params.keywords) && params.keywords.length > 0;
+  if (hasKeywords) {
+    searchParams.set("keywords", params.keywords.join(","));
+  }
   searchParams.set("date_start", params.dateStart);
   searchParams.set("date_end", params.dateEnd);
   searchParams.set("include_insights", String(params.includeInsights ?? true));
@@ -153,20 +156,16 @@ export function useGdeltContext(params: UseGdeltContextParams = {}) {
     queryFn: ({ signal }) =>
       fetchGdeltContextData(
         {
-          keywords: queryParams.keywords,
           dateStart: queryParams.dateStart,
           dateEnd: queryParams.dateEnd,
+          keywords: queryParams.keywords,
           limit: queryParams.limit,
           includeInsights: queryParams.includeInsights,
         },
         fetch,
         signal,
       ),
-    enabled:
-      Array.isArray(queryParams.keywords) &&
-      queryParams.keywords.length > 0 &&
-      Boolean(queryParams.dateStart) &&
-      Boolean(queryParams.dateEnd),
+    enabled: Boolean(queryParams.dateStart) && Boolean(queryParams.dateEnd),
     ...commonQueryOptions,
   });
 }
