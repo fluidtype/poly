@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
+import { SidePanel } from "@/components/shared/SidePanel";
 import { AppQueryProvider } from "./query-client-provider";
 
 const poppins = Poppins({
@@ -63,6 +64,7 @@ export default function RootLayout({
               </div>
             </footer>
           </div>
+          <SidePanel />
           <Toaster />
         </AppQueryProvider>
       </body>
