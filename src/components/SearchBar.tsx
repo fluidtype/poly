@@ -27,18 +27,11 @@ type SearchBarProps = {
   onSearch?: (keywords: string[]) => void;
 };
 
-const DEBOUNCE_DELAY = 300;
-
 function parseKeywords(value: string) {
   return value
     .split(/[\s,]+/)
     .map((keyword) => keyword.trim())
     .filter(Boolean);
-}
-
-function keywordsEqual(a: string[], b: string[]) {
-  if (a.length !== b.length) return false;
-  return a.every((value, index) => value === b[index]);
 }
 
 export default function SearchBar({
@@ -59,17 +52,6 @@ export default function SearchBar({
     setQuery((current) => (current === joined ? current : joined));
   }, [keywords]);
 
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      const parsed = parseKeywords(query);
-      if (!keywordsEqual(parsed, keywords)) {
-        setKeywords(parsed);
-      }
-    }, DEBOUNCE_DELAY);
-
-    return () => window.clearTimeout(handle);
-  }, [query, keywords, setKeywords]);
-
   const dispatchSearchEvent = (parsed: string[]) => {
     if (typeof window !== "undefined") {
       window.dispatchEvent(
@@ -86,7 +68,8 @@ export default function SearchBar({
     dispatchSearchEvent([]);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
     const parsed = parseKeywords(query);
     setKeywords(parsed);
     onSearch?.(parsed);
@@ -108,11 +91,13 @@ export default function SearchBar({
       return;
     }
 
-    if (event.metaKey || event.altKey || event.ctrlKey) {
+    const modifierActive = event.metaKey || event.altKey;
+
+    if (!modifierActive) {
       return;
     }
 
-    switch (key) {
+    switch (key.toLowerCase()) {
       case "7":
         event.preventDefault();
         setPreset("7D");
@@ -126,23 +111,19 @@ export default function SearchBar({
         setPreset("90D");
         break;
       case "c":
-      case "C":
         event.preventDefault();
         setPreset("CUSTOM");
         document.dispatchEvent(new CustomEvent(CUSTOM_PRESET_EVENT));
         break;
       case "g":
-      case "G":
         event.preventDefault();
         toggleDataset("gdelt");
         break;
       case "p":
-      case "P":
         event.preventDefault();
         toggleDataset("poly");
         break;
       case "t":
-      case "T":
         if (twitterDatasetEnabled) {
           event.preventDefault();
           toggleDataset("twitter");
@@ -181,7 +162,8 @@ export default function SearchBar({
           <div className={skeletonClass} />
         </div>
       ) : (
-        <div
+        <form
+          onSubmit={handleSubmit}
           className={cn(
             "surface-pill flex items-center rounded-3xl border border-[color:var(--border)]/60 px-5",
             "bg-[color:var(--surface-2)]",
@@ -190,7 +172,14 @@ export default function SearchBar({
             "focus-within:ring-2 focus-within:ring-[color:var(--primary)]/45"
           )}
         >
-          <Search className="mr-3 h-4 w-4 text-[color:var(--muted)]" strokeWidth={2} />
+          <button
+            type="submit"
+            aria-label="Submit search"
+            className="mr-3 flex h-8 w-8 items-center justify-center rounded-full text-[color:var(--muted)] transition hover:text-[color:var(--text)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)]/45"
+            disabled={loading}
+          >
+            <Search className="h-4 w-4" strokeWidth={2} />
+          </button>
           <input
             type="text"
             placeholder="Search events or markets"
@@ -217,7 +206,7 @@ export default function SearchBar({
           >
             ✕
           </button>
-        </div>
+        </form>
       )}
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
