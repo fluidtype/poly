@@ -116,13 +116,13 @@ export function GdeltEventsList({
 
   if (isLoading) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col gap-4 rounded-2xl bg-[color:var(--card)]/70 p-6">
-        <div className="h-6 w-48 animate-pulse rounded-full bg-[color:var(--elev-2)]/70" />
+      <div className="card flex h-full min-h-[320px] flex-col gap-4 rounded-2xl bg-[rgb(var(--surface2))]/70 p-6">
+        <div className="h-6 w-48 animate-pulse rounded-full bg-[rgb(var(--surface3))]/70" />
         <div className="space-y-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
-              className="h-16 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60"
+              className="h-16 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/60"
             />
           ))}
         </div>
@@ -132,7 +132,7 @@ export function GdeltEventsList({
 
   if (error) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-6 text-sm text-[color:var(--accent-light)]">
+      <div className="card flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/10 p-6 text-sm text-[rgb(var(--accent-light))]">
         <p className="font-medium">Unable to load GDELT events</p>
         <p className="text-xs opacity-80">{error}</p>
       </div>
@@ -141,17 +141,17 @@ export function GdeltEventsList({
 
   if (normalizedEvents.length === 0) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-sm text-[color:var(--muted)]">
+      <div className="card flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/70 p-6 text-sm text-[rgb(var(--muted))]">
         <p>No GDELT events found for the selected period.</p>
       </div>
     );
   }
 
   return (
-    <div className="card flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl bg-[color:var(--card)]/90">
-      <div className="flex items-center justify-between border-b border-[color:var(--border)]/60 px-6 py-5">
+    <div className="card flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl bg-[rgb(var(--surface2))]/90">
+      <div className="flex items-center justify-between border-b border-[rgb(var(--borderc))]/60 px-6 py-5">
         <div>
-          <h3 className="text-base font-semibold text-[color:var(--fg)]">Event stream</h3>
+          <h3 className="text-base font-semibold text-[rgb(var(--text))]">Event stream</h3>
           <p className="meta mt-1">Live slice of the latest {normalizedEvents.length.toLocaleString()} articles.</p>
         </div>
       </div>
@@ -189,18 +189,18 @@ export function GdeltEventsList({
                     }
                   }}
                   className={clsx(
-                    "group flex h-full cursor-pointer flex-col justify-center rounded-2xl border border-transparent bg-[color:var(--panel)]/40 px-4 py-3 transition",
-                    isActive && "border-[color:var(--accent)]/60 bg-[color:var(--accent)]/15",
-                    !isActive && "hover:border-[color:var(--accent)]/40 hover:bg-[color:var(--panel)]/60",
+                    "group flex h-full cursor-pointer flex-col justify-center rounded-2xl border border-transparent bg-[rgb(var(--surface))]/40 px-4 py-3 transition",
+                    isActive && "border-[rgb(var(--brand))]/60 bg-[rgb(var(--brand))]/15",
+                    !isActive && "hover:border-[rgb(var(--brand))]/40 hover:bg-[rgb(var(--surface))]/60",
                   )}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-[color:var(--fg)]">
+                      <p className="text-sm font-semibold text-[rgb(var(--text))]">
                         {event.hostname || "Unknown source"}
                       </p>
                       {event.path && (
-                        <p className="truncate text-xs text-[color:var(--muted)]">{truncate(event.path)}</p>
+                        <p className="truncate text-xs text-[rgb(var(--muted))]">{truncate(event.path)}</p>
                       )}
                       {event.isoDate && (
                         <p className="meta mt-1 uppercase tracking-[0.2em]">{event.isoDate}</p>
@@ -212,7 +212,7 @@ export function GdeltEventsList({
                           className={clsx(
                             "pill border px-2 py-0 text-xs font-medium",
                             negative
-                              ? "border-[color:var(--accent)]/40 bg-[color:var(--accent)]/15 text-[color:var(--accent-light)]"
+                              ? "border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/15 text-[rgb(var(--accent-light))]"
                               : "border-emerald-400/40 bg-emerald-500/10 text-emerald-200",
                           )}
                         >
@@ -226,8 +226,8 @@ export function GdeltEventsList({
                             event.tone > 1
                               ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
                               : event.tone < -1
-                              ? "border-[color:var(--accent)]/40 bg-[color:var(--accent)]/15 text-[color:var(--accent-light)]"
-                              : "border-[color:var(--border)]/60 bg-[color:var(--panel)]/50 text-[color:var(--fg)]/90",
+                              ? "border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/15 text-[rgb(var(--accent-light))]"
+                              : "border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/50 text-[rgb(var(--text))]/90",
                           )}
                         >
                           Tone {toneLabel(event.tone)}
@@ -238,7 +238,7 @@ export function GdeltEventsList({
                           {event.countryCodes.map((code) => (
                             <span
                               key={`${event.id}-${code}`}
-                              className="pill gap-1 border-[color:var(--border)]/60 bg-[color:var(--panel)]/50 text-xs text-[color:var(--fg)]/80"
+                              className="pill gap-1 border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/50 text-xs text-[rgb(var(--text))]/80"
                             >
                               <Flag className="h-3 w-3 opacity-60" aria-hidden="true" />
                               {code}
@@ -251,7 +251,7 @@ export function GdeltEventsList({
                           href={event.original.SOURCEURL}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="iconbtn text-[color:var(--fg)] transition hover:border-[color:var(--accent)]/60 hover:bg-[color:var(--accent)]/20"
+                          className="iconbtn text-[rgb(var(--text))] transition hover:border-[rgb(var(--brand))]/60 hover:bg-[rgb(var(--brand))]/20"
                           onClick={(clickEvent) => clickEvent.stopPropagation()}
                         >
                           <ExternalLink className="h-4 w-4" aria-hidden="true" />

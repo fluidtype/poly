@@ -147,7 +147,7 @@ function EventContent() {
 
   if (!eventData) {
     return (
-      <div className="card space-y-3 rounded-3xl border border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/60 p-6 text-sm text-[color:var(--muted)]">
+      <div className="card space-y-3 rounded-3xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface2))]/60 p-6 text-sm text-[rgb(var(--muted))]">
         No event selected.
       </div>
     );
@@ -155,15 +155,15 @@ function EventContent() {
 
   return (
     <div className="space-y-4">
-      <div className="card space-y-3 rounded-3xl border border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/70 p-5 shadow-lg shadow-black/5">
+      <div className="card space-y-3 rounded-3xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface2))]/70 p-5 shadow-lg shadow-black/5">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <p className="text-xs uppercase tracking-wide text-[color:var(--muted)]">Event Date</p>
-            <p className="text-base font-semibold text-[color:var(--text)]">{eventDate}</p>
+            <p className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">Event Date</p>
+            <p className="text-base font-semibold text-[rgb(var(--text))]">{eventDate}</p>
           </div>
           {eventUrl ? (
             <Link
-              className="inline-flex items-center gap-1 rounded-full border border-[color:var(--primary)]/60 bg-[color:var(--primary)]/10 px-3 py-1 text-xs font-semibold text-[color:var(--primary)] transition hover:bg-[color:var(--primary)]/20"
+              className="inline-flex items-center gap-1 rounded-full border border-[rgb(var(--primary))]/60 bg-[rgb(var(--primary))]/10 px-3 py-1 text-xs font-semibold text-[rgb(var(--primary))] transition hover:bg-[rgb(var(--primary))]/20"
               href={eventUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -173,8 +173,8 @@ function EventContent() {
             </Link>
           ) : null}
         </div>
-        <div className="card compact rounded-2xl border border-dashed border-[color:var(--border)]/60 bg-[color:var(--surface)]/50 p-4 text-xs">
-          <pre className="max-h-80 overflow-y-auto whitespace-pre-wrap text-[color:var(--muted)]">
+        <div className="card compact rounded-2xl border border-dashed border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/50 p-4 text-xs">
+          <pre className="max-h-80 overflow-y-auto whitespace-pre-wrap text-[rgb(var(--muted))]">
             {JSON.stringify(eventData, null, 2)}
           </pre>
         </div>
@@ -190,13 +190,13 @@ function EventContent() {
 
 function MarketSkeleton() {
   return (
-    <div className="card space-y-4 rounded-3xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/50 p-5">
-      <div className="h-5 w-1/2 animate-pulse rounded-full bg-[color:var(--surface-3)]/80" />
+    <div className="card space-y-4 rounded-3xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/50 p-5">
+      <div className="h-5 w-1/2 animate-pulse rounded-full bg-[rgb(var(--surface3))]/80" />
       <div className="space-y-2">
-        <div className="h-10 animate-pulse rounded-2xl bg-[color:var(--surface-3)]/70" />
-        <div className="h-10 animate-pulse rounded-2xl bg-[color:var(--surface-3)]/70" />
+        <div className="h-10 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/70" />
+        <div className="h-10 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/70" />
       </div>
-      <div className="h-32 animate-pulse rounded-3xl bg-[color:var(--surface-3)]/50" />
+      <div className="h-32 animate-pulse rounded-3xl bg-[rgb(var(--surface3))]/50" />
     </div>
   );
 }
@@ -215,7 +215,7 @@ function MarketContent({ market }: { market: PolyMarket | null }) {
 
   if (!market) {
     return (
-      <div className="card space-y-3 rounded-3xl border border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/60 p-6 text-sm text-[color:var(--muted)]">
+      <div className="card space-y-3 rounded-3xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface2))]/60 p-6 text-sm text-[rgb(var(--muted))]">
         Market details are not available.
       </div>
     );
@@ -238,45 +238,45 @@ function MarketContent({ market }: { market: PolyMarket | null }) {
 
   return (
     <div className="space-y-4">
-      <div className="card space-y-4 rounded-3xl border border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/70 p-5 shadow-lg shadow-black/5">
+      <div className="card space-y-4 rounded-3xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface2))]/70 p-5 shadow-lg shadow-black/5">
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold text-[color:var(--text)]">{market.title}</h2>
-          <div className="flex flex-wrap gap-2 text-xs text-[color:var(--muted)]">
-            <span className="rounded-full bg-[color:var(--surface-3)]/60 px-3 py-1">
-              Status: <span className="font-semibold text-[color:var(--text)]">{market.status}</span>
+          <h2 className="text-lg font-semibold text-[rgb(var(--text))]">{market.title}</h2>
+          <div className="flex flex-wrap gap-2 text-xs text-[rgb(var(--muted))]">
+            <span className="rounded-full bg-[rgb(var(--surface3))]/60 px-3 py-1">
+              Status: <span className="font-semibold text-[rgb(var(--text))]">{market.status}</span>
             </span>
             {market.category ? (
-              <span className="rounded-full bg-[color:var(--surface-3)]/60 px-3 py-1">
-                Category: <span className="font-semibold text-[color:var(--text)]">{market.category}</span>
+              <span className="rounded-full bg-[rgb(var(--surface3))]/60 px-3 py-1">
+                Category: <span className="font-semibold text-[rgb(var(--text))]">{market.category}</span>
               </span>
             ) : null}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="card compact space-y-1 rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--primary)]/10 p-4">
-            <span className="text-xs uppercase tracking-wide text-[color:var(--muted)]">YES</span>
+          <div className="card compact space-y-1 rounded-2xl border border-[rgb(var(--primary))]/40 bg-[rgb(var(--primary))]/10 p-4">
+            <span className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">YES</span>
             <span className="text-xl font-semibold text-emerald-300">
               {formatNumber(market.priceYes ?? market.tokens.find((token) => token.outcome === "YES")?.price ?? null)}
             </span>
           </div>
           <div className="card compact space-y-1 rounded-2xl border border-red-500/40 bg-red-500/10 p-4">
-            <span className="text-xs uppercase tracking-wide text-[color:var(--muted)]">NO</span>
+            <span className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">NO</span>
             <span className="text-xl font-semibold text-red-200">
               {formatNumber(market.priceNo ?? market.tokens.find((token) => token.outcome === "NO")?.price ?? null)}
             </span>
           </div>
         </div>
-        <div className="card compact space-y-3 rounded-2xl border border-dashed border-[color:var(--border)]/60 bg-[color:var(--surface)]/60 p-4 text-sm">
+        <div className="card compact space-y-3 rounded-2xl border border-dashed border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/60 p-4 text-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[color:var(--muted)]">24h Volume</span>
+            <span className="text-[rgb(var(--muted))]">24h Volume</span>
             <span className="font-semibold">{formatNumber(market.volume24h)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[color:var(--muted)]">Liquidity</span>
+            <span className="text-[rgb(var(--muted))]">Liquidity</span>
             <span className="font-semibold">{formatNumber(market.liquidity)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[color:var(--muted)]">End Date</span>
+            <span className="text-[rgb(var(--muted))]">End Date</span>
             <span className="font-semibold">{market.endDate ? formatDate(market.endDate) : "—"}</span>
           </div>
         </div>
@@ -317,7 +317,7 @@ export function SidePanel() {
 
   return (
     <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-      <DrawerContent className="w-full max-w-[420px] border-l border-[color:var(--border)]/60 bg-[color:var(--surface)]/95">
+      <DrawerContent className="w-full max-w-[420px] border-l border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/95">
         <DrawerHeader className="flex flex-col gap-1">
           <DrawerTitle>
             {mode === "event" ? "Event Details" : "Market Details"}

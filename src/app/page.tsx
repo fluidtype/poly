@@ -9,6 +9,7 @@ import { KpiCards } from "@/components/gdelt/KpiCards";
 import { PolyMarketGrid } from "@/components/poly/PolyMarketGrid";
 import ActivityPanel from "@/components/system/ActivityPanel";
 import { TwitterPlaceholder } from "@/components/twitter/TwitterPlaceholder";
+import { useFitScale } from "@/components/useFitScale";
 import { useGdeltBBVA } from "@/hooks/useGdeltBBVA";
 import { useGdeltBilateral } from "@/hooks/useGdeltBilateral";
 import { useGdeltContext } from "@/hooks/useGdeltContext";
@@ -206,9 +207,9 @@ const toIsoString = (timestamp?: number): string | undefined => {
 };
 
 const DisabledDatasetCard = ({ title, description }: { title: string; description: string }) => (
-  <div className="card flex h-full min-h-[200px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-center">
-    <h3 className="text-base font-semibold text-[color:var(--fg)]">{title}</h3>
-    <p className="mt-2 text-sm text-[color:var(--muted)]">{description}</p>
+  <div className="flex h-full min-h-[200px] flex-col items-center justify-center rounded-2xl border border-dashed border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/85 px-6 py-8 text-center shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
+    <h3 className="text-base font-semibold text-[rgb(var(--text))]">{title}</h3>
+    <p className="mt-2 max-w-[22rem] text-sm text-[rgb(var(--muted))]">{description}</p>
   </div>
 );
 
@@ -558,116 +559,169 @@ export default function HomePage() {
     ],
   );
 
+  const scale = useFitScale(1440, 900);
+
+  const renderGdeltChartCard = () => (
+    <div className="flex h-full flex-col overflow-hidden">
+      {datasets.gdelt ? (
+        <GdeltChart
+          series={gdeltSeries}
+          aggregation={gdeltAggregation}
+          onDateClick={(iso) => setActiveDate(iso)}
+          isLoading={gdeltLoading}
+          error={gdeltError}
+        />
+      ) : (
+        <DisabledDatasetCard
+          title="GDELT dataset disabled"
+          description="Enable the GDELT dataset from the filters to explore temporal activity."
+        />
+      )}
+    </div>
+  );
+
+  const renderEventsCard = () => (
+    <div className="flex h-full flex-col overflow-hidden">
+      {datasets.gdelt ? (
+        <GdeltEventsList
+          events={gdeltEvents}
+          activeDate={activeDate ?? undefined}
+          onOpen={(event) =>
+            openPanel("event", {
+              json: event,
+              title: typeof event.SOURCEURL === "string" ? event.SOURCEURL : "Event details",
+              url: typeof event.SOURCEURL === "string" ? event.SOURCEURL : undefined,
+            })
+          }
+          isLoading={gdeltLoading}
+          error={gdeltError}
+        />
+      ) : (
+        <DisabledDatasetCard
+          title="Events hidden"
+          description="Activate the GDELT stream to review the underlying source events."
+        />
+      )}
+    </div>
+  );
+
+  const renderKpiCard = () => (
+    <div className="flex h-full flex-col">
+      {datasets.gdelt ? (
+        <KpiCards
+          totalEvents={kpiValues.totalEvents}
+          avgTone={kpiValues.avgTone}
+          avgImpact={kpiValues.avgImpact}
+          topPair={kpiValues.topPair ?? undefined}
+          isLoading={gdeltLoading}
+          error={gdeltError}
+        />
+      ) : (
+        <DisabledDatasetCard
+          title="KPIs unavailable"
+          description="Turn on the GDELT feed to surface sentiment and impact metrics."
+        />
+      )}
+    </div>
+  );
+
+  const renderInsightsCard = () => (
+    <div className="flex h-full flex-col">
+      {datasets.gdelt ? (
+        <InsightsPanel insights={gdeltInsights} isLoading={gdeltLoading} error={gdeltError} />
+      ) : (
+        <DisabledDatasetCard
+          title="Insights paused"
+          description="Switch the GDELT dataset back on to surface keyword and actor insights."
+        />
+      )}
+    </div>
+  );
+
+  const renderPolyCard = () => (
+    <div className="flex h-full min-h-0 flex-col rounded-2xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/90 p-5 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition hover:ring-1 hover:ring-[rgb(var(--brand))]/25">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+        <h3 className="text-base font-semibold text-[rgb(var(--text))]">Polymarket highlights</h3>
+        <span className="text-[10px] uppercase tracking-[0.28em] text-[rgb(var(--muted))]">Top markets</span>
+      </div>
+      <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-1">
+        <PolyMarketGrid
+          markets={markets}
+          onOpen={(id) => openPanel("market", { id })}
+          isLoading={polyLoading}
+          error={polyError}
+        />
+      </div>
+    </div>
+  );
+
+  const renderPolySection = () => (
+    <div className="flex h-full flex-col">
+      {datasets.poly ? (
+        renderPolyCard()
+      ) : (
+        <DisabledDatasetCard
+          title="Polymarket disabled"
+          description="Enable the Polymarket dataset to browse high-liquidity markets."
+        />
+      )}
+    </div>
+  );
+
+  const renderTwitterCard = () => (
+    <div className="flex h-full flex-col">
+      <TwitterPlaceholder comingSoon={comingSoon} />
+    </div>
+  );
+
+  const renderActivityCard = () => (
+    <div className="flex h-full flex-col">
+      <ActivityPanel datasets={datasetStatuses} recentQueries={recentQueries} />
+    </div>
+  );
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-6">
-      <div className="grid flex-1 min-h-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] xl:grid-cols-[minmax(0,8fr)_minmax(0,5fr)]">
-        <div className="grid min-h-0 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-6">
-          <section className="flex min-h-0 flex-col">
-            {datasets.gdelt ? (
-              <GdeltChart
-                series={gdeltSeries}
-                aggregation={gdeltAggregation}
-                onDateClick={(iso) => setActiveDate(iso)}
-                isLoading={gdeltLoading}
-                error={gdeltError}
-              />
-            ) : (
-              <DisabledDatasetCard
-                title="GDELT dataset disabled"
-                description="Enable the GDELT dataset from the filters to explore temporal activity."
-              />
-            )}
-          </section>
-
-          <section className="flex min-h-0 flex-col">
-            {datasets.gdelt ? (
-              <GdeltEventsList
-                events={gdeltEvents}
-                activeDate={activeDate ?? undefined}
-                onOpen={(event) =>
-                  openPanel("event", {
-                    json: event,
-                    title: typeof event.SOURCEURL === "string" ? event.SOURCEURL : "Event details",
-                    url: typeof event.SOURCEURL === "string" ? event.SOURCEURL : undefined,
-                  })
-                }
-                isLoading={gdeltLoading}
-                error={gdeltError}
-              />
-            ) : (
-              <DisabledDatasetCard
-                title="Events hidden"
-                description="Activate the GDELT stream to review the underlying source events."
-              />
-            )}
-          </section>
-        </div>
-
-        <div className="flex min-h-0 flex-col gap-6">
-          <div>
-            {datasets.gdelt ? (
-              <KpiCards
-                totalEvents={kpiValues.totalEvents}
-                avgTone={kpiValues.avgTone}
-                avgImpact={kpiValues.avgImpact}
-                topPair={kpiValues.topPair ?? undefined}
-                isLoading={gdeltLoading}
-                error={gdeltError}
-              />
-            ) : (
-              <DisabledDatasetCard
-                title="KPIs unavailable"
-                description="Turn on the GDELT feed to surface sentiment and impact metrics."
-              />
-            )}
-          </div>
-
-          <div className="grid flex-1 min-h-0 grid-cols-1 gap-6 xl:grid-cols-2">
-            <div className="min-h-0">
-              {datasets.gdelt ? (
-                <InsightsPanel insights={gdeltInsights} isLoading={gdeltLoading} error={gdeltError} />
-              ) : (
-                <DisabledDatasetCard
-                  title="Insights paused"
-                  description="Switch the GDELT dataset back on to surface keyword and actor insights."
-                />
-              )}
-            </div>
-
-            <div className="min-h-0">
-              <ActivityPanel datasets={datasetStatuses} recentQueries={recentQueries} />
-            </div>
-
-            <div className="xl:col-span-2 flex min-h-0 flex-col">
-              {datasets.poly ? (
-                <div className="card flex min-h-0 flex-col gap-5 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-base font-semibold text-[color:var(--fg)]">Polymarket highlights</h3>
-                    <span className="meta uppercase tracking-[0.2em]">Top markets</span>
-                  </div>
-                  <div className="min-h-0 overflow-y-auto pr-1">
-                    <PolyMarketGrid
-                      markets={markets}
-                      onOpen={(id) => openPanel("market", { id })}
-                      isLoading={polyLoading}
-                      error={polyError}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <DisabledDatasetCard
-                  title="Polymarket disabled"
-                  description="Enable the Polymarket dataset to browse high-liquidity markets."
-                />
-              )}
-            </div>
-
-            <div className="xl:col-span-2 min-h-0">
-              <TwitterPlaceholder comingSoon={comingSoon} />
-            </div>
+    <>
+      <div className="hidden lg:block">
+        <div
+          className="mx-auto origin-top"
+          style={{ width: 1440, height: 900, transform: `scale(${scale})` }}
+        >
+          <div className="grid h-full w-full grid-cols-12 gap-5">
+            <section className="col-span-8 flex h-full flex-col overflow-hidden">
+              {renderGdeltChartCard()}
+            </section>
+            <aside className="col-span-4 flex h-full flex-col gap-5">
+              {renderKpiCard()}
+            </aside>
+            <section className="col-span-8 flex h-full flex-col overflow-hidden">
+              {renderEventsCard()}
+            </section>
+            <section className="col-span-4 flex h-full flex-col overflow-hidden">
+              {renderPolySection()}
+            </section>
+            <section className="col-span-5 flex h-full flex-col overflow-hidden">
+              {renderTwitterCard()}
+            </section>
+            <section className="col-span-4 flex h-full flex-col overflow-hidden">
+              {renderInsightsCard()}
+            </section>
+            <section className="col-span-3 flex h-full flex-col overflow-hidden">
+              {renderActivityCard()}
+            </section>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="flex flex-col gap-5 pb-6 lg:hidden">
+        {renderGdeltChartCard()}
+        {renderKpiCard()}
+        {renderEventsCard()}
+        {renderPolySection()}
+        {renderTwitterCard()}
+        {renderInsightsCard()}
+        {renderActivityCard()}
+      </div>
+    </>
   );
 }

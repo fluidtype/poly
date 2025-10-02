@@ -34,7 +34,7 @@ const Toast = React.forwardRef<
   <ToastPrimitives.Root
     ref={ref}
     className={cn(
-      "relative rounded-3xl border border-[color:var(--border)]/70 bg-[color:var(--surface)]/95 p-4 pr-10 text-sm shadow-[0_18px_45px_rgba(0,0,0,0.45)]",
+      "relative rounded-3xl border border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface))]/95 p-4 pr-10 text-sm shadow-[0_18px_45px_rgba(0,0,0,0.45)]",
       "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
       className
     )}
@@ -50,7 +50,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      "inline-flex h-8 items-center rounded-2xl border border-[color:var(--border)]/70 px-3 text-xs font-semibold uppercase tracking-wide text-[color:var(--text)] transition hover:bg-[color:var(--primary)]/20",
+      "inline-flex h-8 items-center rounded-2xl border border-[rgb(var(--borderc))]/70 px-3 text-xs font-semibold uppercase tracking-wide text-[rgb(var(--text))] transition hover:bg-[rgb(var(--primary))]/20",
       className
     )}
     {...props}
@@ -65,7 +65,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "absolute right-3 top-3 rounded-full p-1 text-[color:var(--muted)] transition hover:text-[color:var(--text)]",
+      "absolute right-3 top-3 rounded-full p-1 text-[rgb(var(--muted))] transition hover:text-[rgb(var(--text))]",
       className
     )}
     toast-close=""
@@ -82,7 +82,7 @@ const ToastTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn("text-sm font-semibold text-[color:var(--text)]", className)}
+    className={cn("text-sm font-semibold text-[rgb(var(--text))]", className)}
     {...props}
   />
 ));
@@ -94,7 +94,7 @@ const ToastDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn("mt-1 text-xs text-[color:var(--muted)]", className)}
+    className={cn("mt-1 text-xs text-[rgb(var(--muted))]", className)}
     {...props}
   />
 ));

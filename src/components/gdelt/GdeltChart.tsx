@@ -88,8 +88,8 @@ export function GdeltChart({
     return (
       <div className="card-elev flex h-full min-h-[320px] flex-col overflow-hidden p-6">
         <div className="flex flex-1 flex-col gap-4">
-          <div className="h-8 w-40 animate-pulse rounded-full bg-[color:var(--elev-2)]/70" />
-          <div className="flex-1 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60" />
+          <div className="h-8 w-40 animate-pulse rounded-full bg-[rgb(var(--surface3))]/70" />
+          <div className="flex-1 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/60" />
         </div>
       </div>
     );
@@ -97,7 +97,7 @@ export function GdeltChart({
 
   if (error) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-6 text-sm text-[color:var(--accent-light)]">
+      <div className="card flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/10 p-6 text-sm text-[rgb(var(--accent-light))]">
         <p className="font-medium">Unable to load GDELT data</p>
         <p className="text-xs opacity-80">{error}</p>
       </div>
@@ -106,7 +106,7 @@ export function GdeltChart({
 
   if (!hasData) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-sm text-[color:var(--muted)]">
+      <div className="card flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/70 p-6 text-sm text-[rgb(var(--muted))]">
         <p>No activity found for the selected filters.</p>
       </div>
     );
@@ -117,7 +117,7 @@ export function GdeltChart({
   return (
     <div className="card-elev flex h-full min-h-[320px] flex-col overflow-hidden p-6">
       {aggregation === "monthly" && (
-        <span className="pill pointer-events-none self-end bg-[color:var(--accent)]/15 text-[color:var(--accent-light)]">
+        <span className="pill pointer-events-none self-end bg-[rgb(var(--brand))]/15 text-[rgb(var(--accent-light))]">
           Monthly aggregation
         </span>
       )}
@@ -126,12 +126,12 @@ export function GdeltChart({
         onValueChange={(value) => setMetric(value as MetricKey)}
         className="mt-4 flex h-full flex-col"
       >
-        <TabsList className="w-max rounded-full bg-[color:var(--panel)]/80 p-1">
+        <TabsList className="w-max rounded-full bg-[rgb(var(--surface))]/80 p-1">
           {(Object.entries(METRIC_CONFIG) as [MetricKey, (typeof METRIC_CONFIG)[MetricKey]][]).map(([key, config]) => (
             <TabsTrigger
               key={key}
               value={key}
-              className="rounded-full px-4 py-1 text-sm data-[state=active]:bg-[color:var(--accent)] data-[state=active]:text-black"
+              className="rounded-full px-4 py-1 text-sm data-[state=active]:bg-[rgb(var(--brand))] data-[state=active]:text-black"
             >
               {config.label}
             </TabsTrigger>
@@ -171,7 +171,7 @@ export function GdeltChart({
                   boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
                   background: "var(--panel)",
                 }}
-                labelStyle={{ fontWeight: 600, color: "var(--fg)" }}
+                labelStyle={{ fontWeight: 600, color: "rgb(var(--text))" }}
                 formatter={(value) => [tooltipFormatter(value) as string, selectedMetric.label]}
               />
               <Brush

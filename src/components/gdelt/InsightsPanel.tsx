@@ -126,7 +126,7 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
 
   if (error) {
     return (
-      <div className="card rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-5 text-sm text-[color:var(--accent-light)]">
+      <div className="card rounded-2xl border border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/10 p-5 text-sm text-[rgb(var(--accent-light))]">
         {error}
       </div>
     );
@@ -134,14 +134,14 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
 
   if (isLoading) {
     return (
-      <div className="card space-y-4 rounded-2xl bg-[color:var(--card)]/70 p-5">
-        <div className="h-5 w-40 animate-pulse rounded-full bg-[color:var(--elev-2)]/70" />
+      <div className="card space-y-4 rounded-2xl bg-[rgb(var(--surface2))]/70 p-5">
+        <div className="h-5 w-40 animate-pulse rounded-full bg-[rgb(var(--surface3))]/70" />
         <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className="h-4 w-full animate-pulse rounded-full bg-[color:var(--elev-2)]/60" />
+            <div key={index} className="h-4 w-full animate-pulse rounded-full bg-[rgb(var(--surface3))]/60" />
           ))}
         </div>
-        <div className="h-36 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60" />
+        <div className="h-36 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/60" />
       </div>
     );
   }
@@ -150,16 +150,16 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
 
   if (isEmpty) {
     return (
-      <div className="card rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-5 text-sm text-[color:var(--muted)]">
+      <div className="card rounded-2xl border border-dashed border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/70 p-5 text-sm text-[rgb(var(--muted))]">
         No insights available yet. Adjust filters or try a different timeframe.
       </div>
     );
   }
 
   return (
-    <div className="card flex h-full flex-col gap-6 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5">
+    <div className="card flex h-full flex-col gap-6 rounded-2xl border border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/90 p-5">
       <header className="space-y-1">
-        <h3 className="text-base font-semibold text-[color:var(--fg)]">Insights snapshot</h3>
+        <h3 className="text-base font-semibold text-[rgb(var(--text))]">Insights snapshot</h3>
         <p className="meta">Top signals from the current GDELT aggregation.</p>
       </header>
 
@@ -170,10 +170,10 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
             {keywords.map((entry) => (
               <li
                 key={entry.keyword}
-                className="flex items-center justify-between rounded-xl bg-[color:var(--panel)]/50 px-3 py-2 text-sm"
+                className="flex items-center justify-between rounded-xl bg-[rgb(var(--surface))]/50 px-3 py-2 text-sm"
               >
-                <span className="font-medium text-[color:var(--fg)]">{entry.keyword}</span>
-                <span className="pill px-2 py-0 text-xs font-semibold text-[color:var(--accent-light)]">
+                <span className="font-medium text-[rgb(var(--text))]">{entry.keyword}</span>
+                <span className="pill px-2 py-0 text-xs font-semibold text-[rgb(var(--accent-light))]">
                   {entry.count.toLocaleString()}
                 </span>
               </li>
@@ -187,16 +187,16 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
           <div className="flex items-center justify-between">
             <h4 className="meta uppercase tracking-[0.2em]">Temporal distribution</h4>
             {spikes.length > 0 && (
-              <div className="flex items-center gap-2 text-xs text-[color:var(--accent-light)]">
+              <div className="flex items-center gap-2 text-xs text-[rgb(var(--accent-light))]">
                 {spikes.map((label) => (
-                  <span key={label} className="pill px-2 py-0 text-xs font-semibold text-[color:var(--accent-light)]">
+                  <span key={label} className="pill px-2 py-0 text-xs font-semibold text-[rgb(var(--accent-light))]">
                     ⚠️ {label}
                   </span>
                 ))}
               </div>
             )}
           </div>
-          <div className="h-40 rounded-2xl border border-[color:var(--border)]/60 bg-[color:var(--panel)]/40 p-3">
+          <div className="h-40 rounded-2xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/40 p-3">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={temporal} margin={{ top: 8, left: 0, right: 0, bottom: 0 }}>
                 <defs>
@@ -216,7 +216,7 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
                     boxShadow: "0 15px 45px rgba(0,0,0,0.4)",
                   }}
                   formatter={(value: number) => [value.toLocaleString(), "Mentions"]}
-                  labelStyle={{ fontWeight: 600, color: "var(--fg)" }}
+                  labelStyle={{ fontWeight: 600, color: "rgb(var(--text))" }}
                 />
                 <Bar dataKey="value" fill="url(#insightsBar)" radius={[12, 12, 4, 4]} />
               </BarChart>
@@ -232,11 +232,11 @@ export function InsightsPanel({ insights, isLoading = false, error }: InsightsPa
             {actors.map((actor) => (
               <span
                 key={actor.name}
-                className="pill gap-2 border-[color:var(--violet)]/40 bg-[color:var(--violet)]/15 text-xs font-medium text-[color:var(--violet-light)]"
+                className="pill gap-2 border-[rgb(var(--tertiary))]/40 bg-[rgb(var(--tertiary))]/15 text-xs font-medium text-[rgb(var(--violet-light))]"
               >
                 {actor.name}
                 {typeof actor.count === "number" && (
-                  <span className="rounded-full bg-[color:var(--panel)]/60 px-2 py-0.5 text-[color:var(--fg)]">
+                  <span className="rounded-full bg-[rgb(var(--surface))]/60 px-2 py-0.5 text-[rgb(var(--text))]">
                     {actor.count.toLocaleString()}
                   </span>
                 )}

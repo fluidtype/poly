@@ -49,18 +49,18 @@ export function DateRangePicker({
         defaultMonth={value.from ?? new Date()}
       />
 
-      <div className="flex items-center justify-between rounded-2xl bg-[color:var(--surface-2)]/60 px-4 py-3 text-xs uppercase tracking-wide text-[color:var(--muted)]">
+      <div className="flex items-center justify-between rounded-2xl bg-[rgb(var(--surface2))]/60 px-4 py-3 text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
         <div className="flex items-center gap-2">
           <CalendarIcon className="h-4 w-4 opacity-70" />
-          <div className="flex flex-col text-[color:var(--text)] normal-case">
-            <span className="text-[11px] uppercase tracking-wider text-[color:var(--muted)]">From</span>
-            <span className="text-sm font-semibold text-[color:var(--text)]">{formatDate(value.from)}</span>
+          <div className="flex flex-col text-[rgb(var(--text))] normal-case">
+            <span className="text-[11px] uppercase tracking-wider text-[rgb(var(--muted))]">From</span>
+            <span className="text-sm font-semibold text-[rgb(var(--text))]">{formatDate(value.from)}</span>
           </div>
         </div>
-        <span className="px-2 text-[color:var(--muted)]">→</span>
-        <div className="flex flex-col text-[color:var(--text)] normal-case">
-          <span className="text-[11px] uppercase tracking-wider text-[color:var(--muted)]">To</span>
-          <span className="text-sm font-semibold text-[color:var(--text)]">{formatDate(value.to)}</span>
+        <span className="px-2 text-[rgb(var(--muted))]">→</span>
+        <div className="flex flex-col text-[rgb(var(--text))] normal-case">
+          <span className="text-[11px] uppercase tracking-wider text-[rgb(var(--muted))]">To</span>
+          <span className="text-sm font-semibold text-[rgb(var(--text))]">{formatDate(value.to)}</span>
         </div>
       </div>
 
