@@ -49,8 +49,25 @@ export async function fetchPolySearch(
       throw new Error("Service unavailable");
     }
 
-    const message = await response.text();
-    throw new Error(message || "Failed to load Poly search results");
+    let errorMessage: string | undefined;
+
+    try {
+      const errorJson = await response.clone().json();
+      if (typeof errorJson === "string") {
+        errorMessage = errorJson;
+      } else if (
+        errorJson &&
+        typeof errorJson === "object" &&
+        typeof (errorJson as { message?: unknown }).message === "string"
+      ) {
+        errorMessage = (errorJson as { message: string }).message;
+      }
+    } catch {
+      const fallbackMessage = await response.text();
+      errorMessage = fallbackMessage || undefined;
+    }
+
+    throw new Error(errorMessage || "Failed to load Poly search results");
   }
 
   const data = (await response.json()) as PolySearchApiResponse;
