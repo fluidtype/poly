@@ -300,11 +300,11 @@ export default function HomePage() {
   const polyQuery = usePolySearch(
     datasets.poly
       ? {
-          q: keywords.join(" "),
+          q: keywords.length > 0 ? keywords.join(" ") : undefined,
           active: true,
           sort: "volume24h",
         }
-      : { q: "" },
+      : { enabled: false },
   );
 
   const activeGdeltState: QueryState = (() => {

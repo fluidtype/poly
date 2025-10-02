@@ -14,6 +14,7 @@ export type UsePolySearchParams = {
   limit?: number;
   category?: string;
   sort?: PolySortOption;
+  enabled?: boolean;
 };
 
 export type PolySearchResult = {
@@ -22,13 +23,15 @@ export type PolySearchResult = {
 };
 
 export async function fetchPolySearch(
-  params: Required<Pick<UsePolySearchParams, "q">> &
-    Pick<UsePolySearchParams, "active" | "limit" | "category" | "sort">,
+  params: Pick<UsePolySearchParams, "q" | "active" | "limit" | "category" | "sort">,
   fetchImpl: typeof fetch = fetch,
   abortSignal?: AbortSignal,
 ): Promise<PolySearchResult> {
   const searchParams = new URLSearchParams();
-  searchParams.set("q", params.q);
+  const trimmedQuery = params.q?.trim();
+  if (trimmedQuery) {
+    searchParams.set("q", trimmedQuery);
+  }
   searchParams.set("active", String(params.active ?? true));
   searchParams.set("limit", String(params.limit ?? 30));
   if (params.category) {
@@ -74,7 +77,11 @@ export function usePolySearch(params: UsePolySearchParams) {
   const globalKeywords = useGlobalFilters((state) => state.keywords);
 
   const queryParams = useMemo(() => ({
-    q: params.q ?? globalKeywords.join(" "),
+    q: (() => {
+      const keywordString = params.q ?? globalKeywords.join(" ");
+      const trimmed = keywordString?.trim();
+      return trimmed ? trimmed : undefined;
+    })(),
     active: params.active ?? true,
     limit: params.limit ?? 30,
     category: params.category,
@@ -88,7 +95,7 @@ export function usePolySearch(params: UsePolySearchParams) {
     params.sort,
   ]);
 
-  const enabled = Boolean(queryParams.q);
+  const enabled = params.enabled ?? true;
 
   return useQuery({
     queryKey: ["poly", "search", queryParams],
