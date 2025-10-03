@@ -4,6 +4,8 @@ import { fetchWithTimeout } from '@/lib/api';
 import { gdeltQuerySchema } from '@/lib/validation';
 
 const shouldLog = process.env.NODE_ENV !== 'production';
+const DEFAULT_GDELT_BASE_URL = 'https://my-search-proxy.ew.r.appspot.com/gdelt';
+const INVALID_GDELT_HOST_PATTERN = /api\.gdeltproject\.org/u;
 
 const ACTIONS_REQUIRING_DATES = new Set([
   'context',
@@ -24,12 +26,38 @@ const parseDate = (value: string) =>
   );
 
 export async function GET(req: Request) {
-  const baseUrl = process.env.GDELT_BASE_URL;
+  const configuredBaseUrl =
+    process.env.GDELT_BASE_URL ?? process.env.NEXT_PUBLIC_GDELT_BASE_URL ?? DEFAULT_GDELT_BASE_URL;
+  const baseUrl = configuredBaseUrl.trim().replace(/\/?$/, '');
+
   if (!baseUrl) {
     return NextResponse.json(
-      { status: 'error', message: 'GDELT_BASE_URL is not configured' },
+      {
+        status: 'error',
+        message: 'GDELT_BASE_URL (or NEXT_PUBLIC_GDELT_BASE_URL) is not configured',
+      },
       { status: 500 },
     );
+  }
+
+  if (INVALID_GDELT_HOST_PATTERN.test(baseUrl)) {
+    const guidance =
+      'Configured GDELT_BASE_URL points to api.gdeltproject.org, but the dashboard requires the Poly proxy (e.g. https://my-search-proxy.ew.r.appspot.com/gdelt).';
+
+    if (shouldLog) {
+      console.error('[api/gdelt] Invalid upstream host configured:', baseUrl);
+    }
+
+    const errorPayload: Record<string, unknown> = {
+      status: 'error',
+      message: guidance,
+    };
+
+    if (shouldLog) {
+      errorPayload.debug = { url: baseUrl };
+    }
+
+    return NextResponse.json(errorPayload, { status: 500 });
   }
 
   const url = new URL(req.url);
@@ -98,37 +126,66 @@ export async function GET(req: Request) {
 
   const response = await fetchWithTimeout(targetUrl);
 
+  const responseText = await response.text();
   let data: unknown;
-  try {
-    data = await response.json();
-  } catch (error) {
-    const message =
-      error instanceof Error && error.name === 'SyntaxError'
-        ? 'Invalid JSON response from GDELT'
-        : (error as Error)?.message ?? 'Unable to parse response';
 
-    return NextResponse.json(
-      { status: 'error', message },
-      { status: 502 },
-    );
+  if (responseText) {
+    try {
+      data = JSON.parse(responseText) as unknown;
+    } catch (error) {
+      const message =
+        error instanceof Error && error.name === 'SyntaxError'
+          ? 'Invalid JSON response from GDELT'
+          : (error as Error)?.message ?? 'Unable to parse response';
+
+      if (shouldLog) {
+        console.error('[api/gdelt] Failed to parse response JSON', {
+          error,
+          url: targetUrl,
+          bodyPreview: responseText.slice(0, 500),
+        });
+      }
+
+      const errorPayload: Record<string, unknown> = {
+        status: 'error',
+        message,
+      };
+
+      if (shouldLog) {
+        errorPayload.debug = { url: targetUrl, status: response.status };
+      }
+
+      return NextResponse.json(errorPayload, { status: 502 });
+    }
   }
 
   if (!response.ok) {
     const status = response.status || 502;
-    const message =
+    const parsedMessage =
       data && typeof data === 'object' && 'message' in (data as Record<string, unknown>)
         ? String((data as { message?: unknown }).message)
-        : 'Upstream request failed';
+        : undefined;
+    const message = parsedMessage || response.statusText || 'Upstream request failed';
 
     if (shouldLog) {
-      console.error('[api/gdelt] Non-OK response', status, 'from URL:', targetUrl, 'message:', message);
+      console.error('[api/gdelt] Non-OK response from upstream', {
+        status,
+        url: targetUrl,
+        bodyPreview: responseText.slice(0, 1000),
+      });
     }
 
-    return NextResponse.json(
-      { status: 'error', message },
-      { status },
-    );
+    const errorPayload: Record<string, unknown> = {
+      status: 'error',
+      message,
+    };
+
+    if (shouldLog) {
+      errorPayload.debug = { url: targetUrl, status, body: responseText.slice(0, 1000) };
+    }
+
+    return NextResponse.json(errorPayload, { status });
   }
 
-  return NextResponse.json(data, { status: response.status });
+  return NextResponse.json(data ?? {}, { status: response.status });
 }

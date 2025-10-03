@@ -27,15 +27,13 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 function buildParams(keywords: string[], dateStart: string, dateEnd: string) {
   const params = new URLSearchParams({
     action: "context",
-    mode: "artlist",
-    format: "json",
     date_start: dateStart,
     date_end: dateEnd,
-    maxrecords: String(MAX_RECORDS),
+    limit: String(MAX_RECORDS),
   });
 
   if (keywords.length > 0) {
-    params.set("query", keywords.join(" OR "));
+    params.set("keywords", keywords.join(","));
   }
 
   return params.toString();
