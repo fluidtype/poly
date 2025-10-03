@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { CUSTOM_PRESET_EVENT } from "@/components/search/events";
+import { pill } from "@/components/search/pill";
 import { DateRangePicker, DateRange } from "@/components/ui/date-range-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -21,17 +22,6 @@ import {
 } from "@/stores/useGlobalFilters";
 
 const MAX_RANGE_DAYS = 365;
-
-const chipClass = cn(
-  "rounded-2xl px-3 py-1.5 text-[13px] transition-all",
-  "bg-[color:var(--surface-2)]/90 border border-[color:var(--border)]/60",
-  "text-[color:var(--muted)] hover:bg-[color:var(--primary-600)]/15 hover:text-[color:var(--text)]",
-  "hover:ring-1 hover:ring-[color:var(--primary)]/30",
-  "data-[active=true]:bg-[color:var(--primary)]/18 data-[active=true]:text-[color:var(--text)]",
-  "data-[active=true]:border-[color:var(--primary)]/35",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)]/45",
-  "disabled:cursor-not-allowed disabled:opacity-50"
-);
 
 const presetOptions: Array<{ label: Exclude<Preset, "CUSTOM">; days: number }> = [
   { label: "7D", days: 7 },
@@ -62,7 +52,7 @@ type DatePresetsProps = {
   disabled?: boolean;
 };
 
-export default function DatePresets({ disabled = false }: DatePresetsProps) {
+export function DatePresets({ disabled = false }: DatePresetsProps) {
   const dateStart = useGlobalFilters((state) => state.dateStart);
   const dateEnd = useGlobalFilters((state) => state.dateEnd);
   const activePreset = useGlobalFilters((state) => state.activePreset);
@@ -130,7 +120,11 @@ export default function DatePresets({ disabled = false }: DatePresetsProps) {
                   type="button"
                   title={tooltip}
                   data-active={isActive ? "true" : undefined}
-                  className={chipClass}
+                  className={cn(
+                    pill,
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--brand))]/35",
+                    "disabled:cursor-not-allowed disabled:opacity-50"
+                  )}
                   disabled={disabled}
                   onClick={() => setPreset(preset.label)}
                 >
@@ -157,7 +151,11 @@ export default function DatePresets({ disabled = false }: DatePresetsProps) {
               <PopoverTrigger asChild>
                 <button
                   type="button"
-                  className={chipClass}
+                  className={cn(
+                    pill,
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--brand))]/35",
+                    "disabled:cursor-not-allowed disabled:opacity-50"
+                  )}
                   data-active={activePreset === "CUSTOM" ? "true" : undefined}
                   disabled={disabled}
                 >

@@ -2,10 +2,10 @@
 
 import { useMemo } from "react";
 
-import type { PolyMarket } from "@/types";
+import type { PolymuffinMarket } from "@/types";
 
 interface OddsDistributionProps {
-  markets: PolyMarket[];
+  markets: PolymuffinMarket[];
   enabled: boolean;
   loading: boolean;
   error: string | null;

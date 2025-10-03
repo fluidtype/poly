@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { ExternalLink, Share2, Copy, RefreshCcw } from "lucide-react";
 
-import { usePolyMarketDetails } from "@/hooks/usePolyMarketDetails";
+import { usePolymuffinMarketDetails } from "@/hooks/usePolymuffinMarketDetails";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/drawer";
 import { useToast } from "@/components/ui/use-toast";
 import { useSidePanel } from "@/stores/useSidePanel";
-import type { PolyMarket } from "@/types";
+import type { PolymuffinMarket } from "@/types";
 
 const numberFormatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
@@ -210,7 +210,7 @@ function MarketError({ message }: { message: string }) {
   );
 }
 
-function MarketContent({ market }: { market: PolyMarket | null }) {
+function MarketContent({ market }: { market: PolymuffinMarket | null }) {
   const { toast } = useToast();
 
   if (!market) {
@@ -304,7 +304,7 @@ export function SidePanel() {
     isError: isMarketError,
     error: marketError,
     refetch,
-  } = usePolyMarketDetails({ id: marketId });
+  } = usePolymuffinMarketDetails({ id: marketId });
 
   const handleOpenChange = React.useCallback(
     (open: boolean) => {

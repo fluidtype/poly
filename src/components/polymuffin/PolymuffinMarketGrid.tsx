@@ -3,10 +3,10 @@
 import Link from "next/link";
 import clsx from "clsx";
 
-import type { PolyMarket } from "@/types";
+import type { PolymuffinMarket } from "@/types";
 
-interface PolyMarketGridProps {
-  markets: PolyMarket[];
+interface PolymuffinMarketGridProps {
+  markets: PolymuffinMarket[];
   onOpen?: (id: string) => void;
   isLoading?: boolean;
   error?: string | null;
@@ -73,12 +73,12 @@ const getStatusClass = (status: string) => {
   return statusStyles[normalized] ?? "bg-[color:var(--panel)]/60 text-[color:var(--muted)] border border-[color:var(--border)]/60";
 };
 
-export function PolyMarketGrid({
+export function PolymuffinMarketGrid({
   markets,
   onOpen,
   isLoading = false,
   error,
-}: PolyMarketGridProps) {
+}: PolymuffinMarketGridProps) {
   if (error) {
     return (
       <div className="card rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-5 text-sm text-[color:var(--accent-light)]">

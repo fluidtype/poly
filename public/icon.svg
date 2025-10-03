@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">Poly UI Icon</title>
+  <title id="title">Polymuffin UI Icon</title>
   <desc id="desc">Stylized hexagon with letter P</desc>
   <defs>
-    <linearGradient id="poly-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="polymuffin-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#E02424" />
       <stop offset="100%" stop-color="#F97316" />
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="14" fill="#16181C" />
-  <path d="M20 16h18a10 10 0 0 1 0 20H28v12h-8V16zm8 8v4h10a2 2 0 0 0 0-4H28z" fill="url(#poly-gradient)" />
+  <path d="M20 16h18a10 10 0 0 1 0 20H28v12h-8V16zm8 8v4h10a2 2 0 0 0 0-4H28z" fill="url(#polymuffin-gradient)" />
   <path d="M24 48c11 0 20-9 20-20" fill="none" stroke="#EAECEE" stroke-width="2" stroke-linecap="round" opacity="0.35" />
 </svg>

@@ -1,4 +1,4 @@
-import type { PolyMarket, PolyMarketApi, PolyToken, PolyTokenApi } from "@/types";
+import type { PolymuffinMarket, PolymuffinMarketApi, PolymuffinToken, PolymuffinTokenApi } from "@/types";
 
 export const commonQueryOptions = {
   cacheTime: 10 * 60 * 1000,
@@ -40,13 +40,13 @@ export function normalizeGdeltDate(value: string | number | undefined | null): s
   return date.toISOString().split("T")[0] ?? "";
 }
 
-export function normalizeTokens(tokens?: PolyTokenApi[] | null): PolyToken[] {
+export function normalizeTokens(tokens?: PolymuffinTokenApi[] | null): PolymuffinToken[] {
   if (!Array.isArray(tokens)) {
     return [];
   }
 
   return tokens
-    .filter((token): token is PolyTokenApi => Boolean(token) && typeof token === "object")
+    .filter((token): token is PolymuffinTokenApi => Boolean(token) && typeof token === "object")
     .map((token) => {
       const rawPrice = token.price;
       const price =
@@ -64,7 +64,7 @@ export function normalizeTokens(tokens?: PolyTokenApi[] | null): PolyToken[] {
     });
 }
 
-export function normalizeMarket(market?: PolyMarketApi | null): PolyMarket {
+export function normalizeMarket(market?: PolymuffinMarketApi | null): PolymuffinMarket {
   const tokens = normalizeTokens(market?.tokens ?? null);
   const yesToken = tokens.find((token) => token.outcome === "YES");
   const noToken = tokens.find((token) => token.outcome === "NO");

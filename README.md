@@ -1,4 +1,4 @@
-# Poly UI Starter
+# Polymuffin UI Starter
 
 A Next.js 14 App Router starter configured with Tailwind CSS, shadcn/ui, and a modern dark design system.
 

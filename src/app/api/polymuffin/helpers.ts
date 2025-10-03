@@ -146,7 +146,7 @@ export const normalizeTokens = (market: GammaMarket): NormalizedToken[] => {
           .filter((token): token is NormalizedToken => Boolean(token));
       }
     } catch (error) {
-      console.error('[api/poly] Failed to parse outcomes/outcomePrices', {
+      console.error('[api/polymuffin] Failed to parse outcomes/outcomePrices', {
         error,
       });
     }

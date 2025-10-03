@@ -45,7 +45,7 @@ export const gdeltQuerySchema = z
 
 const booleanLiteralSchema = z.union([z.literal('true'), z.literal('false')]);
 
-export const polyListQuerySchema = z
+export const polymuffinListQuerySchema = z
   .object({
     q: z.string().trim().min(1).optional(),
     active: booleanLiteralSchema.optional(),
@@ -55,6 +55,6 @@ export const polyListQuerySchema = z
   })
   .passthrough();
 
-export const polyMarketQuerySchema = z.object({
+export const polymuffinMarketQuerySchema = z.object({
   id: z.string().min(1, 'Market id is required'),
 });

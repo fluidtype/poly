@@ -7,16 +7,16 @@ jest.mock("@/lib/api", () => ({
 
 const mockedFetchWithTimeout = fetchWithTimeout as jest.MockedFunction<typeof fetchWithTimeout>;
 
-describe("GET /api/poly", () => {
-  const originalEnv = process.env.POLY_GAMMA_BASE;
+describe("GET /api/polymuffin", () => {
+  const originalEnv = process.env.POLYMUFFIN_GAMMA_BASE;
 
   beforeEach(() => {
     mockedFetchWithTimeout.mockReset();
-    process.env.POLY_GAMMA_BASE = "https://gamma.example";
+    process.env.POLYMUFFIN_GAMMA_BASE = "https://gamma.example";
   });
 
   afterAll(() => {
-    process.env.POLY_GAMMA_BASE = originalEnv;
+    process.env.POLYMUFFIN_GAMMA_BASE = originalEnv;
   });
 
   it("returns markets when nested under data.markets", async () => {
@@ -41,7 +41,7 @@ describe("GET /api/poly", () => {
       }),
     );
 
-    const request = new Request("https://local.test/api/poly?limit=5");
+    const request = new Request("https://local.test/api/polymuffin?limit=5");
     const response = await GET(request);
 
     expect(mockedFetchWithTimeout).toHaveBeenCalledWith(
@@ -66,7 +66,7 @@ describe("GET /api/poly", () => {
       }),
     );
 
-    const request = new Request("https://local.test/api/poly?active=false");
+    const request = new Request("https://local.test/api/polymuffin?active=false");
     await GET(request);
 
     expect(mockedFetchWithTimeout).toHaveBeenCalledWith(

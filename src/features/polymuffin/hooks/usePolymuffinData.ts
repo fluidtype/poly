@@ -7,12 +7,12 @@ import { useGdeltBBVA } from "@/hooks/useGdeltBBVA";
 import { useGdeltBilateral } from "@/hooks/useGdeltBilateral";
 import { useGdeltContext } from "@/hooks/useGdeltContext";
 import { useGdeltCountry } from "@/hooks/useGdeltCountry";
-import { usePolySearch } from "@/hooks/usePolySearch";
+import { usePolymuffinSearch } from "@/hooks/usePolymuffinSearch";
 import { normalizeGdeltDate } from "@/hooks/utils";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 import { useGdeltMode } from "@/stores/useGdeltMode";
 import { useSidePanel } from "@/stores/useSidePanel";
-import type { GdeltEvent, GdeltInsights, GdeltSeriesPoint, PolyMarket } from "@/types";
+import type { GdeltEvent, GdeltInsights, GdeltSeriesPoint, PolymuffinMarket } from "@/types";
 
 import type { ComponentProps } from "react";
 import type ActivityPanel from "@/components/system/ActivityPanel";
@@ -44,9 +44,9 @@ export interface PolymuffinData {
     activeDate: string | null;
     setActiveDate: (value: string | null) => void;
   };
-  poly: {
+  polymuffin: {
     enabled: boolean;
-    markets: PolyMarket[];
+    markets: PolymuffinMarket[];
     loading: boolean;
     error: string | null;
   };
@@ -311,8 +311,8 @@ export function usePolymuffinData(): PolymuffinData {
         },
   );
 
-  const polyQuery = usePolySearch(
-    datasets.poly
+  const polymuffinQuery = usePolymuffinSearch(
+    datasets.polymuffin
       ? {
           q: keywords.length > 0 ? keywords.join(" ") : undefined,
           active: true,
@@ -448,12 +448,12 @@ export function usePolymuffinData(): PolymuffinData {
         : "Unknown error"
       : null;
 
-  const markets = datasets.poly ? polyQuery.data?.markets ?? [] : [];
-  const polyLoading = datasets.poly && (polyQuery.isLoading || polyQuery.isFetching);
-  const polyError =
-    datasets.poly && polyQuery.isError
-      ? polyQuery.error instanceof Error
-        ? polyQuery.error.message
+  const markets = datasets.polymuffin ? polymuffinQuery.data?.markets ?? [] : [];
+  const polymuffinLoading = datasets.polymuffin && (polymuffinQuery.isLoading || polymuffinQuery.isFetching);
+  const polymuffinError =
+    datasets.polymuffin && polymuffinQuery.isError
+      ? polymuffinQuery.error instanceof Error
+        ? polymuffinQuery.error.message
         : "Unknown error"
       : null;
 
@@ -507,18 +507,18 @@ export function usePolymuffinData(): PolymuffinData {
         enabled: datasets.gdelt,
       },
       {
-        id: "poly",
+        id: "polymuffin",
         label: "Polymarket",
-        lastFetched: toIsoString(polyQuery.dataUpdatedAt),
-        status: !datasets.poly
+        lastFetched: toIsoString(polymuffinQuery.dataUpdatedAt),
+        status: !datasets.polymuffin
           ? "red"
-          : polyError
+          : polymuffinError
             ? "red"
-            : polyQuery.isFetching
+            : polymuffinQuery.isFetching
               ? "yellow"
               : "green",
         fallback: null,
-        enabled: datasets.poly,
+        enabled: datasets.polymuffin,
       },
       {
         id: "twitter",
@@ -533,13 +533,13 @@ export function usePolymuffinData(): PolymuffinData {
       activeGdeltState.dataUpdatedAt,
       activeGdeltState.isFetching,
       datasets.gdelt,
-      datasets.poly,
+      datasets.polymuffin,
       datasets.twitter,
       gdeltAggregation,
       gdeltError,
-      polyError,
-      polyQuery.dataUpdatedAt,
-      polyQuery.isFetching,
+      polymuffinError,
+      polymuffinQuery.dataUpdatedAt,
+      polymuffinQuery.isFetching,
     ],
   );
 
@@ -558,10 +558,10 @@ export function usePolymuffinData(): PolymuffinData {
         });
       }
 
-      if (datasets.poly) {
+      if (datasets.polymuffin) {
         entries.push({
           query: keywords.join(" "),
-          timestamp: toIsoString(polyQuery.dataUpdatedAt) ?? new Date().toISOString(),
+          timestamp: toIsoString(polymuffinQuery.dataUpdatedAt) ?? new Date().toISOString(),
           dataset: "Polymarket",
         });
       }
@@ -571,18 +571,18 @@ export function usePolymuffinData(): PolymuffinData {
     [
       activeGdeltState.dataUpdatedAt,
       datasets.gdelt,
-      datasets.poly,
+      datasets.polymuffin,
       keywords,
       mode,
-      polyQuery.dataUpdatedAt,
+      polymuffinQuery.dataUpdatedAt,
     ],
   );
 
   const refresh = useCallback(() => {
     const prefixes: string[] = [];
 
-    if (datasets.poly) {
-      prefixes.push("poly");
+    if (datasets.polymuffin) {
+      prefixes.push("polymuffin");
     }
 
     if (datasets.gdelt) {
@@ -593,9 +593,9 @@ export function usePolymuffinData(): PolymuffinData {
       queryClient.invalidateQueries({ queryKey: [prefix] });
       queryClient.refetchQueries({ queryKey: [prefix], type: "active" });
     });
-  }, [datasets.gdelt, datasets.poly, queryClient]);
+  }, [datasets.gdelt, datasets.polymuffin, queryClient]);
 
-  const combinedError = gdeltError ?? polyError;
+  const combinedError = gdeltError ?? polymuffinError;
 
   const openEvent = useCallback(
     (event: GdeltEvent) => {
@@ -629,11 +629,11 @@ export function usePolymuffinData(): PolymuffinData {
       activeDate,
       setActiveDate,
     },
-    poly: {
-      enabled: datasets.poly,
+    polymuffin: {
+      enabled: datasets.polymuffin,
       markets,
-      loading: Boolean(polyLoading),
-      error: polyError,
+      loading: Boolean(polymuffinLoading),
+      error: polymuffinError,
     },
     activity: {
       datasets: datasetStatuses,
@@ -641,7 +641,7 @@ export function usePolymuffinData(): PolymuffinData {
     },
     kpis: kpiValues,
     refresh,
-    isFetchingAny: Boolean(activeGdeltState.isFetching || polyQuery.isFetching),
+    isFetchingAny: Boolean(activeGdeltState.isFetching || polymuffinQuery.isFetching),
     combinedError,
     openEvent,
     openMarket,

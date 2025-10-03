@@ -42,7 +42,7 @@ export async function GET(req: Request) {
 
   if (INVALID_GDELT_HOST_PATTERN.test(baseUrl)) {
     const guidance =
-      'Configured GDELT_BASE_URL points to api.gdeltproject.org, but the dashboard requires the Poly proxy (e.g. https://my-search-proxy.ew.r.appspot.com/gdelt).';
+      'Configured GDELT_BASE_URL points to api.gdeltproject.org, but the dashboard requires the Polymuffin proxy (e.g. https://my-search-proxy.ew.r.appspot.com/gdelt).';
 
     if (shouldLog) {
       console.error('[api/gdelt] Invalid upstream host configured:', baseUrl);
