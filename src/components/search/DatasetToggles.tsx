@@ -2,6 +2,7 @@
 
 import type { ComponentType, SVGProps } from "react";
 
+import { pill } from "@/components/search/pill";
 import { cn } from "@/lib/utils";
 import {
   Datasets,
@@ -9,17 +10,6 @@ import {
   useGlobalFilters,
 } from "@/stores/useGlobalFilters";
 import { BarChart, Search, Twitter } from "lucide-react";
-
-const chipClass = cn(
-  "inline-flex items-center gap-1.5 rounded-2xl px-3 py-1.5 text-[13px] transition-all",
-  "bg-[color:var(--surface-2)]/90 border border-[color:var(--border)]/60",
-  "text-[color:var(--muted)] hover:bg-[color:var(--primary-600)]/15 hover:text-[color:var(--text)]",
-  "hover:ring-1 hover:ring-[color:var(--primary)]/30",
-  "data-[active=true]:bg-[color:var(--primary)]/18 data-[active=true]:text-[color:var(--text)]",
-  "data-[active=true]:border-[color:var(--primary)]/35",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)]/45",
-  "disabled:cursor-not-allowed disabled:opacity-50"
-);
 
 type DatasetTogglesProps = {
   disabled?: boolean;
@@ -37,7 +27,7 @@ const datasetOptions: DatasetOption[] = [
   { key: "twitter", label: "Twitter", icon: Twitter },
 ];
 
-export default function DatasetToggles({ disabled = false }: DatasetTogglesProps) {
+export function DatasetToggles({ disabled = false }: DatasetTogglesProps) {
   const datasets = useGlobalFilters((state) => state.datasets);
   const toggleDataset = useGlobalFilters((state) => state.toggleDataset);
 
@@ -49,18 +39,26 @@ export default function DatasetToggles({ disabled = false }: DatasetTogglesProps
         const isActive = datasets[key];
         const isDisabled = disabled || !isEnabled;
 
+        const buttonClass = cn(
+          pill,
+          "inline-flex items-center gap-1.5",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--brand))]/35",
+          isDisabled && "cursor-not-allowed opacity-50"
+        );
+
+        const buttonProps = isDisabled
+          ? { onClick: undefined as undefined }
+          : { onClick: () => toggleDataset(key) };
+
         return (
           <button
             key={key}
             type="button"
-            className={chipClass}
+            className={buttonClass}
             data-active={isActive ? "true" : undefined}
-            disabled={isDisabled}
             aria-disabled={isDisabled}
-            onClick={() => {
-              if (isDisabled) return;
-              toggleDataset(key);
-            }}
+            disabled={isDisabled}
+            {...buttonProps}
           >
             <Icon className="h-3.5 w-3.5 opacity-75" strokeWidth={2} />
             <span className="font-semibold tracking-tight">{label}</span>
