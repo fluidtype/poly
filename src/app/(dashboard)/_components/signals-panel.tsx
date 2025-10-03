@@ -1,0 +1,51 @@
+import { Panel } from "./panel";
+
+const signals = [
+  {
+    name: "Funding stress",
+    detail: "Futures premium widened to 12bps over cash markets.",
+    status: "Watch",
+  },
+  {
+    name: "Narrative drift",
+    detail: "Long-tail Twitter cohort diverging from base sentiment.",
+    status: "Alert",
+  },
+  {
+    name: "Liquidity pocket",
+    detail: "Fresh asks stacking on prediction markets around $0.62.",
+    status: "Opportunity",
+  },
+];
+
+export function SignalsPanel({ className }: { className?: string }) {
+  return (
+    <Panel
+      className={className}
+      subtitle="Signals"
+      title="Monitoring grid"
+      headerAction={
+        <span className="rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-3 py-1 text-xs text-[var(--muted)]">
+          Sync live
+        </span>
+      }
+    >
+      <ul className="flex flex-1 flex-col gap-3 text-xs text-[var(--muted)]">
+        {signals.map((signal) => (
+          <li
+            key={signal.name}
+            className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4"
+          >
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-[var(--fg)]">{signal.name}</p>
+              <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-[var(--primary)]">
+                {signal.status}
+              </span>
+            </div>
+            <p className="mt-2 text-xs text-[var(--muted)]">{signal.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </Panel>
+  );
+}
