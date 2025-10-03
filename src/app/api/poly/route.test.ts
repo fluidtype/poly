@@ -45,7 +45,7 @@ describe("GET /api/poly", () => {
     const response = await GET(request);
 
     expect(mockedFetchWithTimeout).toHaveBeenCalledWith(
-      "https://gamma.example/markets?active=true&limit=5",
+      "https://gamma.example/markets?closed=false&limit=5",
     );
 
     const body = await response.json();
@@ -56,5 +56,21 @@ describe("GET /api/poly", () => {
     expect(body.markets[0].id).toBe("abc123");
     expect(body.markets[0].title).toBe("Nested market");
     expect(body.markets[0].slug).toBe("nested-market");
+  });
+
+  it("passes closed=true when active filter is explicitly disabled", async () => {
+    mockedFetchWithTimeout.mockResolvedValue(
+      new Response(JSON.stringify({ markets: [] }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+
+    const request = new Request("https://local.test/api/poly?active=false");
+    await GET(request);
+
+    expect(mockedFetchWithTimeout).toHaveBeenCalledWith(
+      "https://gamma.example/markets?closed=true&limit=30",
+    );
   });
 });

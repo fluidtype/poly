@@ -81,12 +81,13 @@ export async function GET(req: Request) {
   const query = data.q?.trim();
   const queryTokens = toQueryTokens(query);
   const active = data.active ? data.active === 'true' : true;
+  const closed = !active;
   const limit = clampLimit(data.limit ?? 30);
   const category = data.category;
   const sort = (data.sort ?? 'volume24h') as SortField;
 
   const searchParams = new URLSearchParams({
-    active: String(active),
+    closed: String(closed),
     limit: String(limit),
   });
 
