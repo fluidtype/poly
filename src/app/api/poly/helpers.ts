@@ -103,6 +103,55 @@ export const normalizeTokens = (market: GammaMarket): NormalizedToken[] => {
     }
   }
 
+  if (typeof market.outcomes === 'string') {
+    try {
+      const parsedOutcomes = JSON.parse(market.outcomes);
+      const parsedPrices =
+        typeof market.outcomePrices === 'string'
+          ? JSON.parse(market.outcomePrices)
+          : undefined;
+
+      if (Array.isArray(parsedOutcomes)) {
+        const outcomes = parsedOutcomes as unknown[];
+        const prices = Array.isArray(parsedPrices)
+          ? (parsedPrices as unknown[])
+          : [];
+
+        const baseId = (() => {
+          const candidate = market.id ?? market.marketId ?? market.questionId ?? market.slug;
+          if (typeof candidate === 'string' && candidate.trim().length > 0) {
+            return candidate.trim();
+          }
+          if (typeof candidate === 'number' && Number.isFinite(candidate)) {
+            return String(candidate);
+          }
+          return 'market';
+        })();
+
+        return outcomes
+          .map((outcome, index) => {
+            if (typeof outcome !== 'string') {
+              return undefined;
+            }
+
+            const rawPrice = index < prices.length ? prices[index] : undefined;
+            const priceValue = rawPrice === undefined || rawPrice === null ? undefined : toNumber(rawPrice);
+
+            return {
+              id: `${baseId}-${index}`,
+              outcome: normalizeOutcomeName(outcome),
+              price: priceValue === undefined ? undefined : priceValue,
+            } satisfies NormalizedToken;
+          })
+          .filter((token): token is NormalizedToken => Boolean(token));
+      }
+    } catch (error) {
+      console.error('[api/poly] Failed to parse outcomes/outcomePrices', {
+        error,
+      });
+    }
+  }
+
   return [];
 };
 
@@ -229,10 +278,15 @@ export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null =>
 
   const endDate = pickString(market, ['endDate', 'endTime', 'end_time', 'closeTime']) ?? null;
   const volume24h = pickNumber(market, [
+    'volume24hrClob',
+    'volume24hrAmm',
+    'volume24hr',
     'volume24h',
     'volume24Hr',
-    'volume24hr',
     'volume24Hours',
+    'volumeClob',
+    'volumeAmm',
+    'volume',
     'volume24hUsd',
     'volume24hUSD',
     'volume24hInUsd',
@@ -240,6 +294,8 @@ export const normalizeMarket = (market: GammaMarket): NormalizedMarket | null =>
     'volume24hAmount',
   ]);
   const liquidity = pickNumber(market, [
+    'liquidityClob',
+    'liquidityAmm',
     'liquidity',
     'liquidity24h',
     'marketMakerLiquidity',
