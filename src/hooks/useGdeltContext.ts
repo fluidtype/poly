@@ -47,8 +47,6 @@ export async function fetchGdeltContextData(
 ): Promise<GdeltContextResult> {
   const searchParams = new URLSearchParams();
   searchParams.set("action", "context");
-  searchParams.set("mode", "artlist");
-  searchParams.set("format", "json");
   const hasKeywords = Array.isArray(params.keywords) && params.keywords.length > 0;
   if (hasKeywords) {
     searchParams.set("keywords", params.keywords.join(","));

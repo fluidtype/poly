@@ -1,6 +1,6 @@
 export type FetchOptions = RequestInit;
 
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 30000;
 
 export async function fetchWithTimeout(
   url: string,

@@ -22,8 +22,6 @@ export async function fetchGdeltBBVA(
 ) {
   const searchParams = new URLSearchParams();
   searchParams.set("action", "bilateral_conflict_coverage");
-  searchParams.set("mode", "artlist");
-  searchParams.set("format", "json");
   searchParams.set("actor1_code", params.actor1);
   searchParams.set("actor2_code", params.actor2);
   searchParams.set("date_start", params.dateStart);
