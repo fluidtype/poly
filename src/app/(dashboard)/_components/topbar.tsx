@@ -22,6 +22,8 @@ import {
   Twitter,
 } from "lucide-react";
 
+import { ToolbarPills } from "./toolbar-pills";
+
 const presetOptions: { label: string; value: Preset; icon: ComponentType<{ className?: string }> }[] = [
   { label: "7D", value: "7D", icon: CalendarDays },
   { label: "30D", value: "30D", icon: CalendarClock },
@@ -91,13 +93,13 @@ export function Topbar({ className }: { className?: string }) {
     <>
       <div
         className={cn(
-          "flex h-auto w-full flex-wrap items-center gap-3 rounded-3xl border border-white/5 bg-[var(--panel)]/90 px-5 py-3 text-sm shadow-[var(--glow)] backdrop-blur md:h-16 md:flex-nowrap md:gap-4 md:py-0",
+          "flex h-auto w-full flex-wrap items-center gap-3 rounded-3xl border border-white/5 bg-[var(--panel)]/90 p-4 text-sm shadow-[var(--glow)] backdrop-blur md:h-16 md:flex-nowrap md:gap-4 md:px-6 md:py-0",
           className
         )}
       >
         <form
           onSubmit={handleSubmit}
-          className="flex min-w-[260px] flex-1 items-center gap-3 rounded-2xl border border-white/5 bg-[var(--panel-2)]/80 px-4 py-2"
+          className="flex min-w-[260px] flex-1 items-center gap-3 rounded-2xl border border-white/5 bg-[var(--panel-2)]/80 px-4 py-2.5"
         >
           <Search className="h-4 w-4 text-[var(--muted)]" strokeWidth={2} />
           <input
@@ -117,55 +119,32 @@ export function Topbar({ className }: { className?: string }) {
           </Button>
         </form>
 
-        <div className="flex items-center gap-2 whitespace-nowrap">
-          {presetOptions.map((option) => {
-            const Icon = option.icon;
+        <ToolbarPills
+          ariaLabel="Select preset range"
+          className="whitespace-nowrap"
+          items={presetOptions.map((option) => ({
+            id: option.value,
+            label: option.label,
+            icon: option.icon,
+            active: activePreset === option.value,
+            onClick: () => handlePresetClick(option.value),
+          }))}
+        />
 
-            return (
-              <Button
-                key={option.value}
-                type="button"
-                size="sm"
-                variant="secondary"
-                onClick={() => handlePresetClick(option.value)}
-                className={cn(
-                  "rounded-full border border-white/5 px-4 text-xs font-semibold text-[var(--muted)]",
-                  activePreset === option.value &&
-                    "border-white/15 bg-[var(--primary)]/15 text-[var(--fg)] shadow-[var(--glow)]"
-                )}
-              >
-                <Icon className="mr-1.5 h-3.5 w-3.5" />
-                {option.label}
-              </Button>
-            );
-          })}
-        </div>
-
-        <div className="flex items-center gap-2 whitespace-nowrap">
-          {datasetOptions.map(({ label, key, icon: Icon }) => {
-            const disabled = key === "twitter" && !twitterDatasetEnabled;
-            const active = datasets[key];
-
-            return (
-              <Button
-                key={key}
-                type="button"
-                size="sm"
-                variant="secondary"
-                disabled={disabled}
-                onClick={() => toggleDataset(key)}
-                className={cn(
-                  "rounded-full border border-white/5 px-4 text-xs font-semibold text-[var(--muted)]",
-                  active &&
-                    "border-white/15 bg-[var(--tertiary)]/20 text-[var(--fg)] shadow-[0_0_0_1px_rgba(122,60,240,0.35)]"
-                )}
-              >
-                <Icon className="mr-1.5 h-3.5 w-3.5" />
-                {label}
-              </Button>
-            );
-          })}
-        </div>
+        <ToolbarPills
+          ariaLabel="Toggle datasets"
+          className="whitespace-nowrap"
+          items={datasetOptions.map(({ label, key, icon: Icon }) => ({
+            id: key,
+            label,
+            icon: Icon,
+            active: datasets[key],
+            disabled: key === "twitter" && !twitterDatasetEnabled,
+            onClick: () => toggleDataset(key),
+            activeClassName:
+              "border-white/15 bg-[var(--tertiary)]/20 text-[var(--fg)] shadow-[0_0_0_1px_rgba(122,60,240,0.35)]",
+          }))}
+        />
 
         <Button
           type="button"
@@ -174,7 +153,7 @@ export function Topbar({ className }: { className?: string }) {
           onClick={() => setAdvancedOpen(true)}
           className="ml-auto rounded-full border border-white/10 px-4 text-xs font-semibold text-[var(--fg)]"
         >
-          <Settings2 className="mr-1.5 h-3.5 w-3.5" />
+          <Settings2 className="mr-1.5 h-4 w-4" />
           Advanced
         </Button>
       </div>

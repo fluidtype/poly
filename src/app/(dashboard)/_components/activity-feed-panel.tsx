@@ -31,8 +31,8 @@ export function ActivityFeedPanel({ className }: { className?: string }) {
   return (
     <Panel
       className={className}
-      subtitle="Workflow"
       title="Activity manager"
+      eyebrow="Workflow"
       headerAction={
         <span className="rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-3 py-1 text-xs text-[var(--muted)]">
           Auto triage on
@@ -44,20 +44,20 @@ export function ActivityFeedPanel({ className }: { className?: string }) {
           {feed.map((item) => (
             <li
               key={item.title}
-              className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4"
+              className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4 md:p-5"
             >
-              <div className="flex items-center justify-between text-xs text-[var(--muted)]">
+              <div className="flex items-center justify-between text-xs text-[var(--muted)] md:text-sm">
                 <span>{item.timestamp}</span>
-                <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-[var(--primary)]">
+                <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-xs font-medium text-[var(--primary)]">
                   {item.status}
                 </span>
               </div>
-              <h3 className="mt-2 text-sm font-semibold text-[var(--fg)]">{item.title}</h3>
-              <p className="mt-1 text-xs text-[var(--muted)]">{item.body}</p>
+              <h3 className="mt-3 text-base font-semibold text-[var(--fg)]">{item.title}</h3>
+              <p className="mt-2 text-sm text-[var(--muted)]">{item.body}</p>
             </li>
           ))}
         </ul>
-        <button className="mt-3 w-full rounded-2xl border border-white/10 bg-[var(--panel-2)]/70 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)] transition hover:text-[var(--fg)]">
+        <button className="mt-3 w-full rounded-2xl border border-white/10 bg-[var(--panel-2)]/70 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)] transition hover:text-[var(--fg)] md:text-sm">
           View queue
         </button>
       </div>

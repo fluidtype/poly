@@ -22,27 +22,27 @@ export function SignalsPanel({ className }: { className?: string }) {
   return (
     <Panel
       className={className}
-      subtitle="Signals"
       title="Monitoring grid"
+      eyebrow="Signals"
       headerAction={
         <span className="rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-3 py-1 text-xs text-[var(--muted)]">
           Sync live
         </span>
       }
     >
-      <ul className="flex flex-1 flex-col gap-3 text-xs text-[var(--muted)]">
+      <ul className="flex flex-1 flex-col gap-3 text-sm text-[var(--muted)]">
         {signals.map((signal) => (
           <li
             key={signal.name}
-            className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4"
+            className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4 md:p-5"
           >
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-[var(--fg)]">{signal.name}</p>
-              <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-[var(--primary)]">
+              <p className="text-base font-semibold text-[var(--fg)]">{signal.name}</p>
+              <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-xs font-medium text-[var(--primary)] md:text-sm">
                 {signal.status}
               </span>
             </div>
-            <p className="mt-2 text-xs text-[var(--muted)]">{signal.detail}</p>
+            <p className="mt-3 text-sm text-[var(--muted)]">{signal.detail}</p>
           </li>
         ))}
       </ul>

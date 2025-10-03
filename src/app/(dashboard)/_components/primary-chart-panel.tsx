@@ -1,17 +1,9 @@
 "use client";
 
 import type { TooltipProps } from "recharts";
-import {
-  ResponsiveContainer,
-  ComposedChart,
-  Area,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-} from "recharts";
 
+import { ChartArea } from "./chart-area";
+import { KpiStat } from "./kpi-stat";
 import { Panel } from "./panel";
 
 const chartData = [
@@ -27,6 +19,27 @@ const chartData = [
   { time: "18:00", liquidity: 474, volume: 295 },
   { time: "19:00", liquidity: 489, volume: 310 },
   { time: "20:00", liquidity: 512, volume: 340 },
+];
+
+const highlights = [
+  {
+    label: "Net flow",
+    value: "+$42.8M",
+    delta: "+6.4% vs last 24h",
+    tone: "positive" as const,
+  },
+  {
+    label: "Funding cost",
+    value: "3.4%",
+    delta: "Weighted across active positions",
+    tone: "neutral" as const,
+  },
+  {
+    label: "Market depth",
+    value: "$8.7M",
+    delta: "Top 5 order books combined",
+    tone: "neutral" as const,
+  },
 ];
 
 function ChartTooltip({ active, payload, label }: TooltipProps<number, string>) {
@@ -57,68 +70,37 @@ export function PrimaryChartPanel({ className }: { className?: string }) {
     <Panel
       className={className}
       title="Cross-market liquidity"
-      subtitle="Live aggregate"
+      eyebrow="Live aggregate"
       headerAction={
         <span className="rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-3 py-1 text-xs text-[var(--muted)]">
           Synced 3m ago
         </span>
       }
     >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/70 p-4 text-xs text-[var(--muted)]">
-          <p className="uppercase tracking-[0.14em]">Net flow</p>
-          <p className="mt-2 text-2xl font-semibold text-[var(--fg)]">+$42.8M</p>
-          <p className="mt-1 text-[var(--primary)]">+6.4% vs last 24h</p>
-        </div>
-        <div className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/70 p-4 text-xs text-[var(--muted)]">
-          <p className="uppercase tracking-[0.14em]">Funding cost</p>
-          <p className="mt-2 text-2xl font-semibold text-[var(--fg)]">3.4%</p>
-          <p className="mt-1 text-[var(--muted)]">Weighted across active positions</p>
-        </div>
-        <div className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/70 p-4 text-xs text-[var(--muted)]">
-          <p className="uppercase tracking-[0.14em]">Market depth</p>
-          <p className="mt-2 text-2xl font-semibold text-[var(--fg)]">$8.7M</p>
-          <p className="mt-1 text-[var(--muted)]">Top 5 order books combined</p>
-        </div>
-      </div>
-      <div className="flex-1 overflow-hidden">
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart
-            data={chartData}
-            margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+        {highlights.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/70 p-4 md:p-5"
           >
-            <defs>
-              <linearGradient id="liquidityGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.85} />
-                <stop offset="95%" stopColor="var(--tertiary)" stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id="volumeGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="5%" stopColor="var(--tertiary)" stopOpacity={0.9} />
-                <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.2} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid stroke="var(--panel-2)" strokeOpacity={0.6} strokeDasharray="3 8" />
-            <XAxis dataKey="time" tickLine={false} axisLine={false} tick={{ fill: "var(--muted)", fontSize: 12 }} dy={10} />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tick={{ fill: "var(--muted)", fontSize: 12 }}
-              width={48}
-              tickFormatter={(value) => `${value}M`}
+            <KpiStat
+              label={item.label}
+              value={item.value}
+              delta={item.delta}
+              deltaTone={item.tone}
             />
-            <Tooltip content={<ChartTooltip />} cursor={{ stroke: "var(--primary)", strokeOpacity: 0.15, strokeWidth: 2 }} />
-            <Bar dataKey="volume" barSize={18} radius={6} fill="url(#volumeGradient)" />
-            <Area
-              type="monotone"
-              dataKey="liquidity"
-              stroke="var(--primary)"
-              strokeWidth={2.4}
-              fill="url(#liquidityGradient)"
-              dot={false}
-              activeDot={{ r: 5, fill: "var(--primary)" }}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
+          </div>
+        ))}
+      </div>
+      <div className="flex-1 overflow-hidden rounded-2xl border border-white/5 bg-[var(--panel-2)]/70 p-4 md:p-5">
+        <ChartArea
+          data={chartData}
+          xKey="time"
+          areaKey="liquidity"
+          barKey="volume"
+          tooltip={<ChartTooltip />}
+          yAxisFormatter={(value) => `${value}M`}
+        />
       </div>
     </Panel>
   );

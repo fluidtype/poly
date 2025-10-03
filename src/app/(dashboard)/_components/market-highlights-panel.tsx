@@ -22,8 +22,8 @@ export function MarketHighlightsPanel({ className }: { className?: string }) {
   return (
     <Panel
       className={className}
-      subtitle="Narratives"
       title="Highlights feed"
+      eyebrow="Narratives"
       headerAction={
         <span className="rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-3 py-1 text-xs text-[var(--muted)]">
           Curated hourly
@@ -34,14 +34,14 @@ export function MarketHighlightsPanel({ className }: { className?: string }) {
         {highlights.map((item) => (
           <li
             key={item.title}
-            className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4"
+            className="rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 p-4 md:p-5"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="text-sm font-semibold text-[var(--fg)]">{item.title}</h3>
-                <p className="mt-2 text-xs text-[var(--muted)]">{item.description}</p>
+                <h3 className="text-base font-semibold text-[var(--fg)]">{item.title}</h3>
+                <p className="mt-2 text-sm text-[var(--muted)]">{item.description}</p>
               </div>
-              <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-xs text-[var(--muted)]">
+              <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-xs text-[var(--muted)] md:text-sm">
                 {item.confidence}%
               </span>
             </div>
