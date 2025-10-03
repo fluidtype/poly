@@ -19,8 +19,6 @@ export async function fetchGdeltCountry(
 ) {
   const searchParams = new URLSearchParams();
   searchParams.set("action", "country");
-  searchParams.set("mode", "artlist");
-  searchParams.set("format", "json");
   searchParams.set("country", params.country);
   searchParams.set("date_start", params.dateStart);
   searchParams.set("date_end", params.dateEnd);
