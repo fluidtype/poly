@@ -24,10 +24,13 @@ const parseDate = (value: string) =>
   );
 
 export async function GET(req: Request) {
-  const baseUrl = process.env.GDELT_BASE_URL;
+  const baseUrl = process.env.GDELT_BASE_URL ?? process.env.NEXT_PUBLIC_GDELT_BASE_URL;
   if (!baseUrl) {
     return NextResponse.json(
-      { status: 'error', message: 'GDELT_BASE_URL is not configured' },
+      {
+        status: 'error',
+        message: 'GDELT_BASE_URL (or NEXT_PUBLIC_GDELT_BASE_URL) is not configured',
+      },
       { status: 500 },
     );
   }
