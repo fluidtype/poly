@@ -54,10 +54,13 @@ type SortField = 'volume24h' | 'liquidity' | 'endDate';
 const clampLimit = (value: number) => Math.min(Math.max(value, 5), 200);
 
 export async function GET(req: Request) {
-  const baseUrl = process.env.POLY_GAMMA_BASE;
+  const baseUrl = process.env.POLY_GAMMA_BASE ?? process.env.NEXT_PUBLIC_POLY_GAMMA_BASE;
   if (!baseUrl) {
     return NextResponse.json(
-      { status: 'error', message: 'POLY_GAMMA_BASE is not configured' },
+      {
+        status: 'error',
+        message: 'POLY_GAMMA_BASE (or NEXT_PUBLIC_POLY_GAMMA_BASE) is not configured',
+      },
       { status: 500 },
     );
   }
