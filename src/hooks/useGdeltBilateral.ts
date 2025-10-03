@@ -19,8 +19,6 @@ export async function fetchGdeltBilateral(
 ) {
   const searchParams = new URLSearchParams();
   searchParams.set("action", "bilateral");
-  searchParams.set("mode", "artlist");
-  searchParams.set("format", "json");
   searchParams.set("country1", params.country1);
   searchParams.set("country2", params.country2);
   searchParams.set("date_start", params.dateStart);
