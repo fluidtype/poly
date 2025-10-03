@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 export type Datasets = {
   gdelt: boolean;
-  poly: boolean;
+  polymuffin: boolean;
   twitter: boolean;
 };
 
@@ -58,7 +58,7 @@ export const useGlobalFilters = create<GlobalFiltersState>((set) => ({
   activePreset: "7D",
   datasets: {
     gdelt: true,
-    poly: true,
+    polymuffin: true,
     twitter: twitterDatasetEnabled,
   },
   setKeywords: (keywords) => set({ keywords }),

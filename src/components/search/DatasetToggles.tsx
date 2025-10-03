@@ -23,7 +23,7 @@ type DatasetOption = {
 
 const datasetOptions: DatasetOption[] = [
   { key: "gdelt", label: "GDELT", icon: Search },
-  { key: "poly", label: "Polymarket", icon: BarChart },
+  { key: "polymuffin", label: "Polymarket", icon: BarChart },
   { key: "twitter", label: "Twitter", icon: Twitter },
 ];
 

@@ -6,15 +6,15 @@ import { Activity, BarChart2, Twitter } from "lucide-react";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 import { cn } from "@/lib/utils";
 
-const DATASET_ICONS: Record<"gdelt" | "poly" | "twitter", React.ComponentType<{ className?: string }>> = {
+const DATASET_ICONS: Record<"gdelt" | "polymuffin" | "twitter", React.ComponentType<{ className?: string }>> = {
   gdelt: Activity,
-  poly: BarChart2,
+  polymuffin: BarChart2,
   twitter: Twitter,
 };
 
-const DATASET_LABELS: Record<"gdelt" | "poly" | "twitter", string> = {
+const DATASET_LABELS: Record<"gdelt" | "polymuffin" | "twitter", string> = {
   gdelt: "GDELT",
-  poly: "Polymarket",
+  polymuffin: "Polymarket",
   twitter: "Twitter",
 };
 
@@ -36,7 +36,7 @@ export default function NavRail() {
   return (
     <nav className="card flex h-full flex-col items-center justify-between gap-4 px-3 py-6">
       <div className="flex flex-col items-center gap-4">
-        <div className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--muted)]">Poly</div>
+        <div className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--muted)]">Polymuffin</div>
         <div className="h-px w-8 bg-[color:var(--border)]" />
         <div className="flex flex-col items-center gap-3">
           {buttons.map(({ id, label, Icon, enabled }) => (

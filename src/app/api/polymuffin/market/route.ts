@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { fetchWithTimeout } from '@/lib/api';
-import { polyMarketQuerySchema } from '@/lib/validation';
+import { polymuffinMarketQuerySchema } from '@/lib/validation';
 
 import { GammaMarket, NormalizedMarket, normalizeMarket } from '../helpers';
 
@@ -67,18 +67,20 @@ const extractMarketPayload = (payload: unknown): GammaMarket | null => {
   return payload as GammaMarket;
 };
 
-const DEFAULT_POLY_GAMMA_BASE = 'https://gamma-api.polymarket.com';
+const DEFAULT_POLYMUFFIN_GAMMA_BASE = 'https://gamma-api.polymarket.com';
 
 export async function GET(req: Request) {
   const configuredBaseUrl =
-    process.env.POLY_GAMMA_BASE ?? process.env.NEXT_PUBLIC_POLY_GAMMA_BASE ?? DEFAULT_POLY_GAMMA_BASE;
+    process.env.POLYMUFFIN_GAMMA_BASE ??
+    process.env.NEXT_PUBLIC_POLYMUFFIN_GAMMA_BASE ??
+    DEFAULT_POLYMUFFIN_GAMMA_BASE;
   const baseUrl = configuredBaseUrl.trim().replace(/\/?$/, '');
 
   if (!baseUrl) {
     return NextResponse.json(
       {
         status: 'error',
-        message: 'POLY_GAMMA_BASE (or NEXT_PUBLIC_POLY_GAMMA_BASE) is not configured',
+        message: 'POLYMUFFIN_GAMMA_BASE (or NEXT_PUBLIC_POLYMUFFIN_GAMMA_BASE) is not configured',
       },
       { status: 500 },
     );
@@ -86,7 +88,7 @@ export async function GET(req: Request) {
 
   const url = new URL(req.url);
   const rawParams = Object.fromEntries(url.searchParams.entries());
-  const parsed = polyMarketQuerySchema.safeParse(rawParams);
+  const parsed = polymuffinMarketQuerySchema.safeParse(rawParams);
 
   if (!parsed.success) {
     return NextResponse.json(

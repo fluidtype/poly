@@ -87,20 +87,20 @@ export interface GdeltInsights {
   [key: string]: unknown;
 }
 
-export interface PolyToken {
+export interface PolymuffinToken {
   id: string;
   outcome: "YES" | "NO";
   price?: number;
 }
 
-export interface PolyTokenApi {
+export interface PolymuffinTokenApi {
   id?: string | number | null;
   outcome?: string | null;
   price?: number | string | null;
   [key: string]: unknown;
 }
 
-export interface PolyMarket {
+export interface PolymuffinMarket {
   id: string;
   slug?: string;
   title: string;
@@ -109,12 +109,12 @@ export interface PolyMarket {
   liquidity: number;
   status: string;
   category?: string;
-  tokens: PolyToken[];
+  tokens: PolymuffinToken[];
   priceYes?: number;
   priceNo?: number;
 }
 
-export interface PolyMarketApi {
+export interface PolymuffinMarketApi {
   id?: string | number | null;
   slug?: string | null;
   title?: string | null;
@@ -123,19 +123,19 @@ export interface PolyMarketApi {
   liquidity?: number | string | null;
   status?: string | null;
   category?: string | null;
-  tokens?: PolyTokenApi[] | null;
+  tokens?: PolymuffinTokenApi[] | null;
   [key: string]: unknown;
 }
 
-export type PolySearchApiResponse =
-  | PolyMarketApi[]
+export type PolymuffinSearchApiResponse =
+  | PolymuffinMarketApi[]
   | {
-      markets?: PolyMarketApi[] | null;
-      data?: PolyMarketApi[] | null;
+      markets?: PolymuffinMarketApi[] | null;
+      data?: PolymuffinMarketApi[] | null;
       [key: string]: unknown;
     };
 
-export interface PolyTrade {
+export interface PolymuffinTrade {
   price: number;
   size: number;
   timestamp: string;

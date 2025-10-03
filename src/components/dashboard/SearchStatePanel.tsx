@@ -5,9 +5,9 @@ import { useCallback } from "react";
 import { SEARCH_SUBMIT_EVENT } from "@/components/search/events";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 
-const datasetLabels: Record<"gdelt" | "poly" | "twitter", string> = {
+const datasetLabels: Record<"gdelt" | "polymuffin" | "twitter", string> = {
   gdelt: "GDELT",
-  poly: "Polymarket",
+  polymuffin: "Polymarket",
   twitter: "Twitter",
 };
 

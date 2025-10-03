@@ -51,7 +51,7 @@ export default function Page() {
               <ActiveMarketsPanel
                 datasets={data.activity.datasets}
                 recentQueries={data.activity.recentQueries}
-                loading={data.gdelt.loading || data.poly.loading}
+                loading={data.gdelt.loading || data.polymuffin.loading}
                 error={data.combinedError}
               />
             </div>
@@ -69,10 +69,10 @@ export default function Page() {
             </div>
             <div className="col-span-4 h-full overflow-hidden">
               <OddsDistribution
-                markets={data.poly.markets}
-                enabled={data.poly.enabled}
-                loading={data.poly.loading}
-                error={data.poly.error}
+                markets={data.polymuffin.markets}
+                enabled={data.polymuffin.enabled}
+                loading={data.polymuffin.loading}
+                error={data.polymuffin.error}
               />
             </div>
             <div className="col-span-4 h-full overflow-hidden">
@@ -86,10 +86,10 @@ export default function Page() {
           <div className="grid h-full grid-cols-12 gap-4">
             <div className="col-span-8 h-full overflow-hidden">
               <MarketsGrid
-                markets={data.poly.markets}
-                enabled={data.poly.enabled}
-                loading={data.poly.loading}
-                error={data.poly.error}
+                markets={data.polymuffin.markets}
+                enabled={data.polymuffin.enabled}
+                loading={data.polymuffin.loading}
+                error={data.polymuffin.error}
                 onOpenMarket={data.openMarket}
               />
             </div>

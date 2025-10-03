@@ -11,7 +11,7 @@ import { AdvancedButton } from "@/components/search/AdvancedButton";
 import { SEARCH_SUBMIT_EVENT } from "@/components/search/events";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 
-const SEARCH_QUERY_PREFIXES = ["poly", "gdelt", "twitter"] as const;
+const SEARCH_QUERY_PREFIXES = ["polymuffin", "gdelt", "twitter"] as const;
 
 export function TopBar() {
   const queryClient = useQueryClient();
@@ -27,8 +27,8 @@ export function TopBar() {
   const triggerRefetch = useCallback(() => {
     const prefixes: Array<(typeof SEARCH_QUERY_PREFIXES)[number]> = [];
 
-    if (datasets.poly) {
-      prefixes.push("poly");
+    if (datasets.polymuffin) {
+      prefixes.push("polymuffin");
     }
 
     if (datasets.gdelt) {

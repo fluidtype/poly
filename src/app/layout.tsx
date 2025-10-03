@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Poly UI",
+  title: "Polymuffin UI",
   description: "Starter template with Next.js 14, Tailwind CSS, and shadcn/ui.",
   icons: {
     icon: "/icon.svg",

@@ -105,7 +105,7 @@ export function SearchInput({ loading = false, onSearch, className }: SearchInpu
         break;
       case "p":
         event.preventDefault();
-        toggleDataset("poly");
+        toggleDataset("polymuffin");
         break;
       case "t":
         if (twitterDatasetEnabled) {

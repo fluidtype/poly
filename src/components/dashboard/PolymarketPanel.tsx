@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import type { NormalizedMarket } from "@/app/api/poly/helpers";
+import type { NormalizedMarket } from "@/app/api/polymuffin/helpers";
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
 
 const DEFAULT_LIMIT = 40;
@@ -18,7 +18,7 @@ const priceFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1,
 });
 
-type PolyResponse = {
+type PolymuffinResponse = {
   status: "success" | "error";
   message?: string;
   count?: number;
@@ -38,9 +38,9 @@ function buildQueryParams(keywords: string[]) {
   return params.toString();
 }
 
-async function fetchPolyMarkets(params: string) {
-  const response = await fetch(`/api/poly?${params}`, { cache: "no-store" });
-  const data = (await response.json()) as PolyResponse;
+async function fetchPolymuffinMarkets(params: string) {
+  const response = await fetch(`/api/polymuffin?${params}`, { cache: "no-store" });
+  const data = (await response.json()) as PolymuffinResponse;
 
   if (!response.ok || data.status === "error") {
     const message = data.message ?? "Unable to load Polymarket data";
@@ -72,9 +72,9 @@ export default function PolymarketPanel() {
   const queryParams = useMemo(() => buildQueryParams(keywords), [keywords]);
 
   const { data, error, isPending, isFetching } = useQuery({
-    queryKey: ["polyMarkets", { queryParams }],
-    queryFn: () => fetchPolyMarkets(queryParams),
-    enabled: datasets.poly,
+    queryKey: ["polymuffinMarkets", { queryParams }],
+    queryFn: () => fetchPolymuffinMarkets(queryParams),
+    enabled: datasets.polymuffin,
     staleTime: 30_000,
     gcTime: 5 * 60_000,
     refetchOnWindowFocus: false,
@@ -83,7 +83,7 @@ export default function PolymarketPanel() {
 
   const loading = isPending || isFetching;
 
-  if (!datasets.poly) {
+  if (!datasets.polymuffin) {
     return (
       <section className="card md:col-span-8">
         <header className="flex items-center justify-between gap-3">
