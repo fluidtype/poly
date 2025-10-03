@@ -11,6 +11,7 @@ import {
 } from "recharts";
 
 import type { GdeltInsights } from "@/types";
+import { TemporalEntry, toTemporalEntries } from "./temporal";
 
 interface InsightsPanelProps {
   insights?: GdeltInsights | null;
@@ -21,11 +22,6 @@ interface InsightsPanelProps {
 interface KeywordEntry {
   keyword: string;
   count: number;
-}
-
-interface TemporalEntry {
-  label: string;
-  value: number;
 }
 
 interface ActorEntry {
@@ -41,25 +37,6 @@ const toKeywordEntries = (matches?: Record<string, number>): KeywordEntry[] => {
     .filter((entry) => Number.isFinite(entry.count))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
-};
-
-const toTemporalEntries = (insights?: GdeltInsights): TemporalEntry[] => {
-  const raw = (insights?.temporal_distribution ?? insights?.timeline ?? []) as unknown[];
-
-  return raw
-    .map((item) => {
-      if (typeof item === "object" && item !== null) {
-        const record = item as Record<string, unknown>;
-        const label = typeof record.date === "string" ? record.date : typeof record.label === "string" ? record.label : null;
-        const valueCandidate = record.count ?? record.value ?? record.total;
-        const value = typeof valueCandidate === "number" ? valueCandidate : Number(valueCandidate);
-        if (label && Number.isFinite(value)) {
-          return { label, value };
-        }
-      }
-      return null;
-    })
-    .filter((entry): entry is TemporalEntry => Boolean(entry));
 };
 
 const toActorEntries = (insights?: GdeltInsights): ActorEntry[] => {
