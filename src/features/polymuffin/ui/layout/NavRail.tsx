@@ -14,7 +14,7 @@ const DATASET_ICONS: Record<"gdelt" | "polymuffin" | "twitter", React.ComponentT
 
 const DATASET_LABELS: Record<"gdelt" | "polymuffin" | "twitter", string> = {
   gdelt: "GDELT",
-  polymuffin: "Polymarket",
+  polymuffin: "Polymuffin",
   twitter: "Twitter",
 };
 
@@ -36,7 +36,9 @@ export default function NavRail() {
   return (
     <nav className="card flex h-full flex-col items-center justify-between gap-4 px-3 py-6">
       <div className="flex flex-col items-center gap-4">
-        <div className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--muted)]">Polymuffin</div>
+        <div className="text-[10px] font-semibold tracking-[0.18em] leading-3 text-[color:var(--muted)]">
+          Polymuffin
+        </div>
         <div className="h-px w-8 bg-[color:var(--border)]" />
         <div className="flex flex-col items-center gap-3">
           {buttons.map(({ id, label, Icon, enabled }) => (
