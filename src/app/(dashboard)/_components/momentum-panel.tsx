@@ -1,3 +1,5 @@
+"use client";
+
 import { Panel } from "./panel";
 
 const movers = [
@@ -33,7 +35,7 @@ export function MomentumPanel({ className }: { className?: string }) {
         </span>
       }
     >
-      <ul className="flex flex-1 flex-col gap-3">
+      <ul className="max-h-full flex flex-1 flex-col gap-3 overflow-y-auto pr-1 [scrollbar-width:thin]">
         {movers.map((item) => (
           <li
             key={item.market}
@@ -41,7 +43,7 @@ export function MomentumPanel({ className }: { className?: string }) {
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 space-y-1">
-                <p className="truncate text-base font-semibold text-[var(--fg)]">
+                <p className="truncate text-base font-semibold text-white/90">
                   {item.market}
                 </p>
                 <p className="text-sm text-[var(--muted)]">{item.sentiment}</p>
@@ -52,7 +54,7 @@ export function MomentumPanel({ className }: { className?: string }) {
             </div>
             <div className="mt-4 flex items-center justify-between text-xs text-[var(--muted)] md:text-sm">
               <span>Depth</span>
-              <span className="text-[var(--fg)]">{item.depth}</span>
+              <span className="text-white/90">{item.depth}</span>
             </div>
           </li>
         ))}

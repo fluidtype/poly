@@ -1,3 +1,5 @@
+"use client";
+
 import { Panel } from "./panel";
 
 const feed = [
@@ -40,7 +42,7 @@ export function ActivityFeedPanel({ className }: { className?: string }) {
       }
     >
       <div className="flex flex-1 flex-col overflow-hidden">
-        <ul className="flex-1 space-y-3 overflow-y-auto pr-2 [scrollbar-width:thin]">
+        <ul className="max-h-full flex-1 space-y-3 overflow-y-auto pr-2 [scrollbar-width:thin]">
           {feed.map((item) => (
             <li
               key={item.title}
@@ -52,12 +54,12 @@ export function ActivityFeedPanel({ className }: { className?: string }) {
                   {item.status}
                 </span>
               </div>
-              <h3 className="mt-3 text-base font-semibold text-[var(--fg)]">{item.title}</h3>
+              <h3 className="mt-3 text-base font-semibold text-white/90">{item.title}</h3>
               <p className="mt-2 text-sm text-[var(--muted)]">{item.body}</p>
             </li>
           ))}
         </ul>
-        <button className="mt-3 w-full rounded-2xl border border-white/10 bg-[var(--panel-2)]/70 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)] transition hover:text-[var(--fg)] md:text-sm">
+        <button className="mt-3 w-full rounded-2xl border border-white/10 bg-[var(--panel-2)]/70 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)] transition hover:text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0 md:text-sm">
           View queue
         </button>
       </div>

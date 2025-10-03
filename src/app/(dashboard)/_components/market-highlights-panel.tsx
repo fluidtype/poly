@@ -1,3 +1,5 @@
+"use client";
+
 import { Panel } from "./panel";
 
 const highlights = [
@@ -30,7 +32,7 @@ export function MarketHighlightsPanel({ className }: { className?: string }) {
         </span>
       }
     >
-      <ul className="flex flex-1 flex-col gap-3">
+      <ul className="max-h-full flex flex-1 flex-col gap-3 overflow-y-auto pr-1 [scrollbar-width:thin]">
         {highlights.map((item) => (
           <li
             key={item.title}
@@ -38,7 +40,7 @@ export function MarketHighlightsPanel({ className }: { className?: string }) {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="text-base font-semibold text-[var(--fg)]">{item.title}</h3>
+                <h3 className="text-base font-semibold text-white/90">{item.title}</h3>
                 <p className="mt-2 text-sm text-[var(--muted)]">{item.description}</p>
               </div>
               <span className="rounded-full border border-white/10 bg-[var(--bg)]/60 px-2 py-1 text-xs text-[var(--muted)] md:text-sm">

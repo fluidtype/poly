@@ -11,20 +11,20 @@ import { Topbar } from "./_components/topbar";
 
 export default function DashboardPage() {
   return (
-    <div className="h-screen overflow-hidden bg-[var(--bg)] text-[var(--fg)]">
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg)] text-[var(--fg)]">
       <DashboardHeader />
-      <main className="px-6 pb-6 pt-4">
-        <div className="flex h-[calc(100vh-64px-24px)] flex-col gap-4 overflow-hidden">
+      <main className="flex flex-1 flex-col gap-4 overflow-auto px-4 pb-6 pt-4 lg:overflow-hidden xl:px-6">
+        <div className="mx-auto flex w-full max-w-[1480px] flex-1 flex-col gap-4 lg:h-[calc(100vh-64px-24px)] lg:overflow-hidden">
           <Topbar className="flex-shrink-0" />
-          <div className="grid flex-1 grid-cols-1 gap-4 overflow-hidden md:grid-cols-12 md:grid-rows-[repeat(7,minmax(0,1fr))]">
-            <PrimaryChartPanel className="col-span-12 row-span-2 h-full md:col-span-8 md:row-span-3" />
-            <OverviewPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-3" />
-            <ActivityFeedPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-2" />
-            <CreditDonutPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-2" />
-            <PortfolioPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-2" />
-            <MarketHighlightsPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-2" />
-            <MomentumPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-2" />
-            <SignalsPanel className="col-span-12 row-span-1 h-full md:col-span-4 md:row-span-2" />
+          <div className="grid flex-1 grid-cols-1 gap-4 overflow-visible lg:grid-cols-12 lg:grid-rows-[repeat(7,minmax(0,1fr))] lg:gap-3 xl:gap-4">
+            <PrimaryChartPanel className="col-span-12 h-full lg:col-span-8 lg:row-span-3 xl:col-span-8 xl:row-span-3" />
+            <OverviewPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2 xl:row-span-3" />
+            <ActivityFeedPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <CreditDonutPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <PortfolioPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <MarketHighlightsPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <MomentumPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <SignalsPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
           </div>
         </div>
       </main>

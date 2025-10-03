@@ -63,7 +63,7 @@ export function PortfolioPanel({ className }: { className?: string }) {
               className="flex items-center justify-between rounded-2xl border border-white/5 bg-[var(--panel-2)]/60 px-4 py-2 md:px-5"
             >
               <span className="uppercase tracking-[0.18em]">{chip.label}</span>
-              <span className="text-[var(--fg)]">{chip.value}</span>
+              <span className="text-white/90">{chip.value}</span>
             </div>
           ))}
         </div>

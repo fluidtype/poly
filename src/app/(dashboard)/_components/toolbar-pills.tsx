@@ -34,7 +34,7 @@ export function ToolbarPills({ items, ariaLabel, className }: ToolbarPillsProps)
           disabled={disabled}
           onClick={onClick}
           className={cn(
-            "rounded-full border border-white/5 px-4 text-xs font-semibold text-[var(--muted)]",
+            "rounded-full border border-white/5 px-4 text-xs font-semibold text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0",
             active &&
               cn(
                 "border-white/15 bg-[var(--primary)]/15 text-[var(--fg)] shadow-[var(--glow)]",
@@ -42,7 +42,14 @@ export function ToolbarPills({ items, ariaLabel, className }: ToolbarPillsProps)
               ),
           )}
         >
-          {Icon ? <Icon className="mr-1.5 h-4 w-4" /> : null}
+          {Icon ? (
+            <Icon
+              className={cn(
+                "mr-1.5 h-4 w-4",
+                active ? "text-[var(--fg)]" : "text-[var(--muted)]",
+              )}
+            />
+          ) : null}
           {label}
         </Button>
       ))}

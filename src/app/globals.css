@@ -22,8 +22,13 @@
     border-color: rgba(255, 255, 255, 0.07);
   }
 
+  html,
   body {
-    min-height: 100vh;
+    height: 100%;
+  }
+
+  body {
+    min-height: 100%;
     background-color: var(--bg);
     color: var(--fg);
     @apply antialiased;
@@ -42,7 +47,7 @@
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--ring) 55%, transparent);
+    @apply ring-1 ring-[var(--ring)]/60 ring-offset-0;
   }
 }
 
