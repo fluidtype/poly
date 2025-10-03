@@ -47,7 +47,7 @@
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    @apply ring-1 ring-[var(--ring)]/60 ring-offset-0;
+    @apply ring-1 ring-[color:var(--ring)] ring-opacity-60 ring-offset-0;
   }
 }
 

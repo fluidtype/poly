@@ -106,14 +106,14 @@ export function Topbar({ className }: { className?: string }) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search narratives or markets"
-            className="min-w-0 flex-1 bg-transparent text-sm text-[var(--fg)] placeholder:text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0"
+            className="min-w-0 flex-1 bg-transparent text-sm text-[var(--fg)] placeholder:text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0"
             type="search"
           />
           <Button
             type="submit"
             size="sm"
             variant="secondary"
-            className="rounded-full px-4 text-xs font-semibold text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0"
+            className="rounded-full px-4 text-xs font-semibold text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0"
           >
             Run query
           </Button>
@@ -151,7 +151,7 @@ export function Topbar({ className }: { className?: string }) {
           size="sm"
           variant="secondary"
           onClick={() => setAdvancedOpen(true)}
-          className="ml-auto rounded-full border border-white/10 px-4 text-xs font-semibold text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0"
+          className="ml-auto rounded-full border border-white/10 px-4 text-xs font-semibold text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0"
         >
           <Settings2 className="mr-1.5 h-4 w-4 text-[var(--muted)]" />
           Advanced

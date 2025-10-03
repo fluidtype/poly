@@ -1,13 +1,13 @@
 import { ActivityFeedPanel } from "./_components/activity-feed-panel";
 import { CreditDonutPanel } from "./_components/credit-donut-panel";
 import { DashboardHeader } from "./_components/dashboard-header";
-import { MarketHighlightsPanel } from "./_components/market-highlights-panel";
+import { Highlights } from "./_components/Highlights";
 import { MomentumPanel } from "./_components/momentum-panel";
 import { OverviewPanel } from "./_components/overview-panel";
 import { PortfolioPanel } from "./_components/portfolio-panel";
 import { PrimaryChartPanel } from "./_components/primary-chart-panel";
-import { SignalsPanel } from "./_components/signals-panel";
-import { Topbar } from "./_components/topbar";
+import { Signals } from "./_components/Signals";
+import { Topbar } from "./_components/Topbar";
 
 export default function DashboardPage() {
   return (
@@ -22,9 +22,9 @@ export default function DashboardPage() {
             <ActivityFeedPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
             <CreditDonutPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
             <PortfolioPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
-            <MarketHighlightsPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <Highlights className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
             <MomentumPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
-            <SignalsPanel className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
+            <Signals className="col-span-12 h-full lg:col-span-4 lg:row-span-2" />
           </div>
         </div>
       </main>

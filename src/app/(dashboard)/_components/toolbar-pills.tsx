@@ -34,7 +34,7 @@ export function ToolbarPills({ items, ariaLabel, className }: ToolbarPillsProps)
           disabled={disabled}
           onClick={onClick}
           className={cn(
-            "rounded-full border border-white/5 px-4 text-xs font-semibold text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0",
+          "rounded-full border border-white/5 px-4 text-xs font-semibold text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0",
             active &&
               cn(
                 "border-white/15 bg-[var(--primary)]/15 text-[var(--fg)] shadow-[var(--glow)]",

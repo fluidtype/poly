@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
-import { Card } from "./card";
+import { Card } from "./Card";
 
 interface PanelProps {
   title: string;

@@ -26,7 +26,7 @@ export function DashboardHeader() {
         {links.map((item, index) => (
           <Fragment key={item.label}>
             <a
-              className="rounded-full border border-transparent px-3 py-1.5 text-[var(--muted)] transition hover:border-white/10 hover:text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0"
+              className="rounded-full border border-transparent px-3 py-1.5 text-[var(--muted)] transition hover:border-white/10 hover:text-[var(--fg)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0"
               href={item.href}
             >
               {item.label}
@@ -44,11 +44,11 @@ export function DashboardHeader() {
         </div>
         <input
           aria-label="Search dashboard"
-          className="h-10 w-44 rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-4 text-sm text-[var(--fg)] placeholder:text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0"
+          className="h-10 w-44 rounded-full border border-white/10 bg-[var(--panel-2)]/70 px-4 text-sm text-[var(--fg)] placeholder:text-[var(--muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0"
           placeholder="Search"
           type="search"
         />
-        <button className="rounded-full border border-white/10 bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-[var(--bg)] shadow-[var(--glow)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-0">
+        <button className="rounded-full border border-white/10 bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-[var(--bg)] shadow-[var(--glow)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-0">
           New Report
         </button>
       </div>
