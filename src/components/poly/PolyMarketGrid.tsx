@@ -64,13 +64,13 @@ const formatDate = (value: string | null) => {
 const statusStyles: Record<string, string> = {
   active: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40",
   trading: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40",
-  expired: "bg-[color:var(--muted)]/10 text-[color:var(--muted)] border border-[color:var(--muted)]/30",
-  resolved: "bg-[color:var(--violet)]/15 text-[color:var(--violet-light)] border border-[color:var(--violet)]/40",
+  expired: "bg-[rgb(var(--muted))]/10 text-[rgb(var(--muted))] border border-[rgb(var(--muted))]/30",
+  resolved: "bg-[rgb(var(--tertiary))]/15 text-[rgb(var(--violet-light))] border border-[rgb(var(--tertiary))]/40",
 };
 
 const getStatusClass = (status: string) => {
   const normalized = status.toLowerCase();
-  return statusStyles[normalized] ?? "bg-[color:var(--panel)]/60 text-[color:var(--muted)] border border-[color:var(--border)]/60";
+  return statusStyles[normalized] ?? "bg-[rgb(var(--surface))]/60 text-[rgb(var(--muted))] border border-[rgb(var(--borderc))]/60";
 };
 
 export function PolyMarketGrid({
@@ -81,7 +81,7 @@ export function PolyMarketGrid({
 }: PolyMarketGridProps) {
   if (error) {
     return (
-      <div className="card rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-5 text-sm text-[color:var(--accent-light)]">
+      <div className="card rounded-2xl border border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/10 p-5 text-sm text-[rgb(var(--accent-light))]">
         <p className="font-medium">Unable to load Polymarket data</p>
         <p className="mt-1 opacity-80">{error}</p>
       </div>
@@ -92,7 +92,7 @@ export function PolyMarketGrid({
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="card h-48 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60" />
+          <div key={index} className="card h-48 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/60" />
         ))}
       </div>
     );
@@ -100,7 +100,7 @@ export function PolyMarketGrid({
 
   if (!markets || markets.length === 0) {
     return (
-      <div className="card flex h-full min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-sm text-[color:var(--muted)]">
+      <div className="card flex h-full min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/70 p-6 text-sm text-[rgb(var(--muted))]">
         <p>No markets matched the current filters.</p>
       </div>
     );
@@ -111,11 +111,11 @@ export function PolyMarketGrid({
       {markets.map((market) => (
         <div
           key={market.id}
-          className="card flex h-full flex-col gap-4 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5"
+          className="card flex h-full flex-col gap-4 rounded-2xl border border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/90 p-5"
         >
           <div className="flex flex-col gap-4">
             <div className="flex items-start justify-between gap-3">
-              <h3 className="line-clamp-2 text-base font-semibold leading-snug text-[color:var(--fg)]">
+              <h3 className="line-clamp-2 text-base font-semibold leading-snug text-[rgb(var(--text))]">
                 {market.title || "Untitled market"}
               </h3>
               <span
@@ -133,24 +133,24 @@ export function PolyMarketGrid({
                 <span className="font-semibold">YES</span>
                 <span>{formatPrice(market.priceYes)}</span>
               </span>
-              <span className="pill gap-2 border-[color:var(--accent)]/40 bg-[color:var(--accent)]/15 text-xs font-medium text-[color:var(--accent-light)]">
+              <span className="pill gap-2 border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/15 text-xs font-medium text-[rgb(var(--accent-light))]">
                 <span className="font-semibold">NO</span>
                 <span>{formatPrice(market.priceNo)}</span>
               </span>
             </div>
 
-            <dl className="grid grid-cols-2 gap-4 text-xs text-[color:var(--muted)]">
+            <dl className="grid grid-cols-2 gap-4 text-xs text-[rgb(var(--muted))]">
               <div>
                 <dt className="font-medium uppercase tracking-[0.18em]">Volume 24h</dt>
-                <dd className="mt-1 text-sm font-semibold text-[color:var(--fg)]">${formatNumber(market.volume24h)}</dd>
+                <dd className="mt-1 text-sm font-semibold text-[rgb(var(--text))]">${formatNumber(market.volume24h)}</dd>
               </div>
               <div>
                 <dt className="font-medium uppercase tracking-[0.18em]">Liquidity</dt>
-                <dd className="mt-1 text-sm font-semibold text-[color:var(--fg)]">${formatNumber(market.liquidity)}</dd>
+                <dd className="mt-1 text-sm font-semibold text-[rgb(var(--text))]">${formatNumber(market.liquidity)}</dd>
               </div>
               <div className="col-span-2">
                 <dt className="font-medium uppercase tracking-[0.18em]">End Date</dt>
-                <dd className="mt-1 text-sm font-semibold text-[color:var(--fg)]">{formatDate(market.endDate)}</dd>
+                <dd className="mt-1 text-sm font-semibold text-[rgb(var(--text))]">{formatDate(market.endDate)}</dd>
               </div>
             </dl>
           </div>
@@ -173,7 +173,7 @@ export function PolyMarketGrid({
               }
               target="_blank"
               rel="noopener noreferrer"
-              className="pill inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[color:var(--accent-light)] transition hover:border-[color:var(--accent)]/50 hover:bg-[color:var(--accent)]/10"
+              className="pill inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[rgb(var(--accent-light))] transition hover:border-[rgb(var(--brand))]/50 hover:bg-[rgb(var(--brand))]/10"
             >
               View on Polymarket
             </Link>

@@ -24,12 +24,12 @@ const MAX_RANGE_DAYS = 365;
 
 const chipClass = cn(
   "rounded-2xl px-3 py-1.5 text-[13px] transition-all",
-  "bg-[color:var(--surface-2)]/90 border border-[color:var(--border)]/60",
-  "text-[color:var(--muted)] hover:bg-[color:var(--primary-600)]/15 hover:text-[color:var(--text)]",
-  "hover:ring-1 hover:ring-[color:var(--primary)]/30",
-  "data-[active=true]:bg-[color:var(--primary)]/18 data-[active=true]:text-[color:var(--text)]",
-  "data-[active=true]:border-[color:var(--primary)]/35",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)]/45",
+  "bg-[rgb(var(--surface2))]/90 border border-[rgb(var(--borderc))]/60",
+  "text-[rgb(var(--muted))] hover:bg-[rgb(var(--brand))]/15 hover:text-[rgb(var(--text))]",
+  "hover:ring-1 hover:ring-[rgb(var(--brand))]/30",
+  "data-[active=true]:bg-[rgb(var(--brand))]/18 data-[active=true]:text-[rgb(var(--text))]",
+  "data-[active=true]:border-[rgb(var(--brand))]/35",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--brand))]/45",
   "disabled:cursor-not-allowed disabled:opacity-50"
 );
 

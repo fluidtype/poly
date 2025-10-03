@@ -32,23 +32,23 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-[color:var(--bg)] text-[color:var(--fg)] antialiased",
+          "min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] antialiased",
           poppins.className,
         )}
       >
         <AppQueryProvider>
-          <div className="flex min-h-screen flex-col bg-[color:var(--bg)]">
-            <header className="border-b border-[color:var(--border)]/80 bg-[color:var(--panel)]/80 backdrop-blur-lg">
-              <div className="container-outer flex h-16 items-center justify-between">
-                <span className="text-lg font-semibold tracking-tight">Poly</span>
-                <nav className="flex items-center gap-6 text-sm text-[color:var(--muted)]">
-                  <Link className="transition hover:text-[color:var(--fg)]" href="/">
+          <div className="flex min-h-screen flex-col bg-[rgb(var(--bg))]">
+            <header className="border-b border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/80 backdrop-blur-md">
+              <div className="container-outer flex h-[var(--header-h)] items-center justify-between">
+                <span className="text-lg font-semibold tracking-tight text-[rgb(var(--text))]">Poly</span>
+                <nav className="flex items-center gap-6 text-sm text-[rgb(var(--muted))]">
+                  <Link className="transition hover:text-[rgb(var(--text))]" href="/">
                     Overview
                   </Link>
-                  <Link className="transition hover:text-[color:var(--fg)]" href="/reports">
+                  <Link className="transition hover:text-[rgb(var(--text))]" href="/reports">
                     Reports
                   </Link>
-                  <Link className="transition hover:text-[color:var(--fg)]" href="/settings">
+                  <Link className="transition hover:text-[rgb(var(--text))]" href="/settings">
                     Settings
                   </Link>
                 </nav>
@@ -56,12 +56,12 @@ export default function RootLayout({
             </header>
             <TopBar />
             <main className="flex-1 overflow-hidden">
-              <div className="container-outer flex h-full flex-col overflow-hidden py-6">
+              <div className="flex h-full flex-col overflow-hidden px-5 py-6 lg:px-6">
                 {children}
               </div>
             </main>
-            <footer className="border-t border-[color:var(--border)]/80 bg-[color:var(--panel)]/60">
-              <div className="container-outer flex h-12 items-center justify-between text-xs text-[color:var(--muted)]">
+            <footer className="border-t border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/60">
+              <div className="container-outer flex h-12 items-center justify-between text-xs text-[rgb(var(--muted))]">
                 <span>&copy; {new Date().getFullYear()} Poly UI</span>
                 <span>Next.js · Tailwind CSS · shadcn/ui</span>
               </div>

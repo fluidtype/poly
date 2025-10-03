@@ -38,7 +38,7 @@ const TrendIndicator = ({ value }: { value: number }) => {
         "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium transition",
         isPositive
           ? "bg-emerald-500/15 text-emerald-300"
-          : "bg-[color:var(--accent)]/20 text-[color:var(--accent-light)]",
+          : "bg-[rgb(var(--brand))]/20 text-[rgb(var(--accent-light))]",
       )}
     >
       <Icon className="h-3.5 w-3.5" strokeWidth={2} />
@@ -52,7 +52,7 @@ const TrendIndicator = ({ value }: { value: number }) => {
 
 const KpiCard = ({ label, value, trend }: KpiCardProps) => {
   return (
-    <div className="card flex flex-col gap-3 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5">
+    <div className="card flex flex-col gap-3 rounded-2xl border border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/90 p-5">
       <p className="meta uppercase tracking-[0.12em]">{label}</p>
       <div className="flex items-baseline gap-3">
         <p className="kpi tabular-nums">{value}</p>
@@ -96,7 +96,7 @@ export function KpiCards({
 
   if (error) {
     return (
-      <div className="card rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-5 text-sm text-[color:var(--accent-light)]">
+      <div className="card rounded-2xl border border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/10 p-5 text-sm text-[rgb(var(--accent-light))]">
         {error}
       </div>
     );
@@ -108,7 +108,7 @@ export function KpiCards({
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="card h-28 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60"
+            className="card h-28 animate-pulse rounded-2xl bg-[rgb(var(--surface3))]/60"
           />
         ))}
       </div>

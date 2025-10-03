@@ -38,12 +38,12 @@ type TwitterApiResponse = PlaceholderTweet[] | { data?: PlaceholderTweet[] | nul
 
 function TweetSkeleton() {
   return (
-    <div className="flex animate-pulse gap-3 rounded-2xl border border-[color:var(--border)]/40 bg-[color:var(--panel)]/40 p-3">
-      <div className="h-10 w-10 rounded-full bg-[color:var(--elev-2)]/60" />
+    <div className="flex animate-pulse gap-3 rounded-2xl border border-[rgb(var(--borderc))]/40 bg-[rgb(var(--surface))]/40 p-3">
+      <div className="h-10 w-10 rounded-full bg-[rgb(var(--surface3))]/60" />
       <div className="flex-1 space-y-2">
-        <div className="h-3 w-32 rounded-full bg-[color:var(--elev-2)]/60" />
-        <div className="h-3 w-full rounded-full bg-[color:var(--elev-2)]/60" />
-        <div className="h-3 w-5/6 rounded-full bg-[color:var(--elev-2)]/60" />
+        <div className="h-3 w-32 rounded-full bg-[rgb(var(--surface3))]/60" />
+        <div className="h-3 w-full rounded-full bg-[rgb(var(--surface3))]/60" />
+        <div className="h-3 w-5/6 rounded-full bg-[rgb(var(--surface3))]/60" />
       </div>
     </div>
   );
@@ -51,16 +51,16 @@ function TweetSkeleton() {
 
 function TweetCard({ tweet }: { tweet: PlaceholderTweet }) {
   return (
-    <article className="group flex flex-col gap-2 rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--panel)]/50 p-3 transition hover:border-[color:var(--accent)]/60 hover:bg-[color:var(--accent)]/10">
+    <article className="group flex flex-col gap-2 rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface))]/50 p-3 transition hover:border-[rgb(var(--brand))]/60 hover:bg-[rgb(var(--brand))]/10">
       <header className="flex items-center justify-between gap-3 text-sm">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="h-10 w-10 flex-shrink-0 rounded-full bg-[color:var(--accent)]/20" />
+          <div className="h-10 w-10 flex-shrink-0 rounded-full bg-[rgb(var(--brand))]/20" />
           <div className="min-w-0">
-            <p className="truncate font-medium text-[color:var(--fg)]">
+            <p className="truncate font-medium text-[rgb(var(--text))]">
               {tweet.author ?? "Unknown handle"}
             </p>
             {tweet.createdAt ? (
-              <p className="text-xs text-[color:var(--muted)]">{formatTimestamp(tweet.createdAt)}</p>
+              <p className="text-xs text-[rgb(var(--muted))]">{formatTimestamp(tweet.createdAt)}</p>
             ) : null}
           </div>
         </div>
@@ -69,13 +69,13 @@ function TweetCard({ tweet }: { tweet: PlaceholderTweet }) {
             href={tweet.url}
             target="_blank"
             rel="noreferrer"
-            className="pill px-3 py-0 text-xs font-semibold text-[color:var(--accent-light)] hover:border-[color:var(--accent)]/50 hover:bg-[color:var(--accent)]/20"
+            className="pill px-3 py-0 text-xs font-semibold text-[rgb(var(--accent-light))] hover:border-[rgb(var(--brand))]/50 hover:bg-[rgb(var(--brand))]/20"
           >
             View
           </a>
         ) : null}
       </header>
-      <p className="line-clamp-4 text-sm leading-relaxed text-[color:var(--muted)]">
+      <p className="line-clamp-4 text-sm leading-relaxed text-[rgb(var(--muted))]">
         {tweet.text ?? "No summary available yet."}
       </p>
     </article>
@@ -142,17 +142,17 @@ export function TwitterPlaceholder({ comingSoon }: TwitterPlaceholderProps) {
   }, [comingSoon]);
 
   return (
-    <section className="card flex h-full flex-col gap-4 rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--card)]/90 p-5">
+    <section className="card flex h-full flex-col gap-4 rounded-2xl border border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/90 p-5">
       <header className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-base font-semibold text-[color:var(--fg)]">Twitter signals</h2>
+          <h2 className="text-base font-semibold text-[rgb(var(--text))]">Twitter signals</h2>
           <p className="meta mt-1">Curated market intelligence sourced from verified feeds.</p>
         </div>
       </header>
 
       {comingSoon ? (
         <div className="space-y-4">
-          <div className="pill px-3 py-0 text-sm font-semibold text-[color:var(--accent-light)]">
+          <div className="pill px-3 py-0 text-sm font-semibold text-[rgb(var(--accent-light))]">
             Twitter integration coming soon
           </div>
           <div className="space-y-3">
@@ -168,12 +168,12 @@ export function TwitterPlaceholder({ comingSoon }: TwitterPlaceholderProps) {
           ))}
         </div>
       ) : error ? (
-        <div className="card rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-4 text-sm text-[color:var(--accent-light)]">
+        <div className="card rounded-2xl border border-[rgb(var(--brand))]/40 bg-[rgb(var(--brand))]/10 p-4 text-sm text-[rgb(var(--accent-light))]">
           Unable to load Twitter data.
           <span className="block text-xs opacity-80">{error}</span>
         </div>
       ) : tweets.length === 0 ? (
-        <div className="card rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-center text-sm text-[color:var(--muted)]">
+        <div className="card rounded-2xl border border-dashed border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface2))]/70 p-6 text-center text-sm text-[rgb(var(--muted))]">
           No Twitter updates available yet.
         </div>
       ) : (
@@ -185,7 +185,7 @@ export function TwitterPlaceholder({ comingSoon }: TwitterPlaceholderProps) {
       )}
 
       {!comingSoon && tweets.length === 0 && !isLoading && !error ? (
-        <p className="text-center text-xs text-[color:var(--muted)]">
+        <p className="text-center text-xs text-[rgb(var(--muted))]">
           Connect your Twitter credentials to surface market chatter once the integration launches.
         </p>
       ) : null}

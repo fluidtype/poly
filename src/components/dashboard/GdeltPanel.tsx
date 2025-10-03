@@ -170,27 +170,27 @@ export default function GdeltPanel() {
     <section className="card md:col-span-4">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-[color:var(--text)]">News pulse</h2>
-          <p className="text-sm text-[color:var(--muted)]">
+          <h2 className="text-lg font-semibold text-[rgb(var(--text))]">News pulse</h2>
+          <p className="text-sm text-[rgb(var(--muted))]">
             {keywords.length > 0
               ? "Latest coverage sourced from GDELT"
               : "Enter keywords to pull related coverage"}
           </p>
         </div>
         {loading && (
-          <span className="flex items-center gap-2 text-xs uppercase tracking-wide text-[color:var(--muted)]">
-            <span className="h-2 w-2 animate-ping rounded-full bg-[color:var(--primary)]" aria-hidden />
+          <span className="flex items-center gap-2 text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
+            <span className="h-2 w-2 animate-ping rounded-full bg-[rgb(var(--primary))]" aria-hidden />
             Loading…
           </span>
         )}
       </header>
 
       {!datasets.gdelt ? (
-        <div className="mt-4 rounded-xl border border-dashed border-[color:var(--border)]/80 bg-[color:var(--surface-2)]/40 p-6 text-center text-sm text-[color:var(--muted)]">
+        <div className="mt-4 rounded-xl border border-dashed border-[rgb(var(--borderc))]/80 bg-[rgb(var(--surface2))]/40 p-6 text-center text-sm text-[rgb(var(--muted))]">
           Enable the GDELT dataset to surface recent coverage.
         </div>
       ) : keywords.length === 0 ? (
-        <div className="mt-4 rounded-xl border border-dashed border-[color:var(--border)]/80 bg-[color:var(--surface-2)]/40 p-6 text-center text-sm text-[color:var(--muted)]">
+        <div className="mt-4 rounded-xl border border-dashed border-[rgb(var(--borderc))]/80 bg-[rgb(var(--surface2))]/40 p-6 text-center text-sm text-[rgb(var(--muted))]">
           Start typing in the search bar and press Enter to fetch matching articles.
         </div>
       ) : error ? (
@@ -198,7 +198,7 @@ export default function GdeltPanel() {
           {(error as Error).message}
         </div>
       ) : stories.length === 0 && !loading ? (
-        <div className="mt-4 rounded-xl border border-dashed border-[color:var(--border)]/80 bg-[color:var(--surface-2)]/40 p-6 text-center text-sm text-[color:var(--muted)]">
+        <div className="mt-4 rounded-xl border border-dashed border-[rgb(var(--borderc))]/80 bg-[rgb(var(--surface2))]/40 p-6 text-center text-sm text-[rgb(var(--muted))]">
           No recent coverage found for the current filters.
         </div>
       ) : (
@@ -209,7 +209,7 @@ export default function GdeltPanel() {
             return (
               <li
                 key={story.id}
-                className="rounded-2xl border border-[color:var(--border)]/80 bg-[color:var(--surface-2)]/60 p-4 text-sm shadow-sm transition hover:border-[color:var(--primary)]/35"
+                className="rounded-2xl border border-[rgb(var(--borderc))]/80 bg-[rgb(var(--surface2))]/60 p-4 text-sm shadow-sm transition hover:border-[rgb(var(--primary))]/35"
               >
                 <div className="flex flex-col gap-2">
                   {story.url ? (
@@ -217,14 +217,14 @@ export default function GdeltPanel() {
                       href={story.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-base font-semibold text-[color:var(--text)] transition hover:text-[color:var(--primary)]"
+                      className="text-base font-semibold text-[rgb(var(--text))] transition hover:text-[rgb(var(--primary))]"
                     >
                       {story.title}
                     </a>
                   ) : (
-                    <span className="text-base font-semibold text-[color:var(--text)]">{story.title}</span>
+                    <span className="text-base font-semibold text-[rgb(var(--text))]">{story.title}</span>
                   )}
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-[color:var(--muted)]">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-[rgb(var(--muted))]">
                     {story.outlet && <span>{story.outlet}</span>}
                     {published && <span>{published}</span>}
                   </div>

@@ -37,7 +37,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-xl translate-x-[-50%] translate-y-[-50%] gap-6 rounded-[28px] border border-[color:var(--border)]/70 bg-[color:var(--surface)]/95 p-8 shadow-[0_25px_70px_rgba(0,0,0,0.55)]",
+        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-xl translate-x-[-50%] translate-y-[-50%] gap-6 rounded-[28px] border border-[rgb(var(--borderc))]/70 bg-[rgb(var(--surface))]/95 p-8 shadow-[0_25px_70px_rgba(0,0,0,0.55)]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
         className
       )}
@@ -84,7 +84,7 @@ const DialogTitle = React.forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-bold tracking-tight text-[color:var(--text)]",
+      "text-lg font-bold tracking-tight text-[rgb(var(--text))]",
       className
     )}
     {...props}
@@ -99,7 +99,7 @@ const DialogDescription = React.forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn(
-      "text-sm text-[color:var(--muted)]",
+      "text-sm text-[rgb(var(--muted))]",
       className
     )}
     {...props}

@@ -88,8 +88,8 @@ export default function PolymarketPanel() {
       <section className="card md:col-span-8">
         <header className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-[color:var(--text)]">Polymarket markets</h2>
-            <p className="text-sm text-[color:var(--muted)]">
+            <h2 className="text-lg font-semibold text-[rgb(var(--text))]">Polymarket markets</h2>
+            <p className="text-sm text-[rgb(var(--muted))]">
               Enable the Polymarket dataset from the search bar to see results.
             </p>
           </div>
@@ -105,22 +105,22 @@ export default function PolymarketPanel() {
     <section className="card md:col-span-8">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-[color:var(--text)]">Polymarket markets</h2>
-          <p className="text-sm text-[color:var(--muted)]">
+          <h2 className="text-lg font-semibold text-[rgb(var(--text))]">Polymarket markets</h2>
+          <p className="text-sm text-[rgb(var(--muted))]">
             {keywords.length > 0
               ? `Showing matches for “${keywords.join(" ")}”`
               : "Trending markets from Polymarket Gamma"}
           </p>
         </div>
-        <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-[color:var(--muted)]">
+        <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
           {!loading && (
-            <span className="rounded-full border border-white/5 bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-[color:var(--text)]/80">
+            <span className="rounded-full border border-white/5 bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-[rgb(var(--text))]/80">
               {resultCount} result{resultCount === 1 ? "" : "s"}
             </span>
           )}
           {loading && (
             <span className="flex items-center gap-2">
-              <span className="h-2 w-2 animate-ping rounded-full bg-[color:var(--primary)]" aria-hidden />
+              <span className="h-2 w-2 animate-ping rounded-full bg-[rgb(var(--primary))]" aria-hidden />
               Loading…
             </span>
           )}
@@ -132,7 +132,7 @@ export default function PolymarketPanel() {
           {(error as Error).message}
         </div>
       ) : markets.length === 0 && !loading ? (
-        <div className="mt-4 rounded-xl border border-dashed border-[color:var(--border)]/80 bg-[color:var(--surface-2)]/40 p-6 text-center text-sm text-[color:var(--muted)]">
+        <div className="mt-4 rounded-xl border border-dashed border-[rgb(var(--borderc))]/80 bg-[rgb(var(--surface2))]/40 p-6 text-center text-sm text-[rgb(var(--muted))]">
           No markets found. Try adjusting your keywords or clearing filters.
         </div>
       ) : (
@@ -149,12 +149,12 @@ export default function PolymarketPanel() {
             return (
               <li
                 key={market.id}
-                className="rounded-2xl border border-[color:var(--border)]/80 bg-[color:var(--surface-2)]/60 p-4 shadow-sm transition hover:border-[color:var(--primary)]/35"
+                className="rounded-2xl border border-[rgb(var(--borderc))]/80 bg-[rgb(var(--surface2))]/60 p-4 shadow-sm transition hover:border-[rgb(var(--primary))]/35"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-base font-semibold text-[color:var(--text)]">{market.title}</h3>
-                    <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-[color:var(--muted)]">
+                    <h3 className="text-base font-semibold text-[rgb(var(--text))]">{market.title}</h3>
+                    <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-[rgb(var(--muted))]">
                       {market.category && (
                         <span className="rounded-full border border-white/5 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide">
                           {market.category}
@@ -167,12 +167,12 @@ export default function PolymarketPanel() {
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="text-right">
-                      <span className="block text-xs uppercase tracking-wide text-[color:var(--muted)]">YES</span>
-                      <span className="text-base font-semibold text-[color:var(--text)]">{yesPrice}</span>
+                      <span className="block text-xs uppercase tracking-wide text-[rgb(var(--muted))]">YES</span>
+                      <span className="text-base font-semibold text-[rgb(var(--text))]">{yesPrice}</span>
                     </div>
                     <div className="text-right">
-                      <span className="block text-xs uppercase tracking-wide text-[color:var(--muted)]">NO</span>
-                      <span className="text-base font-semibold text-[color:var(--text)]">{noPrice}</span>
+                      <span className="block text-xs uppercase tracking-wide text-[rgb(var(--muted))]">NO</span>
+                      <span className="text-base font-semibold text-[rgb(var(--text))]">{noPrice}</span>
                     </div>
                   </div>
                 </div>

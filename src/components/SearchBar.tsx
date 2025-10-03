@@ -132,8 +132,8 @@ export default function SearchBar({
   const showClear = query.length > 0;
 
   const skeletonClass = cn(
-    "surface-pill flex h-12 w-full items-center justify-between rounded-3xl px-5",
-    "md:h-14"
+    "surface-pill flex h-14 w-full items-center justify-between rounded-3xl px-5",
+    "sm:h-12"
   );
 
   return (
@@ -146,17 +146,17 @@ export default function SearchBar({
         <form
           onSubmit={handleSubmit}
           className={cn(
-            "surface-pill flex items-center rounded-3xl border border-[color:var(--border)]/60 px-5",
-            "bg-[color:var(--surface-2)]",
-            "h-12 md:h-14",
-            "hover:ring-1 hover:ring-[color:var(--primary)]/35",
-            "focus-within:ring-2 focus-within:ring-[color:var(--primary)]/45"
+            "surface-pill flex h-14 items-center gap-4 rounded-3xl border border-[rgb(var(--borderc))]/60 px-5",
+            "sm:h-12",
+            "bg-[rgb(var(--surface2))]",
+            "hover:ring-1 hover:ring-[rgb(var(--brand))]/35",
+            "focus-within:ring-2 focus-within:ring-[rgb(var(--brand))]/45"
           )}
         >
           <button
             type="submit"
             aria-label="Submit search"
-            className="mr-3 flex h-8 w-8 items-center justify-center rounded-full text-[color:var(--muted)] transition hover:text-[color:var(--text)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)]/45"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgb(var(--surface3))]/60 text-[rgb(var(--muted))] transition hover:text-[rgb(var(--text))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand))]/45 sm:h-9 sm:w-9"
             disabled={loading}
           >
             <Search className="h-4 w-4" strokeWidth={2} />
@@ -169,24 +169,26 @@ export default function SearchBar({
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={handleKeyDown}
             disabled={loading}
-            className="min-w-0 flex-1 bg-transparent text-[15px] text-[color:var(--text)] outline-none placeholder:text-[color:var(--muted)]"
+            className="min-w-0 w-full bg-transparent text-[15px] text-[rgb(var(--text))] outline-none placeholder:text-[rgb(var(--muted))]"
           />
-          <kbd className="hidden rounded border border-white/10 bg-black/30 px-1.5 py-0.5 text-xs uppercase tracking-wide text-[color:var(--muted)] md:block">
-            ⌘K
-          </kbd>
-          <button
-            type="button"
-            aria-label="Clear search"
-            onClick={clearSearch}
-            className={cn(
-              "ml-2 text-sm text-[color:var(--muted)] transition",
-              "hover:text-[color:var(--text)]",
-              !showClear && "pointer-events-none opacity-0"
-            )}
-            disabled={!showClear}
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-3">
+            <kbd className="hidden rounded border border-white/10 bg-black/30 px-1.5 py-0.5 text-xs uppercase tracking-wide text-[rgb(var(--muted))] md:block">
+              ⌘K
+            </kbd>
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={clearSearch}
+              className={cn(
+                "text-sm text-[rgb(var(--muted))] transition",
+                "hover:text-[rgb(var(--text))]",
+                !showClear && "pointer-events-none opacity-0"
+              )}
+              disabled={!showClear}
+            >
+              ✕
+            </button>
+          </div>
         </form>
       )}
 
@@ -197,7 +199,7 @@ export default function SearchBar({
           type="button"
           size="sm"
           variant="ghost"
-          className="rounded-2xl border border-transparent bg-[color:var(--surface-2)]/80 px-3 text-[13px] text-[color:var(--muted)] transition hover:border-[color:var(--primary)]/35 hover:bg-[color:var(--primary)]/12 hover:text-[color:var(--text)]"
+          className="rounded-2xl border border-transparent bg-[rgb(var(--surface3))]/70 px-3 text-[13px] text-[rgb(var(--muted))] transition hover:border-[rgb(var(--brand))]/35 hover:bg-[rgb(var(--brand))]/12 hover:text-[rgb(var(--text))]"
           disabled={loading}
           onClick={() => setAdvancedOpen(true)}
         >

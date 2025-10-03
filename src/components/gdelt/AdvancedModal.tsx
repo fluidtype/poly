@@ -251,10 +251,10 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl bg-[color:var(--surface-3)]/95">
+      <DialogContent className="max-w-2xl bg-[rgb(var(--surface3))]/95">
         <DialogHeader className="space-y-2">
           <DialogTitle>Advanced GDELT modes</DialogTitle>
-          <DialogDescription className="text-[color:var(--muted)]">
+          <DialogDescription className="text-[rgb(var(--muted))]">
             Tailor the request type for the active date range {formatRange(dateStart, dateEnd)}.
           </DialogDescription>
         </DialogHeader>
@@ -264,13 +264,13 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
             {Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={index}
-                className="h-12 rounded-2xl bg-gradient-to-r from-[color:var(--surface-2)] to-[color:var(--surface)]/60 animate-pulse"
+                className="h-12 rounded-2xl bg-gradient-to-r from-[rgb(var(--surface2))] to-[rgb(var(--surface))]/60 animate-pulse"
               />
             ))}
           </div>
         ) : (
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as GdeltMode)} className="space-y-5">
-            <TabsList className="relative flex w-full flex-wrap justify-start gap-2 rounded-2xl bg-[color:var(--surface-2)]/60 p-1">
+            <TabsList className="relative flex w-full flex-wrap justify-start gap-2 rounded-2xl bg-[rgb(var(--surface2))]/60 p-1">
               <TabsTrigger value="context" className="px-4 py-1.5">
                 Context
               </TabsTrigger>
@@ -287,12 +287,12 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
 
             <TabsContent value="context" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/60 p-4">
-                  <h3 className="text-sm font-semibold text-[color:var(--text)]">Insights</h3>
-                  <p className="mt-1 text-xs text-[color:var(--muted)]">
+                <div className="rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/60 p-4">
+                  <h3 className="text-sm font-semibold text-[rgb(var(--text))]">Insights</h3>
+                  <p className="mt-1 text-xs text-[rgb(var(--muted))]">
                     Include aggregated insights alongside the event series response.
                   </p>
-                  <label className="mt-3 flex items-center gap-3 text-sm text-[color:var(--text)]">
+                  <label className="mt-3 flex items-center gap-3 text-sm text-[rgb(var(--text))]">
                     <Checkbox
                       checked={contextParams.includeInsights}
                       onCheckedChange={(checked) =>
@@ -305,13 +305,13 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                     Include insights panel data
                   </label>
                 </div>
-                <div className="rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/60 p-4">
-                  <h3 className="text-sm font-semibold text-[color:var(--text)]">Result window</h3>
-                  <p className="mt-1 text-xs text-[color:var(--muted)]">
+                <div className="rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/60 p-4">
+                  <h3 className="text-sm font-semibold text-[rgb(var(--text))]">Result window</h3>
+                  <p className="mt-1 text-xs text-[rgb(var(--muted))]">
                     Limit the maximum number of timeline rows returned from the proxy.
                   </p>
                   <div className="mt-3">
-                    <label className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+                    <label className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
                       Limit
                     </label>
                     <input
@@ -325,19 +325,19 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                           limit: Number(event.target.value),
                         }))
                       }
-                      className="mt-1 w-full rounded-2xl border border-[color:var(--border)]/60 bg-[color:var(--surface)]/70 px-3 py-2 text-sm text-[color:var(--text)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)]/45"
+                      className="mt-1 w-full rounded-2xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/70 px-3 py-2 text-sm text-[rgb(var(--text))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))]/45"
                     />
                   </div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-dashed border-[color:var(--border)]/60 bg-[color:var(--surface-2)]/40 p-4 text-xs text-[color:var(--muted)]">
+              <div className="rounded-2xl border border-dashed border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface2))]/40 p-4 text-xs text-[rgb(var(--muted))]">
                 Keywords in play: {keywords.length ? keywords.join(", ") : "None"}
               </div>
             </TabsContent>
 
             <TabsContent value="country" className="space-y-4">
-              <div className="rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/60 p-4">
-                <label className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+              <div className="rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/60 p-4">
+                <label className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
                   Country
                 </label>
                 <Select
@@ -363,9 +363,9 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                 {["country1", "country2"].map((field, index) => (
                   <div
                     key={field}
-                    className="rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/60 p-4"
+                    className="rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/60 p-4"
                   >
-                    <label className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+                    <label className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
                       {index === 0 ? "Primary country" : "Counterparty"}
                     </label>
                     <Select
@@ -391,7 +391,7 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-[color:var(--muted)]">
+              <p className="text-xs text-[rgb(var(--muted))]">
                 Compare bilateral coverage between two actors. Daily timeline is returned when available.
               </p>
             </TabsContent>
@@ -401,9 +401,9 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                 {["actor1", "actor2"].map((field, index) => (
                   <div
                     key={field}
-                    className="rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/60 p-4"
+                    className="rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/60 p-4"
                   >
-                    <label className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+                    <label className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
                       {index === 0 ? "Actor 1" : "Actor 2"}
                     </label>
                     <Select
@@ -429,8 +429,8 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                   </div>
                 ))}
               </div>
-              <div className="rounded-2xl border border-[color:var(--border)]/50 bg-[color:var(--surface-2)]/60 p-4">
-                <label className="flex items-center gap-3 text-sm text-[color:var(--text)]">
+              <div className="rounded-2xl border border-[rgb(var(--borderc))]/50 bg-[rgb(var(--surface2))]/60 p-4">
+                <label className="flex items-center gap-3 text-sm text-[rgb(var(--text))]">
                   <Checkbox
                     checked={bbvaParams.includeTotal}
                     onCheckedChange={(checked) =>
@@ -443,7 +443,7 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                   Include total conflict coverage
                 </label>
                 <div className="mt-4">
-                  <label className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+                  <label className="text-xs uppercase tracking-wide text-[rgb(var(--muted))]">
                     CAMEO codes (optional)
                   </label>
                   <input
@@ -456,11 +456,11 @@ export default function AdvancedModal({ open, onOpenChange }: AdvancedModalProps
                         cameoCodes: event.target.value,
                       }))
                     }
-                    className="mt-1 w-full rounded-2xl border border-[color:var(--border)]/60 bg-[color:var(--surface)]/70 px-3 py-2 text-sm text-[color:var(--text)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)]/45"
+                    className="mt-1 w-full rounded-2xl border border-[rgb(var(--borderc))]/60 bg-[rgb(var(--surface))]/70 px-3 py-2 text-sm text-[rgb(var(--text))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))]/45"
                   />
                 </div>
               </div>
-              <p className="text-xs text-[color:var(--muted)]">
+              <p className="text-xs text-[rgb(var(--muted))]">
                 Use BBVA conflict coverage mode for specialized bilateral analysis filters.
               </p>
             </TabsContent>

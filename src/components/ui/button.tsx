@@ -9,13 +9,13 @@ type ButtonSize = "default" | "sm" | "lg" | "icon";
 
 const variantClasses: Record<ButtonVariant, string> = {
   default:
-    "bg-[color:var(--primary)] text-[color:var(--text)] shadow-[0_12px_35px_rgba(224,36,36,0.35)] hover:bg-[color:var(--primary-600)]",
+    "bg-[rgb(var(--primary))] text-[rgb(var(--text))] shadow-[0_12px_35px_rgba(224,36,36,0.35)] hover:bg-[rgb(var(--primary-600))]",
   outline:
-    "border border-[color:var(--border)]/70 bg-transparent text-[color:var(--text)] hover:border-[color:var(--primary)]/45 hover:bg-[color:var(--primary)]/10",
+    "border border-[rgb(var(--borderc))]/70 bg-transparent text-[rgb(var(--text))] hover:border-[rgb(var(--primary))]/45 hover:bg-[rgb(var(--primary))]/10",
   ghost:
-    "text-[color:var(--muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--primary)]/10",
+    "text-[rgb(var(--muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--primary))]/10",
   secondary:
-    "bg-[color:var(--surface-2)] text-[color:var(--text)] hover:bg-[color:var(--surface)]",
+    "bg-[rgb(var(--surface2))] text-[rgb(var(--text))] hover:bg-[rgb(var(--surface))]",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -37,7 +37,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)]/45 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center gap-2 rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--primary))]/45 disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],
           sizeClasses[size],
           className
