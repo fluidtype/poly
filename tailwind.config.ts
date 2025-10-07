@@ -27,7 +27,7 @@ const config: Config = {
         "violet-dark": "var(--violet-dark)",
       },
       fontFamily: {
-        sans: ["Poppins", "sans-serif"],
+        sans: ["var(--font-plus-jakarta)", "Plus Jakarta Sans", "sans-serif"],
       },
       boxShadow: {
         glow: "0 20px 60px rgba(0,0,0,0.35)",

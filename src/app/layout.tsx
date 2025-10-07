@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
@@ -7,10 +7,11 @@ import "./globals.css";
 import { SidePanel } from "@/components/shared/SidePanel";
 import { AppQueryProvider } from "./query-client-provider";
 
-const poppins = Poppins({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plus-jakarta",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("bg-[color:var(--bg)] text-[color:var(--fg)] antialiased", poppins.className)}>
+      <body
+        className={cn(
+          "bg-[color:var(--bg)] text-[color:var(--fg)] antialiased font-sans tracking-tight",
+          plusJakarta.className,
+          plusJakarta.variable,
+        )}
+      >
         <AppQueryProvider>
           <div className="min-h-screen bg-[color:var(--bg)]">{children}</div>
           <SidePanel />

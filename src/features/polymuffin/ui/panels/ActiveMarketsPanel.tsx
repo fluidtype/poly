@@ -15,15 +15,17 @@ type ActiveMarketsPanelProps = {
 
 export default function ActiveMarketsPanel({ datasets, recentQueries, loading, error }: ActiveMarketsPanelProps) {
   return (
-    <div className="card flex h-full flex-col overflow-hidden">
-      <header className="flex items-center justify-between border-b border-[color:var(--border)]/60 px-5 py-3">
-        <div>
-          <h3 className="text-base font-semibold text-[color:var(--fg)]">Dataset activity</h3>
-          <p className="text-xs text-[color:var(--muted)]">Monitor sync health and recent lookups</p>
+    <div className="card-surface card-hover flex h-full flex-col overflow-hidden rounded-2xl">
+      <header className="flex items-center justify-between border-b border-white/5 px-4 py-3 md:px-5 md:py-4">
+        <div className="space-y-1">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-white/70">Dataset activity</h3>
+          <p className="text-[11px] text-white/50">Monitor sync health and recent lookups</p>
         </div>
       </header>
-      <div className="flex-1 overflow-hidden px-4 py-3">
-        <ActivityPanel datasets={datasets} recentQueries={recentQueries} isLoading={loading} error={error ?? undefined} />
+      <div className="flex-1 overflow-hidden px-3 py-3 md:px-4">
+        <div className="scroll-stable h-full overflow-auto pr-1">
+          <ActivityPanel datasets={datasets} recentQueries={recentQueries} isLoading={loading} error={error ?? undefined} />
+        </div>
       </div>
     </div>
   );

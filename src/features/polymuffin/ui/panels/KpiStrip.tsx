@@ -36,24 +36,27 @@ export default function KpiStrip({ totalEvents, avgTone, avgImpact, topPair, loa
 
   if (error) {
     return (
-      <div className="card flex h-full items-center justify-center text-sm text-[color:var(--accent-light)]">
+      <div className="card-surface card-surface--secondary card-hover flex h-full items-center justify-center rounded-2xl text-sm text-[#ff9da8]">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="card flex h-full flex-col justify-between px-5 py-4">
-      <header>
-        <h3 className="text-base font-semibold text-[color:var(--fg)]">Impact snapshot</h3>
-        <p className="text-xs text-[color:var(--muted)]">Key indicators from the active window</p>
+    <div className="card-surface card-surface--secondary card-hover flex h-full flex-col justify-between rounded-2xl p-4 md:p-5">
+      <header className="space-y-1">
+        <h3 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-white/70">Impact snapshot</h3>
+        <p className="text-[11px] text-white/50">Key indicators from the active window</p>
       </header>
-      <div className="grid grid-cols-2 gap-3 text-sm text-[color:var(--muted)]">
+      <div className="grid grid-cols-2 gap-3 text-sm text-white/60">
         {items.map((item) => (
-          <div key={item.label} className="rounded-2xl border border-[color:var(--border)]/70 bg-[color:var(--panel)]/50 px-3 py-2">
-            <p className="text-[11px] uppercase tracking-[0.28em]">{item.label}</p>
-            <p className="mt-1 text-lg font-semibold text-[color:var(--fg)] tabular-nums">
-              {loading ? <span className="inline-block h-4 w-16 animate-pulse rounded-full bg-[color:var(--panel-strong)]" /> : item.value}
+          <div
+            key={item.label}
+            className="rounded-xl border border-white/5 bg-white/5 px-3 py-3 backdrop-blur-sm"
+          >
+            <p className="text-[10px] uppercase tracking-[0.35em] text-white/40">{item.label}</p>
+            <p className="mt-2 text-[28px] font-semibold tracking-tight text-white tabular-nums">
+              {loading ? <span className="inline-block h-6 w-20 skeleton" /> : item.value}
             </p>
           </div>
         ))}
