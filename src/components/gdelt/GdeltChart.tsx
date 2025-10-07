@@ -5,6 +5,7 @@ import {
   Area,
   AreaChart,
   Brush,
+  CartesianGrid,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -12,6 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { TooltipProps } from "recharts";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { GdeltSeriesPoint } from "@/types";
@@ -27,22 +29,22 @@ interface GdeltChartProps {
 const METRIC_CONFIG = {
   conflict_events: {
     label: "Events",
-    color: "#FF6B6B",
+    color: "#FF3B3B",
     chart: "line" as const,
   },
   avg_sentiment: {
     label: "Sentiment",
-    color: "#E53935",
+    color: "#FF3B3B",
     chart: "area" as const,
   },
   avg_impact: {
     label: "Impact",
-    color: "#FF6B6B",
+    color: "#A347FF",
     chart: "line" as const,
   },
   relative_coverage: {
     label: "Rel Coverage",
-    color: "#7C4DFF",
+    color: "#7A3CF0",
     chart: "line" as const,
   },
 };
@@ -86,10 +88,10 @@ export function GdeltChart({
 
   if (isLoading) {
     return (
-      <div className="card-elev flex h-full min-h-[320px] flex-col overflow-hidden p-6">
+      <div className="card-surface card-hover flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl p-6">
         <div className="flex flex-1 flex-col gap-4">
-          <div className="h-8 w-40 animate-pulse rounded-full bg-[color:var(--elev-2)]/70" />
-          <div className="flex-1 animate-pulse rounded-2xl bg-[color:var(--elev-2)]/60" />
+          <div className="h-8 w-40 skeleton" />
+          <div className="flex-1 rounded-2xl bg-white/5" />
         </div>
       </div>
     );
@@ -97,7 +99,7 @@ export function GdeltChart({
 
   if (error) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[color:var(--accent)]/40 bg-[color:var(--accent)]/10 p-6 text-sm text-[color:var(--accent-light)]">
+      <div className="card-surface card-hover flex h-full min-h-[320px] flex-col justify-center gap-2 rounded-2xl border border-[color:var(--primary)]/40 bg-[color:var(--primary)]/10 p-6 text-sm text-[#ff9da8]">
         <p className="font-medium">Unable to load GDELT data</p>
         <p className="text-xs opacity-80">{error}</p>
       </div>
@@ -106,7 +108,7 @@ export function GdeltChart({
 
   if (!hasData) {
     return (
-      <div className="card flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)]/70 bg-[color:var(--card)]/70 p-6 text-sm text-[color:var(--muted)]">
+      <div className="card-surface card-hover flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 p-6 text-sm text-white/60">
         <p>No activity found for the selected filters.</p>
       </div>
     );
@@ -115,9 +117,9 @@ export function GdeltChart({
   const ChartComponent = selectedMetric.chart === "area" ? AreaChart : LineChart;
 
   return (
-    <div className="card-elev flex h-full min-h-[320px] flex-col overflow-hidden p-6">
+    <div className="card-surface card-hover flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl p-6">
       {aggregation === "monthly" && (
-        <span className="pill pointer-events-none self-end bg-[color:var(--accent)]/15 text-[color:var(--accent-light)]">
+        <span className="pill pointer-events-none self-end bg-[color:var(--primary)]/20 text-white/80">
           Monthly aggregation
         </span>
       )}
@@ -126,12 +128,12 @@ export function GdeltChart({
         onValueChange={(value) => setMetric(value as MetricKey)}
         className="mt-4 flex h-full flex-col"
       >
-        <TabsList className="w-max rounded-full bg-[color:var(--panel)]/80 p-1">
+        <TabsList className="w-max rounded-full bg-white/5 p-1">
           {(Object.entries(METRIC_CONFIG) as [MetricKey, (typeof METRIC_CONFIG)[MetricKey]][]).map(([key, config]) => (
             <TabsTrigger
               key={key}
               value={key}
-              className="rounded-full px-4 py-1 text-sm data-[state=active]:bg-[color:var(--accent)] data-[state=active]:text-black"
+              className="rounded-full px-4 py-1 text-sm uppercase tracking-[0.18em] text-white/50 transition data-[state=active]:bg-[color:var(--primary)] data-[state=active]:text-black"
             >
               {config.label}
             </TabsTrigger>
@@ -150,34 +152,36 @@ export function GdeltChart({
               }}
             >
               <defs>
-                <linearGradient id="gdeltSentimentGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={selectedMetric.color} stopOpacity={0.4} />
-                  <stop offset="95%" stopColor={selectedMetric.color} stopOpacity={0.05} />
+                <linearGradient id="pm-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#FF3B3B" stopOpacity={0.85} />
+                  <stop offset="100%" stopColor="#7A3CF0" stopOpacity={0.2} />
                 </linearGradient>
+
+                <filter id="pm-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
-              <XAxis dataKey="date" tick={{ fill: "var(--muted)", fontSize: 12 }} tickLine={false} axisLine={false} minTickGap={24} />
+              <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} strokeDasharray="3 6" />
+              <XAxis dataKey="date" tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 11 }} tickLine={false} axisLine={false} minTickGap={24} />
               <YAxis
-                tick={{ fill: "var(--muted)", fontSize: 12 }}
+                tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 11 }}
                 tickLine={false}
                 axisLine={false}
                 width={60}
                 tickFormatter={(value) => tooltipFormatter(value as number) as string}
               />
               <Tooltip
-                wrapperClassName="!bg-transparent"
-                contentStyle={{
-                  borderRadius: 16,
-                  border: "1px solid rgba(255,255,255,0.05)",
-                  boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
-                  background: "var(--panel)",
-                }}
-                labelStyle={{ fontWeight: 600, color: "var(--fg)" }}
-                formatter={(value) => [tooltipFormatter(value) as string, selectedMetric.label]}
+                cursor={{ stroke: "rgba(255,255,255,0.2)", strokeWidth: 1 }}
+                content={(props) => <CustomTooltip {...props} metricLabel={selectedMetric.label} />}
               />
               <Brush
                 dataKey="date"
                 height={24}
-                stroke={selectedMetric.color}
+                stroke="rgba(255,59,59,0.6)"
                 travellerWidth={12}
                 fill="rgba(255,255,255,0.02)"
               />
@@ -185,10 +189,11 @@ export function GdeltChart({
                 <Area
                   type="monotone"
                   dataKey={metric}
-                  stroke={selectedMetric.color}
-                  fill="url(#gdeltSentimentGradient)"
+                  stroke="#FF3B3B"
+                  fill="url(#pm-grad)"
                   strokeWidth={3}
                   dot={false}
+                  filter="url(#pm-glow)"
                 />
               ) : (
                 <Line
@@ -196,14 +201,34 @@ export function GdeltChart({
                   dataKey={metric}
                   stroke={selectedMetric.color}
                   strokeWidth={3}
-                  dot={{ r: 2, strokeWidth: 1, stroke: selectedMetric.color, fill: "var(--card)" }}
-                  activeDot={{ r: 4 }}
+                  dot={{ r: 2, strokeWidth: 0, fill: "#FF3B3B" }}
+                  activeDot={{ r: 5, strokeWidth: 0, fill: "#FF3B3B", filter: "brightness(1.1)" }}
+                  filter="url(#pm-glow)"
                 />
               )}
             </ChartComponent>
           </ResponsiveContainer>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+function CustomTooltip(
+  props: TooltipProps<number, string> & { metricLabel: string },
+) {
+  const { active, payload, label, metricLabel } = props;
+  if (!active || !payload?.length) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[rgba(18,18,23,0.92)] px-4 py-3 shadow-[0_20px_45px_rgba(0,0,0,0.5)]">
+      <p className="text-[11px] uppercase tracking-[0.3em] text-white/40">{label}</p>
+      <div className="mt-2 flex items-center justify-between gap-6 text-sm text-white/80">
+        <span className="uppercase tracking-[0.2em] text-white/50">{metricLabel}</span>
+        <span className="font-semibold text-white">{tooltipFormatter(payload[0].value)}</span>
+      </div>
     </div>
   );
 }

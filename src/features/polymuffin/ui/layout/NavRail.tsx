@@ -35,7 +35,7 @@ export default function NavRail() {
   );
 
   return (
-    <nav className="card flex h-full flex-col items-center justify-between gap-4 px-3 py-6">
+    <nav className="card-surface card-hover flex h-full flex-col items-center justify-between gap-4 rounded-2xl px-3 py-6">
       <div className="flex flex-col items-center gap-4">
         <Image
           src="/polymuffinpng.png"
@@ -44,7 +44,7 @@ export default function NavRail() {
           height={40}
           priority
         />
-        <div className="h-px w-8 bg-[color:var(--border)]" />
+        <div className="h-px w-8 bg-white/10" />
         <div className="flex flex-col items-center gap-3">
           {buttons.map(({ id, label, Icon, enabled }) => (
             <button
@@ -52,10 +52,10 @@ export default function NavRail() {
               type="button"
               onClick={() => toggleDataset(id)}
               className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-2xl border text-[color:var(--muted)] transition",
+                "flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/60 transition hover:border-[color:var(--primary)]/40 hover:text-white hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(11,11,14,0.7)]",
                 enabled
-                  ? "border-[color:var(--accent)]/60 bg-[color:var(--accent)]/15 text-[color:var(--fg)]"
-                  : "border-[color:var(--border)]/70 bg-transparent hover:border-[color:var(--accent)]/40 hover:text-[color:var(--fg)]",
+                  ? "border-[color:var(--primary)]/50 bg-[color:var(--primary)]/15 text-white shadow-[0_0_8px_rgba(255,59,59,0.15)]"
+                  : "",
               )}
               aria-pressed={enabled}
               aria-label={label}
@@ -66,7 +66,7 @@ export default function NavRail() {
           ))}
         </div>
       </div>
-      <div className="text-center text-[10px] uppercase tracking-[0.28em] text-[color:var(--muted)]">
+      <div className="text-center text-[10px] uppercase tracking-[0.3em] text-white/40">
         Toggle datasets
       </div>
     </nav>
