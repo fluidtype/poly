@@ -2,33 +2,37 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useGlobalFilters } from "@/stores/useGlobalFilters";
-import type { PolyMarket, PolyMarketApi, PolySearchApiResponse } from "@/types";
+import type {
+  PolymuffinMarket,
+  PolymuffinMarketApi,
+  PolymuffinSearchApiResponse,
+} from "@/types";
 
 import { commonQueryOptions, createAbortSignal, normalizeMarket } from "./utils";
 
 const shouldLog = process.env.NODE_ENV !== "production";
 
-type PolySortOption = "volume24h" | "liquidity" | "endDate";
+type PolymuffinSortOption = "volume24h" | "liquidity" | "endDate";
 
-export type UsePolySearchParams = {
+export type UsePolymuffinSearchParams = {
   q?: string;
   active?: boolean;
   limit?: number;
   category?: string;
-  sort?: PolySortOption;
+  sort?: PolymuffinSortOption;
   enabled?: boolean;
 };
 
-export type PolySearchResult = {
-  markets: PolyMarket[];
+export type PolymuffinSearchResult = {
+  markets: PolymuffinMarket[];
   [key: string]: unknown;
 };
 
-export async function fetchPolySearch(
-  params: Pick<UsePolySearchParams, "q" | "active" | "limit" | "category" | "sort">,
+export async function fetchPolymuffinSearch(
+  params: Pick<UsePolymuffinSearchParams, "q" | "active" | "limit" | "category" | "sort">,
   fetchImpl: typeof fetch = fetch,
   abortSignal?: AbortSignal,
-): Promise<PolySearchResult> {
+): Promise<PolymuffinSearchResult> {
   const searchParams = new URLSearchParams();
   const trimmedQuery = params.q?.trim();
   if (trimmedQuery) {
@@ -41,10 +45,15 @@ export async function fetchPolySearch(
   }
   searchParams.set("sort", params.sort ?? "volume24h");
 
-  const requestUrl = `/api/poly?${searchParams.toString()}`;
+  const requestUrl = `/api/polymuffin?${searchParams.toString()}`;
 
   if (shouldLog) {
-    console.log("[hooks/usePolySearch] Fetching URL:", requestUrl, "params:", params);
+    console.log(
+      "[hooks/usePolymuffinSearch] Fetching URL:",
+      requestUrl,
+      "params:",
+      params,
+    );
   }
 
   const response = await fetchImpl(requestUrl, {
@@ -75,11 +84,11 @@ export async function fetchPolySearch(
       errorMessage = fallbackMessage || undefined;
     }
 
-    throw new Error(errorMessage || "Failed to load Poly search results");
+    throw new Error(errorMessage || "Failed to load Polymuffin search results");
   }
 
-  const data = (await response.json()) as PolySearchApiResponse;
-  const rawMarkets: PolyMarketApi[] = Array.isArray(data)
+  const data = (await response.json()) as PolymuffinSearchApiResponse;
+  const rawMarkets: PolymuffinMarketApi[] = Array.isArray(data)
     ? data
     : Array.isArray(data?.markets)
     ? data.markets ?? []
@@ -98,7 +107,7 @@ export async function fetchPolySearch(
   };
 }
 
-export function usePolySearch(params: UsePolySearchParams) {
+export function usePolymuffinSearch(params: UsePolymuffinSearchParams) {
   const globalKeywords = useGlobalFilters((state) => state.keywords);
 
   const queryParams = useMemo(() => ({
@@ -123,9 +132,9 @@ export function usePolySearch(params: UsePolySearchParams) {
   const enabled = params.enabled ?? true;
 
   return useQuery({
-    queryKey: ["poly", "search", queryParams],
+    queryKey: ["polymuffin", "search", queryParams],
     queryFn: ({ signal }) =>
-      fetchPolySearch(
+      fetchPolymuffinSearch(
         {
           q: queryParams.q,
           active: queryParams.active,

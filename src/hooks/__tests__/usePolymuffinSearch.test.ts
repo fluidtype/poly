@@ -1,4 +1,4 @@
-import { fetchPolySearch } from "../usePolySearch";
+import { fetchPolymuffinSearch } from "../usePolymuffinSearch";
 import { normalizeMarket } from "../utils";
 
 describe("normalizeMarket", () => {
@@ -21,7 +21,7 @@ describe("normalizeMarket", () => {
   });
 });
 
-describe("fetchPolySearch", () => {
+describe("fetchPolymuffinSearch", () => {
   it("throws the message from a JSON error payload", async () => {
     const errorMessage = "Readable human error";
 
@@ -44,7 +44,7 @@ describe("fetchPolySearch", () => {
     >;
 
     await expect(
-      fetchPolySearch({}, mockFetch),
+      fetchPolymuffinSearch({}, mockFetch),
     ).rejects.toThrow(errorMessage);
 
     expect(mockFetch).toHaveBeenCalled();

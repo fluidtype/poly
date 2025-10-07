@@ -1,24 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 
-import type { PolyMarket } from "@/types";
+import type { PolymuffinMarket } from "@/types";
 
 import { commonQueryOptions, createAbortSignal, normalizeMarket } from "./utils";
 
-export type UsePolyMarketDetailsParams = {
+export type UsePolymuffinMarketDetailsParams = {
   id?: string;
 };
 
-export type PolyMarketDetailsResult = {
-  market: PolyMarket | null;
+export type PolymuffinMarketDetailsResult = {
+  market: PolymuffinMarket | null;
   [key: string]: unknown;
 };
 
-export async function fetchPolyMarketDetails(
-  params: Required<UsePolyMarketDetailsParams>,
+export async function fetchPolymuffinMarketDetails(
+  params: Required<UsePolymuffinMarketDetailsParams>,
   fetchImpl: typeof fetch = fetch,
   abortSignal?: AbortSignal,
-): Promise<PolyMarketDetailsResult> {
-  const response = await fetchImpl(`/api/poly/market?id=${params.id}`, {
+): Promise<PolymuffinMarketDetailsResult> {
+  const response = await fetchImpl(`/api/polymuffin/market?id=${params.id}`, {
     signal: createAbortSignal(abortSignal),
   });
 
@@ -29,7 +29,7 @@ export async function fetchPolyMarketDetails(
     }
 
     const message = await response.text();
-    throw new Error(message || "Failed to load Poly market details");
+    throw new Error(message || "Failed to load Polymuffin market details");
   }
 
   const data = await response.json();
@@ -41,15 +41,15 @@ export async function fetchPolyMarketDetails(
   };
 }
 
-export function usePolyMarketDetails(params: UsePolyMarketDetailsParams) {
+export function usePolymuffinMarketDetails(params: UsePolymuffinMarketDetailsParams) {
   return useQuery({
-    queryKey: ["poly", "market", params?.id],
+    queryKey: ["polymuffin", "market", params?.id],
     queryFn: ({ signal }) => {
       if (!params?.id) {
         throw new Error("Market id is required");
       }
 
-      return fetchPolyMarketDetails(
+      return fetchPolymuffinMarketDetails(
         {
           id: params.id,
         },

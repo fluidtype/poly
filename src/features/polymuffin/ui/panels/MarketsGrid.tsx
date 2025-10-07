@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import type { PolyMarket } from "@/types";
+import type { PolymuffinMarket } from "@/types";
 
 const PAGE_SIZE = 4;
 
 type MarketsGridProps = {
-  markets: PolyMarket[];
+  markets: PolymuffinMarket[];
   enabled: boolean;
   loading: boolean;
   error: string | null;

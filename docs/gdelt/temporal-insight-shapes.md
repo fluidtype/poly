@@ -1,6 +1,6 @@
 # GDELT context temporal insight payloads
 
-The `/api/gdelt?action=context&…` proxy can surface `insights.temporal_distribution` or `insights.timeline` in a few different shapes. The samples below were captured while querying the Poly GDELT proxy and trimmed for brevity so we can document how the structures differ.
+The `/api/gdelt?action=context&…` proxy can surface `insights.temporal_distribution` or `insights.timeline` in a few different shapes. The samples below were captured while querying the Polymuffin GDELT proxy and trimmed for brevity so we can document how the structures differ.
 
 ## 1. Flat array payload
 

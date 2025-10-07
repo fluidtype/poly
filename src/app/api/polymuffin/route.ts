@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
 import { fetchWithTimeout } from '@/lib/api';
-import { polyListQuerySchema } from '@/lib/validation';
+import { polymuffinListQuerySchema } from '@/lib/validation';
 
 const shouldLog = process.env.NODE_ENV !== 'production';
-const DEFAULT_POLY_GAMMA_BASE = 'https://gamma-api.polymarket.com';
+const DEFAULT_POLYMUFFIN_GAMMA_BASE = 'https://gamma-api.polymarket.com';
 
 import {
   GammaMarket,
@@ -56,14 +56,16 @@ const clampLimit = (value: number) => Math.min(Math.max(value, 5), 200);
 
 export async function GET(req: Request) {
   const configuredBaseUrl =
-    process.env.POLY_GAMMA_BASE ?? process.env.NEXT_PUBLIC_POLY_GAMMA_BASE ?? DEFAULT_POLY_GAMMA_BASE;
+    process.env.POLYMUFFIN_GAMMA_BASE ??
+    process.env.NEXT_PUBLIC_POLYMUFFIN_GAMMA_BASE ??
+    DEFAULT_POLYMUFFIN_GAMMA_BASE;
   const baseUrl = configuredBaseUrl.trim().replace(/\/?$/, '');
 
   if (!baseUrl) {
     return NextResponse.json(
       {
         status: 'error',
-        message: 'POLY_GAMMA_BASE (or NEXT_PUBLIC_POLY_GAMMA_BASE) is not configured',
+        message: 'POLYMUFFIN_GAMMA_BASE (or NEXT_PUBLIC_POLYMUFFIN_GAMMA_BASE) is not configured',
       },
       { status: 500 },
     );
@@ -71,7 +73,7 @@ export async function GET(req: Request) {
 
   const url = new URL(req.url);
   const rawParams = Object.fromEntries(url.searchParams.entries());
-  const parsed = polyListQuerySchema.safeParse(rawParams);
+  const parsed = polymuffinListQuerySchema.safeParse(rawParams);
 
   if (!parsed.success) {
     return NextResponse.json(
@@ -105,7 +107,7 @@ export async function GET(req: Request) {
   const targetUrl = `${baseUrl}/markets?${searchParams.toString()}`;
 
   if (shouldLog) {
-    console.log('[api/poly] Fetching URL:', targetUrl);
+    console.log('[api/polymuffin] Fetching URL:', targetUrl);
   }
 
   const response = await fetchWithTimeout(targetUrl);
@@ -123,7 +125,7 @@ export async function GET(req: Request) {
           : (error as Error)?.message ?? 'Unable to parse response';
 
       if (shouldLog) {
-        console.error('[api/poly] Failed to parse response JSON', {
+        console.error('[api/polymuffin] Failed to parse response JSON', {
           error,
           url: targetUrl,
           bodyPreview: responseText.slice(0, 500),
@@ -152,7 +154,7 @@ export async function GET(req: Request) {
     const message = parsedMessage || response.statusText || 'Upstream request failed';
 
     if (shouldLog) {
-      console.error('[api/poly] Non-OK response from upstream', {
+      console.error('[api/polymuffin] Non-OK response from upstream', {
         status,
         url: targetUrl,
         bodyPreview: responseText.slice(0, 1000),
@@ -183,7 +185,7 @@ export async function GET(req: Request) {
 
   if (shouldLog) {
     console.log(
-      '[api/poly] Returning markets:',
+      '[api/polymuffin] Returning markets:',
       normalized.length,
       'from upstream:',
       upstreamMarkets.length,
