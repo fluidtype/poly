@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 import type { GdeltInsights } from "@/types";
-import { TemporalEntry, toTemporalEntries } from "./temporal";
+import { toTemporalEntries } from "./temporal";
 
 interface InsightsPanelProps {
   insights?: GdeltInsights | null;
