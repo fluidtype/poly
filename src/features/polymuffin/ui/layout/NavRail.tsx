@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo } from "react";
 import { Activity, BarChart2, Twitter } from "lucide-react";
 
@@ -36,9 +37,13 @@ export default function NavRail() {
   return (
     <nav className="card flex h-full flex-col items-center justify-between gap-4 px-3 py-6">
       <div className="flex flex-col items-center gap-4">
-        <div className="text-[10px] font-semibold tracking-[0.18em] leading-3 text-[color:var(--muted)]">
-          Polymuffin
-        </div>
+        <Image
+          src="/polymuffinpng.png"
+          alt="Polymuffin logo"
+          width={40}
+          height={40}
+          priority
+        />
         <div className="h-px w-8 bg-[color:var(--border)]" />
         <div className="flex flex-col items-center gap-3">
           {buttons.map(({ id, label, Icon, enabled }) => (
